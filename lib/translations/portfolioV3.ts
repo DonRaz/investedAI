@@ -80,6 +80,46 @@ export interface PortfolioV3Translation {
   yearsLabel: string; // Label for years
   formulasTitle: string; // Title for formulas section
   yearLabel: string; // Label for singular year
+
+  // Slider Info
+  marketReturn: string;
+  marketReturnDesc: string;
+  interestRate_2: string;
+  interestRateDesc: string;
+  currentValue: string;
+  currentValueDesc: string;
+  targetCash_2: string;
+  targetCashDesc: string;
+  years_2: string;
+  yearsDesc: string;
+  taxRate_2: string;
+  taxRateDesc: string;
+  profitPercentage_2: string;
+  profitPercentageDesc: string;
+
+  // Chart labels
+  loanStrategyChart: string;
+  sellStrategyChart: string;
+  netWorthChart: string;
+
+  // Tooltip labels
+  tooltipLoanStrategy: string;
+  tooltipSellStrategy: string;
+  tooltipNetWorth: string;
+  tooltipYear: string;
+
+  // Summary Section
+  summaryLoanStrategy: string;
+  summarySellStrategy: string;
+  summaryRequiredLoan: string;
+  summaryMonthlyPayment: string;
+  summaryPrepaidInterest: string;
+  summaryTotalInterest: string;
+  summaryFinalValue: string;
+  summaryNetWorth: string;
+  summaryAmountToSell: string;
+  summaryTaxPaid: string;
+  summaryRemainingPortfolio: string;
 }
 
 export const portfolioV3Translations: Record<Language, PortfolioV3Translation> = {
@@ -144,8 +184,47 @@ export const portfolioV3Translations: Record<Language, PortfolioV3Translation> =
     monthlyPaymentsTitle: 'Monthly Payments',
     yearsLabel: 'years',
     formulasTitle: 'Formulas Used',
-    yearLabel: 'year'
+    yearLabel: 'year',
 
+    // Slider Info
+    marketReturn: "Market Return Rate",
+    marketReturnDesc: "The expected annual percentage growth of your investment portfolio. Historical average for the S&P 500 is around 10%. Higher returns mean your portfolio grows faster, potentially offsetting interest costs in the loan strategy.",
+    interestRate_2: "Loan Interest Rate",
+    interestRateDesc: "The annual interest rate charged on your portfolio-backed loan. These rates are typically lower than unsecured loans because your portfolio serves as collateral. Lower rates make the loan strategy more attractive compared to selling assets.",
+    currentValue: "Portfolio Value",
+    currentValueDesc: "The current total market value of your investment portfolio. This is the combined value of all your investments before any taxes or fees.",
+    targetCash_2: "Target Cash",
+    targetCashDesc: "The amount of money you need to access from your portfolio. This is the cash you're trying to obtain either by selling assets or by taking a loan against your portfolio.",
+    years_2: "Investment Period",
+    yearsDesc: "The number of years you plan to maintain your investment strategy before potentially selling or paying back loans. Longer periods typically favor the loan strategy as it gives your investments more time to compound.",
+    taxRate_2: "Tax Rate",
+    taxRateDesc: "The percentage of your investment profits that will be paid as taxes when you sell. This includes federal, state, and local capital gains taxes. Higher tax rates make the loan strategy more attractive as it defers these taxes.",
+    profitPercentage_2: "Portfolio's Profit Percentage",
+    profitPercentageDesc: "The percentage of your portfolio that consists of profits (capital gains). You only pay capital gains taxes on this portion. For example, if you invested $25,000 and now have $100,000, your profit percentage would be 75%.",
+
+    // Chart labels
+    loanStrategyChart: "Loan Strategy",
+    sellStrategyChart: "Sell Strategy",
+    netWorthChart: "Net Worth (Loan)",
+
+    // Tooltip labels
+    tooltipLoanStrategy: "Loan Strategy",
+    tooltipSellStrategy: "Sell Strategy",
+    tooltipNetWorth: "Net Worth (Loan)",
+    tooltipYear: "Year",
+
+    // Summary Section
+    summaryLoanStrategy: "Loan Strategy Results",
+    summarySellStrategy: "Sell Strategy Results",
+    summaryRequiredLoan: "Required Loan:",
+    summaryMonthlyPayment: "Monthly Payment:",
+    summaryPrepaidInterest: "Prepaid Interest:",
+    summaryTotalInterest: "Total Interest Paid:",
+    summaryFinalValue: "Final Portfolio Value:",
+    summaryNetWorth: "Net Worth:",
+    summaryAmountToSell: "Amount to Sell:",
+    summaryTaxPaid: "Tax Paid:",
+    summaryRemainingPortfolio: "Remaining Portfolio:",
   },
   he: {
     financialPlanningTool: 'כלי לתכנון פיננסי',
@@ -207,7 +286,46 @@ export const portfolioV3Translations: Record<Language, PortfolioV3Translation> =
     monthlyPaymentsTitle: 'תשלומים חודשיים',
     yearsLabel: 'שנים',
     formulasTitle: 'נוסחאות בשימוש',
-    yearLabel: 'שנה'
-    
-  }
+    yearLabel: 'שנה',
+
+    // Slider Info
+    marketReturn: "שיעור תשואת שוק",
+    marketReturnDesc: "התשואה השנתית הצפויה באחוזים של תיק ההשקעות שלך. הממוצע ההיסטורי עבור S&P 500 הוא סביב 10%. תשואות גבוהות יותר משמעותן שתיק ההשקעות שלך גדל מהר יותר, מה שעשוי לקזז את עלויות הריבית באסטרטגיית ההלוואה.",
+    interestRate_2: "שיעור ריבית ההלוואה",
+    interestRateDesc: "שיעור הריבית השנתי שנגבה על ההלוואה המגובה בתיק ההשקעות שלך. שיעורים אלה נמוכים בדרך כלל מהלוואות לא מובטחות מכיוון שתיק ההשקעות שלך משמש כבטוחה. שיעורים נמוכים יותר הופכים את אסטרטגיית ההלוואה לאטרקטיבית יותר בהשוואה למכירת נכסים.",
+    currentValue: "ערך תיק",
+    currentValueDesc: "הערך הכולל הנוכחי בשוק של תיק ההשקעות שלך. זהו הערך המשולב של כל ההשקעות שלך לפני מיסים או עמלות.",
+    targetCash_2: "מזומן נדרש",
+    targetCashDesc: "סכום הכסף שאתה צריך לגשת אליו מתיק ההשקעות שלך. זהו המזומן שאתה מנסה להשיג על ידי מכירת נכסים או על ידי לקיחת הלוואה כנגד תיק ההשקעות שלך.",
+    years_2: "תקופת השקעה",
+    yearsDesc: "מספר השנים שבהן אתה מתכנן לשמור על אסטרטגיית ההשקעה שלך לפני מכירה פוטנציאלית או החזר הלוואות. תקופות ארוכות יותר בדרך כלל מעדיפות את אסטרטגיית ההלוואה מכיוון שהיא נותנת להשקעות שלך יותר זמן לצבור ריבית דריבית.",
+    taxRate_2: "שיעור מס",
+    taxRateDesc: "אחוז הרווחים מההשקעות שלך שישולמו כמסים בעת המכירה. בישראל המס על רווחי הון עומד על 25%. שיעורי מס גבוהים יותר הופכים את אסטרטגיית ההלוואה לאטרקטיבית יותר מכיוון שהיא דוחה את תשלום המסים הללו.״",
+    profitPercentage_2: "אחוז הרווח בתיק",
+    profitPercentageDesc: "אחוז תיק ההשקעות שלך שמורכב מרווחים (רווחי הון). אתה משלם מס רווחי הון רק על חלק זה. לדוגמה, אם השקעת 25,000 ש\"ח ועכשיו יש לך 100,000 ש\"ח, אחוז הרווח שלך יהיה 75%.",
+
+    // Chart labels
+    loanStrategyChart: "אסטרטגיית הלוואה",
+    sellStrategyChart: "אסטרטגיית מכירה",
+    netWorthChart: "שווי נקי (הלוואה)",
+
+    // Tooltip labels
+    tooltipLoanStrategy: "אסטרטגיית הלוואה",
+    tooltipSellStrategy: "אסטרטגיית מכירה",
+    tooltipNetWorth: "שווי נקי (הלוואה)",
+    tooltipYear: "שנה",
+
+    // Summary Section
+    summaryLoanStrategy: "תוצאות אסטרטגיית ההלוואה",
+    summarySellStrategy: "תוצאות אסטרטגיית המכירה",
+    summaryRequiredLoan: "הלוואה נדרשת:",
+    summaryMonthlyPayment: "תשלום חודשי:",
+    summaryPrepaidInterest: "ריבית מראש:",
+    summaryTotalInterest: "סך ריבית ששולמה:",
+    summaryFinalValue: "ערך סופי של התיק:",
+    summaryNetWorth: "שווי נקי:",
+    summaryAmountToSell: "סכום למכירה:",
+    summaryTaxPaid: "מס ששולם:",
+    summaryRemainingPortfolio: "יתרת התיק:",
+  },
 }; 
