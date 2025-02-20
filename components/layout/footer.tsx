@@ -19,7 +19,7 @@ export function Footer() {
 
   return (
     <footer className="border-t">
-      <div className="container flex h-14 items-center justify-between" dir={direction()}>
+      <div className="container flex h-14 items-center justify-between mx-auto" dir={direction()}>
         <p className="text-sm text-muted-foreground">
           © {new Date().getFullYear()} InvestCalc. {t.allRightsReserved}
         </p>

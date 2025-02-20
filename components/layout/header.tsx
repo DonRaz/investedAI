@@ -20,7 +20,7 @@ import {
 import { useRouter } from "next/navigation";
 
 const navigation = [
-  { name: "portfolio", href: "/", icon: Calculator },
+  { name: "portfolio", href: "/loan-vs-sell", icon: Calculator },
   { name: "compound", href: "/compound", icon: LineChart },
   { name: "tax", href: "/tax", icon: PieChart },
   { name: "pension", href: "/pension", icon: Wallet },
@@ -45,7 +45,7 @@ export function Header() {
   React.useEffect(() => {
     const prefetchRoutes = () => {
       navigation.forEach((item) => {
-        const href = `/${language}${item.href === '/' ? '' : item.href}`;
+        const href = `/${language}${item.href}`;
         router.prefetch(href);
       });
     };
@@ -62,8 +62,8 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container relative flex h-14 items-center justify-between" dir={direction()}>
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 ">
+      <div className="container relative flex h-14 items-center justify-between mx-auto" dir={direction()}>
         {/* Logo */}
         <div className="flex items-center gap-2">
           <Link href={`/${language}`} className="flex items-center space-x-2" prefetch={true}>
@@ -78,8 +78,8 @@ export function Header() {
             <NavigationMenuList>
               {navigation.map((item) => {
                 const Icon = item.icon;
-                const href = `/${language}${item.href === '/' ? '' : item.href}`;
-                const isActive = basePath === (item.href === '/' ? '' : item.href.slice(1));
+                const href = `/${language}${item.href}`;
+                const isActive = basePath === item.href.slice(1);
                 
                 return (
                   <NavigationMenuItem key={item.href}>
@@ -122,8 +122,8 @@ export function Header() {
             <nav className="flex flex-col space-y-3">
               {navigation.map((item) => {
                 const Icon = item.icon;
-                const href = `/${language}${item.href === '/' ? '' : item.href}`;
-                const isActive = basePath === (item.href === '/' ? '' : item.href.slice(1));
+                const href = `/${language}${item.href}`;
+                const isActive = basePath === item.href.slice(1);
                 
                 return (
                   <Link

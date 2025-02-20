@@ -29,11 +29,19 @@ export function middleware(request: NextRequest) {
       new URL(`/${locale}${pathname}`, request.url)
     );
   }
+
+  // If the request is for favicon.ico, redirect to the static favicon
+  if (pathname === '/favicon.ico') {
+    return NextResponse.rewrite(new URL('/favicon.ico', request.url));
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: [
     // Skip all internal paths (_next)
-    '/((?!_next|api|favicon.ico).*)',
+    '/((?!_next|api).*)',
+    '/favicon.ico',
   ],
 };
