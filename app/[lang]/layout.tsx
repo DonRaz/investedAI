@@ -13,8 +13,25 @@ export const metadata: Metadata = {
   description: 'Professional investment calculator tools for portfolio management',
 };
 
+// This generates all the static paths for the site
 export async function generateStaticParams() {
-  return [{ lang: 'en' }, { lang: 'he' }];
+  const routes = [
+    '',
+    '/tax',
+    '/pension',
+    '/compound',
+    '/loan-vs-sell'
+  ];
+
+  const locales = ['en', 'he'];
+  
+  return locales.flatMap(lang => 
+    routes.map(route => ({
+      lang,
+      // Remove leading slash and handle empty string for root path
+      slug: route.split('/').filter(Boolean)
+    }))
+  );
 }
 
 export default function RootLayout({

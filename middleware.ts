@@ -18,6 +18,13 @@ function getLocale(request: NextRequest): string {
 
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
+
+  // Handle root path specifically
+  if (pathname === '/') {
+    const locale = getLocale(request);
+    return NextResponse.redirect(new URL(`/${locale}`, request.url));
+  }
+
   const pathnameIsMissingLocale = locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
@@ -40,8 +47,8 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Skip all internal paths (_next)
-    '/((?!_next|api).*)',
-    '/favicon.ico',
+    // Skip all internal paths (_next, assets, api)
+    '/((?!api|_next/static|_next/image|assets|favicon.ico).*)',
+    '/',  // Add this to ensure root path is handled
   ],
 };

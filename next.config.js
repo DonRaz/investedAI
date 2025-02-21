@@ -12,7 +12,9 @@ const nextConfig = {
   // Optimize production builds
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-  }
+  },
+  // Add basePath if needed
+  // basePath: '',
 };
 
 module.exports = nextConfig;
