@@ -22,7 +22,7 @@ import { useRouter } from "next/navigation";
 const navigation = [
   { name: "portfolio", href: "/loan-vs-sell", icon: Calculator },
   { name: "compound", href: "/compound", icon: LineChart },
-  { name: "tax", href: "/tax", icon: PieChart },
+  // { name: "tax", href: "/tax", icon: PieChart },
   { name: "pension", href: "/pension", icon: Wallet },
 ] as const;
 
@@ -57,6 +57,14 @@ export function Header() {
     setOpen(prev => !prev);
   }, []);
 
+  // New helper function to determine active state
+  const isRouteActive = React.useCallback((itemHref: string) => {
+    // Remove leading slash and split into segments
+    const itemPath = itemHref.replace('/', '');
+    // Compare with basePath, also handling the home page case
+    return basePath.includes(itemPath) ;
+  }, [basePath]);
+
   if (!mounted) {
     return null;
   }
@@ -68,7 +76,7 @@ export function Header() {
         <div className="flex items-center gap-2">
           <Link href={`/${language}`} className="flex items-center space-x-2" prefetch={true}>
             <Calculator className="h-6 w-6" />
-            <span className="font-bold">InvestCalc</span>
+            <span className="font-semibold">InvestCalc</span>
           </Link>
         </div>
 
@@ -79,17 +87,17 @@ export function Header() {
               {navigation.map((item) => {
                 const Icon = item.icon;
                 const href = `/${language}${item.href}`;
-                const isActive = basePath === item.href.slice(1);
+                const isActive = isRouteActive(item.href);
                 
                 return (
                   <NavigationMenuItem key={item.href}>
                     <Link href={href} legacyBehavior passHref prefetch={true}>
                       <NavigationMenuLink
-                        className={`flex items-center space-x-2 px-4 py-2 text-sm font-medium transition-colors hover:text-foreground/80 ${
-                          isActive ? "text-foreground" : "text-foreground/60"
+                        className={`flex items-center space-x-2 px-4 py-2 text-sm transition-colors hover:text-foreground/80 ${
+                          isActive ? "text-foreground font-semibold" : "text-foreground font-medium"
                         }`}
                       >
-                        <Icon className="h-4 w-4" />
+                        <Icon className={`${isActive ? "h-5 w-5 stroke-[2.5]" : "h-4 w-4 stroke-[1.5]"}`} />
                         <span>{t[item.name]}</span>
                       </NavigationMenuLink>
                     </Link>
@@ -123,19 +131,21 @@ export function Header() {
               {navigation.map((item) => {
                 const Icon = item.icon;
                 const href = `/${language}${item.href}`;
-                const isActive = basePath === item.href.slice(1);
+                const isActive = isRouteActive(item.href);
                 
                 return (
                   <Link
                     key={item.href}
                     href={href}
                     prefetch={true}
-                    className={`flex items-center space-x-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent ${
-                      isActive ? "bg-accent" : ""
+                    className={`flex items-center space-x-3 rounded-md px-3 py-2.5 text-sm transition-colors relative ${
+                      isActive 
+                        ? "bg-accent/50 font-semibold after:absolute after:left-0 after:top-0 after:h-full after:w-1 after:bg-primary after:rounded-full" 
+                        : "font-medium hover:bg-accent/30"
                     }`}
                     onClick={toggleMenu}
                   >
-                    <Icon className="h-4 w-4" />
+                    <Icon className={`${isActive ? "h-5 w-5 stroke-[2.5]" : "h-4 w-4 stroke-[1.5]"}`} />
                     <span>{t[item.name]}</span>
                   </Link>
                 );
