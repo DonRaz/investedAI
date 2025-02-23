@@ -280,7 +280,7 @@ const PortfolioTaxCalculator = () => {
 	}) => (
 		<span
 			onClick={() => handleValueClick(refName)}
-			className="underline decoration-dotted cursor-pointer hover:text-blue-500 transition-colors font-medium"
+			className="underline decoration-dotted cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors font-medium"
 		>
 			{formatter(value)}
 		</span>
@@ -291,40 +291,33 @@ const PortfolioTaxCalculator = () => {
 		<Button
 			variant="ghost"
 			size="icon"
-			className="h-5 w-5 rounded-full bg-gradient-to-r from-blue-50/80 to-indigo-50/80 dark:from-blue-900/30 dark:to-indigo-900/30 border border-blue-100/60 dark:border-blue-800/30 shadow-sm backdrop-blur-sm p-0"
+			className="h-5 w-5 rounded-full bg-transparent hover:bg-white/30  dark:hover:bg-black/30 transition-all shadow-sm backdrop-blur-sm p-0"
 			onClick={(e) => {
 				e.stopPropagation();
 				openInfoDrawer(sliderInfo[sliderKey].title, sliderInfo[sliderKey].description);
 			}}
 		>
-			<HelpCircle className="h-3.5 w-3.5 text-blue-500/90 dark:text-blue-400/90 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" />
+			<HelpCircle className="h-3.5 w-3.5 text-emerald-700/90 dark:text-emerald-400/90 transition-colors" />
 		</Button>
 	);
 
 	return (
 		<div
-			className={`font-sans bg-gradient-to-br from-blue-50 via-gray-50 to-indigo-50 dark:from-blue-950 dark:via-gray-950 dark:to-indigo-950 p-8 min-h-screen flex flex-col justify-center items-center 
-                
-                `}
+			className={`font-sans p-4 md:p-8 min-h-screen flex flex-col justify-center items-center`}
 		>
-			<Card className="w-full max-w-4xl overflow-hidden border border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-xl bg-white/80 dark:bg-gray-900/70 rounded-3xl mb-8">
-				<div className="absolute inset-0 bg-gradient-to-tr from-blue-100/30 via-transparent to-purple-100/30 dark:from-blue-900/20 dark:to-purple-900/20 rounded-3xl"></div>
+			<Card className="w-full max-w-4xl overflow-hidden border border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-xl bg-white/80 dark:bg-zinc-900/70 rounded-3xl mb-8">
+				<div className="absolute inset-0 bg-gradient-to-tr from-zinc-100/30 via-transparent to-emerald-100/30 dark:from-zinc-900/20 dark:to-emerald-900/20 rounded-3xl"></div>
 				<CardContent className="space-y-8 p-8 relative z-10">
 					{/* Header */}
 					<div className="text-center space-y-3 mb-10">
-						<div className="inline-block px-4 py-1 rounded-full bg-gradient-to-r from-blue-100/80 to-indigo-100/80 dark:from-blue-900/30 dark:to-indigo-900/30 backdrop-blur-sm mb-2">
-							<span className="text-sm font-medium bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
-								{t.financialPlanningTool}
-							</span>
-						</div>
-						<h1 className="text-3xl font-light tracking-tight bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent">
+						<h1 className="text-3xl font-light tracking-tight bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-zinc-100 dark:to-zinc-300 bg-clip-text text-transparent">
 							{t.portfolioTaxStrategy}
 						</h1>
 						<p className="text-sm text-gray-500 dark:text-gray-400 max-w-lg mx-auto">{t.compareOutcomes}</p>
 					</div>
 
 					{/* Explanatory section */}
-					<div className="p-6 backdrop-blur-md bg-gradient-to-r from-blue-50/90 to-blue-100/90 dark:from-blue-950/60 dark:to-blue-900/60 rounded-2xl border border-blue-200/50 dark:border-blue-800/30 shadow-lg">
+					<div className="p-6 backdrop-blur-md bg-gradient-to-r from-zinc-50/90 to-zinc-100/90 dark:from-zinc-950/60 dark:to-zinc-900/60 rounded-2xl border border-zinc-200/50 dark:border-zinc-800/30 shadow-lg">
 						<p className="text-sm leading-relaxed text-gray-800 dark:text-gray-200">
 							{t.ifYouHave}{' '}
 							<ClickableValue
@@ -351,15 +344,33 @@ const PortfolioTaxCalculator = () => {
 							{t.inCash}
 						</p>
 						<div className="mt-4 grid grid-cols-2 gap-8 text-sm">
-							<div className="flex flex-col space-y-2 items-center p-4 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md rounded-xl shadow-sm border border-white/50 dark:border-gray-700/30">
-								<div className="w-4 h-4 rounded-full bg-gradient-to-br from-red-400 to-red-500 mb-2 shadow-inner"></div>
-								<span className="font-medium text-center">{t.sellPortfolioAssets}</span>
-								<span className="text-xs text-center text-gray-500">{t.payTaxNow}</span>
-							</div>
-							<div className="flex flex-col space-y-2 items-center p-4 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md rounded-xl shadow-sm border border-white/50 dark:border-gray-700/30">
-								<div className="w-4 h-4 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 mb-2 shadow-inner"></div>
+							<div className="flex flex-col space-y-2 items-center p-4 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md rounded-xl shadow-md border border-zinc-400/50 dark:border-zinc-700/30 relative overflow-hidden">
+								<div className="w-4 h-4 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-500 mb-2 shadow-inner"></div>
 								<span className="font-medium text-center">{t.portfolioBackedLoan}</span>
 								<span className="text-xs text-center text-gray-500">{t.payInterestOverTime}</span>
+								{(finalYear.loanStrategy - summary.totalLoanNeeded) > finalYear.sellStrategy && (
+									<div className="absolute -right-[40%] top-[2%] w-full rotate-45 transform">
+										<div className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-[10px] sm:text-xs py-1 px-6 shadow-lg border border-emerald-400/30 text-center whitespace-nowrap">
+											<span className="font-semibold tracking-wider">
+												${Math.round((finalYear.loanStrategy - summary.totalLoanNeeded)/1000)}k
+											</span>
+										</div>
+									</div>
+								)}
+							</div>
+							<div className="flex flex-col space-y-2 items-center p-4 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md rounded-xl shadow-md border border-zinc-400/50 dark:border-zinc-700/30 relative overflow-hidden">
+								<div className="w-4 h-4 rounded-full bg-gradient-to-br from-amber-400 to-amber-500 mb-2 shadow-inner"></div>
+								<span className="font-medium text-center">{t.sellPortfolioAssets}</span>
+								<span className="text-xs text-center text-gray-500">{t.payTaxNow}</span>
+								{finalYear.sellStrategy > (finalYear.loanStrategy - summary.totalLoanNeeded) && (
+									<div className="absolute -right-[30%] top-[5%] w-full rotate-45 transform">
+										<div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[10px] sm:text-xs py-1 px-6 shadow-lg border border-amber-400/30 text-center whitespace-nowrap">
+											<span className="font-semibold tracking-wider">
+												${Math.round(finalYear.sellStrategy/1000)}k
+											</span>
+										</div>
+									</div>
+								)}
 							</div>
 						</div>
 					</div>
@@ -436,7 +447,7 @@ const PortfolioTaxCalculator = () => {
 						</div>
 					</div>
 
-					<div className="h-80 mt-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-2xl border border-white/50 dark:border-gray-700/30 shadow-lg">
+					<div className="h-80 mt-8 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md p-6 rounded-2xl border border-white/50 dark:border-zinc-700/30 shadow-lg">
 						<ResponsiveContainer width="100%" height="100%">
 							<LineChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 10 }}>
 								<CartesianGrid strokeDasharray="3 3" stroke="#eaeaea" />
@@ -487,54 +498,56 @@ const PortfolioTaxCalculator = () => {
 										<span style={{ color: '#666', fontSize: 12, marginLeft: 8 }}>{value}</span>
 									)}
 								/>
+                                <Line
+									type="monotone"
+									dataKey="sellStrategy"
+									name="Sell Strategy"
+									stroke="#d97706"
+									strokeWidth={3}
+									dot={{ r: 1 }}
+									activeDot={{ r: 5, strokeWidth: 0 }}
+								/>
 								<Line
 									type="monotone"
 									dataKey="loanStrategy"
 									name="Loan Strategy"
-									stroke="#60a5fa"
+									stroke="#059669"
 									strokeWidth={3}
 									dot={{ r: 1 }}
 									activeDot={{ r: 5, strokeWidth: 0 }}
 								/>
-								<Line
-									type="monotone"
-									dataKey="sellStrategy"
-									name="Sell Strategy"
-									stroke="#f87171"
-									strokeWidth={3}
-									dot={{ r: 1 }}
-									activeDot={{ r: 5, strokeWidth: 0 }}
-								/>
-								<Line
+                                <Line
 									type="monotone"
 									dataKey="netWorth"
 									name="Net Worth (Loan)"
-									stroke="#bfdbfe"
+									stroke="oklch(0.845 0.143 164.978)" // emerald-300
 									strokeWidth={2}
 									dot={{ r: 0 }}
 									activeDot={{ r: 4, strokeWidth: 0 }}
 								/>
+
+
 							</LineChart>
 						</ResponsiveContainer>
 					</div>
-
-					{/* Loan Strategy Results (Updated to use translations) */}
+					{/* Loan Strategy Results*/}
 					<div className="grid gap-6 md:grid-cols-2">
-						<div className="bg-gradient-to-br from-blue-50/90 to-indigo-50/90 dark:from-blue-950/60 dark:to-indigo-950/60 backdrop-blur-md rounded-2xl p-6 shadow-md border border-blue-100/50 dark:border-blue-800/20">
-							<h3 className="font-medium text-md mb-4 text-blue-800 dark:text-blue-300">
+                        {/* Loan Strategy */}
+						<div className="flex flex-col h-full bg-gradient-to-br from-emerald-50/95 via-emerald-50/90 to-zinc-50/95 dark:from-emerald-950/30 dark:via-emerald-900/30 dark:to-zinc-900/30 backdrop-blur-md rounded-2xl p-6 shadow-md border border-emerald-100/50 dark:border-emerald-900/50">
+							<h3 className="font-medium text-md mb-4 text-emerald-900 dark:text-emerald-200">
 								{t.summaryLoanStrategy}
 							</h3>
-							<div className="space-y-3">
+							<div className="space-y-3 flex-grow mb-4">
 								<div className="flex justify-between text-sm">
-									<span className="text-gray-600 dark:text-gray-400">{t.summaryRequiredLoan}:</span>
+									<span className="text-gray-600 dark:text-gray-200/80">{t.summaryRequiredLoan}</span>
 									<span className="font-medium">
 										${Math.round(summary.totalLoanNeeded).toLocaleString()}
 									</span>
 								</div>
 								{loanStrategy === 'monthly' && (
 									<div className="flex justify-between text-sm">
-										<span className="text-gray-600 dark:text-gray-400">
-											{t.summaryMonthlyPayment}:
+										<span className="text-gray-600 dark:text-gray-200/80">
+											{t.summaryMonthlyPayment}
 										</span>
 										<span className="font-medium">
 											${Math.round(finalYear.monthlyPayment).toLocaleString()}
@@ -542,60 +555,60 @@ const PortfolioTaxCalculator = () => {
 									</div>
 								)}
 								<div className="flex justify-between text-sm">
-									<span className="text-gray-600 dark:text-gray-400">
+									<span className="text-gray-600 dark:text-gray-200/80">
 										{loanStrategy === 'upfront' ? t.summaryPrepaidInterest : t.summaryTotalInterest}
-										:
 									</span>
 									<span className="font-medium">
 										${Math.round(finalYear.totalInterestPaid).toLocaleString()}
 									</span>
 								</div>
 								<div className="flex justify-between text-sm">
-									<span className="text-gray-600 dark:text-gray-400">{t.summaryFinalValue}:</span>
+									<span className="text-gray-600 dark:text-gray-200/80">{t.summaryFinalValue}</span>
 									<span className="font-medium">${finalYear.loanStrategy.toLocaleString()}</span>
 								</div>
-								<div className="flex justify-between bg-gradient-to-r from-blue-100/90 to-indigo-100/90 dark:from-blue-900/70 dark:to-indigo-900/70 backdrop-blur-sm px-0 py-3 rounded-lg mt-4 text-sm border border-blue-200/50 dark:border-blue-700/30">
-									<span className="font-medium text-blue-800 dark:text-blue-200 pl-3">
-										{t.summaryNetWorth}:
-									</span>
-									<span className="font-medium text-blue-800 dark:text-blue-200 pr-3">
-										${(finalYear.loanStrategy - summary.totalLoanNeeded).toLocaleString()}
-									</span>
-								</div>
+							</div>
+
+							<div className="flex justify-between bg-gradient-to-r from-emerald-100/95 to-emerald-50/95 dark:from-emerald-900/90 dark:to-emerald-800/85 backdrop-blur-sm px-0 py-3 rounded-lg mt-auto text-sm border border-emerald-200/50 dark:border-emerald-700/50">
+								<span className="font-medium text-emerald-900 dark:text-emerald-100 pl-3">
+									{t.summaryNetWorth}
+								</span>
+								<span className="font-medium text-emerald-900 dark:text-emerald-100 pr-3">
+									${(finalYear.loanStrategy - summary.totalLoanNeeded).toLocaleString()}
+								</span>
 							</div>
 						</div>
-
-						<div className="bg-gradient-to-br from-red-50/90 to-rose-50/90 dark:from-red-950/60 dark:to-rose-950/60 backdrop-blur-md rounded-2xl p-6 shadow-md border border-red-100/50 dark:border-red-800/20">
-							<h3 className="font-medium text-md mb-4 text-red-800 dark:text-red-300">
+                        {/* Sell Strategy */}
+						<div className="flex flex-col h-full bg-gradient-to-br from-amber-50/95 via-amber-700/10 to-zinc-50/95 dark:from-amber-950/30 dark:via-amber-900/30 dark:to-zinc-900/30 backdrop-blur-md rounded-2xl p-6 shadow-md border border-amber-100/50 dark:border-amber-900/50">
+							<h3 className="font-medium text-md mb-4 text-amber-900 dark:text-amber-200">
 								{t.summarySellStrategy}
 							</h3>
-							<div className="space-y-3">
+							<div className="space-y-3 flex-grow mb-4">
 								<div className="flex justify-between text-sm">
-									<span className="text-gray-600 dark:text-gray-400">{t.summaryAmountToSell}:</span>
+									<span className="text-gray-600 dark:text-gray-200/80">{t.summaryAmountToSell}</span>
 									<span className="font-medium">
 										${Math.round(summary.amountToSell).toLocaleString()}
 									</span>
 								</div>
 								<div className="flex justify-between text-sm">
-									<span className="text-gray-600 dark:text-gray-400">{t.summaryTaxPaid}:</span>
+									<span className="text-gray-600 dark:text-gray-200/80">{t.summaryTaxPaid}</span>
 									<span className="font-medium">${Math.round(summary.taxPaid).toLocaleString()}</span>
 								</div>
 								<div className="flex justify-between text-sm">
-									<span className="text-gray-600 dark:text-gray-400">
-										{t.summaryRemainingPortfolio}:
+									<span className="text-gray-600 dark:text-gray-200/80">
+										{t.summaryRemainingPortfolio}
 									</span>
 									<span className="font-medium">
 										${Math.round(inputs.currentValue - summary.amountToSell).toLocaleString()}
 									</span>
 								</div>
-								<div className="flex justify-between bg-gradient-to-r from-red-100/90 to-rose-100/90 dark:from-red-900/70 dark:to-rose-900/70 backdrop-blur-sm px-0 py-3 rounded-lg mt-4 text-sm border border-red-200/50 dark:border-red-700/30">
-									<span className="font-medium text-red-800 dark:text-red-200 pl-3">
-										{t.summaryFinalValue}:
-									</span>
-									<span className="font-medium text-red-800 dark:text-red-200 pr-3">
-										${finalYear.sellStrategy.toLocaleString()}
-									</span>
-								</div>
+							</div>
+							<div className="flex mt-auto justify-between bg-gradient-to-r from-amber-100/95 to-amber-50/95 dark:from-amber-900/90 dark:to-amber-800/85 backdrop-blur-sm px-0 py-3 rounded-lg text-sm border border-amber-200/50 dark:border-amber-700/50">
+								<span className="font-medium text-amber-900 dark:text-amber-100 pl-3">
+									{/*t.summaryFinalValue*/ t.summaryNetWorth}
+								</span>
+								<span className="font-medium text-amber-900 dark:text-amber-100 pr-3">
+									${finalYear.sellStrategy.toLocaleString()}
+								</span>
 							</div>
 						</div>
 					</div>
@@ -618,24 +631,25 @@ const PortfolioTaxCalculator = () => {
 								<h4 className="font-medium text-md mb-4 bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent">
 									Strategy Comparison
 								</h4>
-								<div className="p-6 bg-gradient-to-b from-gray-50/80 to-gray-100/80 dark:from-gray-900/50 dark:to-gray-800/50 backdrop-blur-md rounded-2xl border border-gray-200/50 dark:border-gray-700/30 shadow-lg mb-6">
+								<div className="p-6 bg-transparent  backdrop-blur-md rounded-2xl border border-gray-200/50 dark:border-gray-700/30 shadow-lg mb-6">
 									<div className="grid grid-cols-1 gap-y-6 text-sm">
-										<div className="flex items-start">
-											<div className="w-3 h-3 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 mt-1 mr-3 flex-shrink-0 shadow-inner"></div>
-											<div>
-												<div className="font-medium">{t.loanStrategy}</div>
-												<div className="text-xs text-gray-500 mt-1">{t.keepInvestments}</div>
-											</div>
-										</div>
-										<div className="flex items-start">
-											<div className="w-3 h-3 rounded-full bg-gradient-to-br from-red-400 to-red-500 mt-1 mr-3 flex-shrink-0 shadow-inner"></div>
+                                    <div className="flex items-start">
+											<div className="w-3 h-3 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 mt-1 mr-3 flex-shrink-0 shadow-inner"></div>
 											<div>
 												<div className="font-medium">{t.sellStrategy}</div>
 												<div className="text-xs text-gray-500 mt-1">{t.realizeGains}</div>
 											</div>
 										</div>
 										<div className="flex items-start">
-											<div className="w-3 h-3 rounded-full bg-gradient-to-br from-blue-200 to-blue-300 mt-1 mr-3 flex-shrink-0 shadow-inner"></div>
+											<div className="w-3 h-3 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 mt-1 mr-3 flex-shrink-0 shadow-inner"></div>
+											<div>
+												<div className="font-medium">{t.loanStrategy}</div>
+												<div className="text-xs text-gray-500 mt-1">{t.keepInvestments}</div>
+											</div>
+										</div>
+	
+										<div className="flex items-start">
+											<div className="w-3 h-3 rounded-full bg-gradient-to-br from-emerald-200 to-emerald-300 mt-1 mr-3 flex-shrink-0 shadow-inner"></div>
 											<div>
 												<div className="font-medium">{t.netWorth}</div>
 												<div className="text-xs text-gray-500 mt-1">{t.netWorthDesc}</div>
@@ -649,42 +663,28 @@ const PortfolioTaxCalculator = () => {
 								<h4 className="font-medium text-md mb-4 bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent">
 									Loan Payment Strategy
 								</h4>
-								<div className="grid md:grid-cols-2 gap-6">
+								<div className="grid lg:grid-cols-2 gap-6 transition-all duration-300">
 									<Button
-										variant={loanStrategy === 'upfront' ? 'default' : 'outline'}
+										variant="strategy"
 										onClick={() => setLoanStrategy('upfront')}
-										className={`p-4 h-auto flex flex-col items-center text-center rounded-xl shadow-sm ${
-											loanStrategy === 'upfront'
-												? 'bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900 dark:to-indigo-900 border-0'
-												: 'bg-white dark:bg-gray-800'
-										}`}
+										data-state={loanStrategy === 'upfront' ? 'active' : 'inactive'}
+										className="p-4 h-auto flex flex-col items-center text-center rounded-xl"
 									>
-										<span
-											className={`font-medium mb-2 ${
-												loanStrategy === 'upfront' ? 'text-blue-800 dark:text-blue-200' : ''
-											}`}
-										>
+										<span className="font-medium mb-2">
 											{t.upfrontInterestTitle}
 										</span>
-										<span className="text-xs text-gray-500 max-w-[200px]">{t.borrowExtra}</span>
+										<span className="text-xs text-gray-500 dark:text-gray-400 max-w-[200px]">{t.borrowExtra}</span>
 									</Button>
 									<Button
-										variant={loanStrategy === 'monthly' ? 'default' : 'outline'}
+										variant="strategy"
 										onClick={() => setLoanStrategy('monthly')}
-										className={`p-4 h-auto flex flex-col items-center text-center rounded-xl shadow-sm ${
-											loanStrategy === 'monthly'
-												? 'bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900 dark:to-indigo-900 border-0'
-												: 'bg-white dark:bg-gray-800'
-										}`}
+										data-state={loanStrategy === 'monthly' ? 'active' : 'inactive'}
+										className="p-4 h-auto flex flex-col items-center text-center rounded-xl"
 									>
-										<span
-											className={`font-medium mb-2 ${
-												loanStrategy === 'monthly' ? 'text-blue-800 dark:text-blue-200' : ''
-											}`}
-										>
+										<span className="font-medium mb-2">
 											{t.monthlyPaymentsTitle}
 										</span>
-										<span className="text-xs text-gray-500 max-w-[200px]">
+										<span className="text-xs text-gray-500 dark:text-gray-400 max-w-[200px]">
 											{t.payInterestMonthly}
 										</span>
 									</Button>
@@ -695,7 +695,7 @@ const PortfolioTaxCalculator = () => {
 								<h4 className="font-medium text-md mb-4 bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent">
 									Parameters
 								</h4>
-								<div className="space-y-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-xl p-6 shadow-md border border-white/50 dark:border-gray-700/30">
+								<div className="space-y-6 bg-white/80 dark:bg-zinc-800/80 backdrop-blur-md rounded-xl p-6 shadow-md border border-white/50 dark:border-zinc-700/30">
 									<div className="grid md:grid-cols-2 gap-8">
 										<div
 											ref={portfolioValueRef}
@@ -812,7 +812,7 @@ const PortfolioTaxCalculator = () => {
 									{Object.entries(formulas).map(([key, formula]) => (
 										<div
 											key={key}
-											className="p-4 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-lg shadow-sm border border-white/50 dark:border-gray-700/30"
+											className="p-4 bg-white/70 dark:bg-zinc-800/70 backdrop-blur-sm rounded-lg shadow-sm border border-white/50 dark:border-zinc-700/30"
 										>
 											<p className="font-mono text-xs text-gray-600 dark:text-gray-400">
 												{formula}
@@ -828,26 +828,26 @@ const PortfolioTaxCalculator = () => {
 
 			{/* Attribution footer - now positioned below everything */}
 			<div className="w-full text-center pb-4">
-				<p className="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent font-medium text-xs">
+				<p className="bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-emerald-400 dark:to-emerald-500 bg-clip-text text-transparent font-medium text-xs">
 					{t.madeWith}
 				</p>
 			</div>
 
 			{/* Info Drawer */}
 			<Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-				<DrawerContent className="max-h-[30vh] rounded-t-3xl overflow-hidden backdrop-blur-xl bg-white/90 dark:bg-gray-900/90 border-t border-white/20 dark:border-white/10 shadow-2xl">
-					<div className="absolute inset-0 bg-gradient-to-b from-blue-50/30 via-transparent to-indigo-50/30 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-t-3xl pointer-events-none"></div>
+				<DrawerContent className="max-h-[30vh] rounded-t-3xl overflow-hidden backdrop-blur-xl bg-white/90 dark:bg-zinc-900/90 border-t border-white/20 dark:border-white/10 shadow-2xl">
+					<div className="absolute inset-0 bg-gradient-to-b from-zinc-50/30 via-transparent to-emerald-50/30 dark:from-zinc-950/20 dark:to-emerald-950/20 rounded-t-3xl pointer-events-none"></div>
 
 					<div className="w-12 h-1.5 bg-gray-300/50 dark:bg-gray-600/50 rounded-full mx-auto mt-2.5 mb-1"></div>
 
-					<DrawerHeader className="border-b border-blue-100/50 dark:border-blue-800/30 relative z-10 px-8">
-						<DrawerTitle className="text-xl font-light tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+					<DrawerHeader className="border-b border-zinc-100/50 dark:border-zinc-800/30 relative z-10 px-8">
+						<DrawerTitle className="text-xl font-light tracking-tight bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-emerald-400 dark:to-emerald-500 bg-clip-text text-transparent">
 							{drawerContent.title}
 						</DrawerTitle>
 					</DrawerHeader>
 
 					<div className="relative z-10 px-8 py-6">
-						<div className="bg-gradient-to-br from-white/70 to-blue-50/70 dark:from-gray-800/70 dark:to-blue-900/50 backdrop-blur-md p-5 rounded-2xl border border-white/50 dark:border-blue-800/20 shadow-lg">
+						<div className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-5 rounded-2xl border border-white/50 dark:border-zinc-700/30 shadow-lg">
 							<DrawerDescription className="text-sm leading-relaxed text-gray-700 dark:text-gray-200">
 								{drawerContent.description}
 							</DrawerDescription>
@@ -858,9 +858,9 @@ const PortfolioTaxCalculator = () => {
 						<DrawerClose asChild>
 							<Button
 								variant="outline"
-								className="w-full py-3 bg-gradient-to-r from-blue-50/90 to-indigo-50/90 dark:from-blue-900/40 dark:to-indigo-900/40 backdrop-blur-md rounded-xl border border-blue-100/50 dark:border-blue-700/30 shadow-sm hover:from-blue-100/90 hover:to-indigo-100/90 dark:hover:from-blue-800/40 dark:hover:to-indigo-800/40 transition-all"
+								className="w-full py-3 bg-gradient-to-r from-zinc-50/90 to-emerald-50/90 dark:from-zinc-900/40 dark:to-emerald-900/40 backdrop-blur-md rounded-xl border border-zinc-100/50 dark:border-zinc-700/30 shadow-sm hover:from-zinc-100/90 hover:to-emerald-100/90 dark:hover:from-zinc-800/40 dark:hover:to-emerald-800/40 transition-all"
 							>
-								<span className="font-medium text-sm bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+								<span className="font-medium text-sm bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-emerald-400 dark:to-emerald-500 bg-clip-text text-transparent">
 									{t.close}
 								</span>
 							</Button>

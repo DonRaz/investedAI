@@ -20,24 +20,8 @@ export default function CompoundPage({
   }, [lang, setLanguage]);
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="max-w-5xl mx-auto space-y-8">
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold tracking-tight">
-            Portfolio Tax Calculator
-          </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Compare different portfolio strategies and their tax implications
-          </p>
-        </div>
-
-        <Card>
-          <CardContent className="pt-6">
-            {/* <PortfolioLoanCalculator /> */}
-            <PortfolioLoanCalculator_V3 />
-          </CardContent>
-        </Card>
-      </div>
+    <div className="container mx-auto">
+      <PortfolioLoanCalculator_V3 />
     </div>
   );
 }

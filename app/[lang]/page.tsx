@@ -7,6 +7,7 @@ import { Info } from "lucide-react";
 import { useTranslationStore } from "@/lib/translations";
 import { useEffect } from "react";
 import { Language } from "@/lib/translations";
+import { PensionPlanningCalculator } from "@/components/calculators/PensionPlanningCalculator";
 
 export default function Home({ params: { lang } }: { params: { lang: Language } }) {
   const { setLanguage } = useTranslationStore();
@@ -21,8 +22,7 @@ export default function Home({ params: { lang } }: { params: { lang: Language } 
         <div className="text-center space-y-4">
           <h1 className="text-4xl font-bold tracking-tight">Investment Calculator Suite</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Make informed investment decisions with our comprehensive calculator tools.
-            Compare different strategies and understand the long-term implications of your choices.
+            Fund today's needs while growing tomorrow's wealth.
           </p>
         </div>
 
@@ -35,7 +35,7 @@ export default function Home({ params: { lang } }: { params: { lang: Language } 
                 This calculator helps you understand the long-term impact of each strategy on your wealth.
               </p>
             </div>
-            <PortfolioLoanCalculator />
+            <PensionPlanningCalculator />
           </CardContent>
         </Card>
       </div>
