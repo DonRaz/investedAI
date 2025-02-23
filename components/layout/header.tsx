@@ -9,6 +9,7 @@ import { Calculator, LineChart, PieChart, Wallet, Menu, X } from "lucide-react";
 import { useTranslationStore } from "@/lib/translations";
 import { commonTranslations } from "@/lib/translations/common";
 import { Button } from "@/components/ui/button";
+import { LogoIcon } from "@/components/ui/logo-icon";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -73,10 +74,11 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 ">
       <div className="container relative flex h-14 items-center justify-between mx-auto" dir={direction()}>
         {/* Logo */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4  px-2 py-1  border-b-2 hover:border-b-0 hover:border-primary/50 rounded-md">
           <Link href={`/${language}`} className="flex items-center space-x-2" prefetch={true}>
-            <Calculator className="h-6 w-6" />
-            <span className="font-semibold">InvestCalc</span>
+          <span className="font-semibold mx-3">Invested</span>
+            <LogoIcon className="h-6 w-6" />
+
           </Link>
         </div>
 
