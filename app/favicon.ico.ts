@@ -2,12 +2,11 @@
 export const runtime = 'edge';
 
 export async function GET() {
-  // Return a simple transparent favicon
-  const transparent1x1 = 'data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAABILAAASCwAAAAAAAAAAAAD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A';
-  
-  return new Response(transparent1x1, {
+  // Redirect to the SVG favicon
+  return new Response(null, {
+    status: 307,
     headers: {
-      'Content-Type': 'image/x-icon',
+      'Location': '/favicon.svg',
       'Cache-Control': 'public, max-age=31536000, immutable',
     },
   });

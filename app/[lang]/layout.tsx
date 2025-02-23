@@ -12,6 +12,11 @@ import { WarningSuppressor } from '@/components/warning-suppressor';
 export const metadata: Metadata = {
   title: 'Investment Calculator Suite',
   description: 'Professional investment calculator tools for portfolio management',
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+  },
 };
 
 // This generates all the static paths for the site
