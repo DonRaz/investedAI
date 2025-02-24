@@ -11,10 +11,12 @@ export function LogoIcon({ className = "h-6 w-6" }: { className?: string }) {
     >
       <defs>
         <linearGradient id="logo-gradient" y1="1" x2="1" gradientUnits="objectBoundingBox">
-          <stop offset="0" stopColor="currentColor" className=" text-zinc-100" />
-          <stop offset="1" stopColor="currentColor" className="text-zinc-300" />
+          {/* <stop offset="0" stopColor="currentColor" className=" text-zinc-100" />
+          <stop offset="1" stopColor="currentColor" className="text-zinc-300" /> */}
           {/* <stop offset="0" stopColor="currentColor" className="text-zinc-800 dark:text-zinc-200" />
           <stop offset="1" stopColor="currentColor" className="text-zinc-600 dark:text-zinc-400" /> */}
+          <stop offset="0" stopColor="currentColor" className="text-zinc-400 dark:text-zinc-800" />
+          <stop offset="1" stopColor="currentColor" className="text-zinc-300/40 dark:text-zinc-600" />
         </linearGradient>
         <linearGradient id="logo-gradient-2" y1="1" x2="0" gradientUnits="objectBoundingBox">
           <stop offset="0" stopColor="currentColor" className="text-amber-600" />

@@ -70,12 +70,22 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
+
+  /* Add smooth transitions for theme changes */
+  :root,
+  .dark {
+    transition: background-color 300ms ease-in-out, border-color 300ms ease-in-out, color 300ms ease-in-out;
+  }
+
+  :root *,
+  .dark * {
+    transition: background-color 300ms ease-in-out, border-color 300ms ease-in-out, color 300ms ease-in-out;
+  }
+
   body {
     @apply bg-background text-foreground;
   }

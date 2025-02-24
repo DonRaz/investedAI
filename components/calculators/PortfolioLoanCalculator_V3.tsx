@@ -447,7 +447,7 @@ const PortfolioTaxCalculator = () => {
 						</div>
 					</div>
 
-					<div className="h-80 mt-8 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md p-6 rounded-2xl border border-white/50 dark:border-zinc-700/30 shadow-lg">
+					<div className="h-80 mt-8 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md p--2 md:p-6 rounded-2xl border border-white/50 dark:border-zinc-700/30 shadow-lg">
 						<ResponsiveContainer width="100%" height="100%">
 							<LineChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 10 }}>
 								<CartesianGrid strokeDasharray="3 3" stroke="#eaeaea" />
@@ -473,11 +473,12 @@ const PortfolioTaxCalculator = () => {
 								/>
 								<RechartsTooltip
 									contentStyle={{
-										backgroundColor: 'rgba(255, 255, 255, 0.9)',
+										backgroundColor: 'hsl(var(--background) / 0.95)',
 										borderRadius: '8px',
-										border: 'none',
+										border: '1px solid hsl(var(--border) / 0.2)',
 										boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
 										padding: '8px 12px',
+										color: 'hsl(var(--foreground))',
 									}}
 									formatter={(value, name) => {
 										const strategyName = {
@@ -485,9 +486,16 @@ const PortfolioTaxCalculator = () => {
 											sellStrategy: 'Sell Strategy',
 											netWorth: 'Net Worth (Loan)',
 										}[name];
-										return [`$${value.toLocaleString()}`, strategyName];
+										return [
+											<span style={{ color: 'hsl(var(--foreground))', fontWeight: 500 }}>${value.toLocaleString()}</span>,
+											<span style={{ color: 'hsl(var(--foreground) / 0.8)' }}>{strategyName}</span>
+										];
 									}}
-									labelFormatter={(year) => `Year ${year}`}
+									labelFormatter={(year) => (
+										<span style={{ color: 'hsl(var(--foreground) / 0.7)', fontSize: '0.875rem' }}>
+											Year {year}
+										</span>
+									)}
 								/>
 								<Legend
 									verticalAlign="top"
