@@ -23,6 +23,7 @@ import {
 import { useTranslationStore } from '@/lib/translations';
 import { compoundTranslations } from '@/lib/translations/compound';
 import { CustomInterestSlider } from '../ui/slider-w-landmarks';
+import { SliderWithInput } from '@/components/ui/slider-w-input';
 
 interface ChartDataPoint {
   month: number;
@@ -263,196 +264,176 @@ export function CompoundInterestCalculator() {
           </div>
 
           {/* Input Controls */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
-              <CardContent className="pt-6">
-                <div className="space-y-2">
-                  <Label className="text-gray-700 dark:text-gray-300">
-                    {isTargetMode ? t.targetAmount : t.monthlyInvestment}
-                  </Label>
-                  <Input
-                    id="targetAmount"
-                    className="font-bold bg-white/50 dark:bg-zinc-900/50"
-                    type="text"
-                    value={
-                      isTargetMode ? targetAmountInput : monthlyInvestmentInput
-                    }
-                    onChange={(e) => {
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="space-y-4 border-r border-zinc-200/30 dark:border-zinc-700/30 md:pr-6 pr-0">
+              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
+                <Label className="text-gray-700 dark:text-gray-300">
+                  {isTargetMode ? t.targetAmount : t.monthlyInvestment}
+                </Label>
+                <div className="pt-2">
+                  <SliderWithInput
+                    value={isTargetMode ? targetAmount : monthlyInvestment}
+                    onValueChange={(value) => {
                       if (isTargetMode) {
-                        handleInputChange(
-                          e.target.value,
-                          setTargetAmountInput,
-                          setTargetAmount
-                        );
+                        setTargetAmount(value);
+                        setTargetAmountInput(formatCurrency(value));
                       } else {
-                        handleInputChange(
-                          e.target.value,
-                          setMonthlyInvestmentInput,
-                          setMonthlyInvestment
-                        );
+                        setMonthlyInvestment(value);
+                        setMonthlyInvestmentInput(formatCurrency(value));
                       }
                     }}
-                    onBlur={() => {
-                      if (isTargetMode) {
-                        setTargetAmountInput(formatCurrency(targetAmount));
-                      } else {
-                        setMonthlyInvestmentInput(
-                          formatCurrency(monthlyInvestment)
-                        );
-                      }
-                    }}
-                    onFocus={(e) => e.target.select()}
+                    min={isTargetMode ? 100000 : 0}
+                    max={isTargetMode ? 10000000 : 50000}
+                    step={isTargetMode ? 50000 : 500}
+                    formatValue={formatCurrency}
                   />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
 
-            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
-              <CardContent className="pt-6">
-                <div className="space-y-2">
-                  <Label className="text-gray-700 dark:text-gray-300">{t.initialInvestment}</Label>
-                  <Input
-                    id="initialInvestment"
-                    type="text"
-                    className="bg-white/50 dark:bg-zinc-900/50"
-                    value={initialAmountInput}
-                    onChange={(e) =>
-                      handleInputChange(
-                        e.target.value,
-                        setInitialAmountInput,
-                        setInitialAmount
-                      )
-                    }
-                    onBlur={() =>
-                      setInitialAmountInput(formatCurrency(initialAmount))
-                    }
-                    onFocus={(e) => e.target.select()}
+              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
+                <Label className="text-gray-700 dark:text-gray-300">{t.initialInvestment}</Label>
+                <div className="pt-2">
+                  <SliderWithInput
+                    value={initialAmount}
+                    onValueChange={(value) => {
+                      setInitialAmount(value);
+                      setInitialAmountInput(formatCurrency(value));
+                    }}
+                    min={0}
+                    max={1000000}
+                    step={10000}
+                    formatValue={formatCurrency}
                   />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
-            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
-              <CardContent className="pt-6">
-                <div className="space-y-2">
-                  <Label className="text-gray-700 dark:text-gray-300">{t.period}</Label>
-                  <Input
-                    id="period"
-                    type="text"
-                    className="bg-white/50 dark:bg-zinc-900/50"
-                    value={periodInput}
-                    onChange={(e) => {
-                      const newValue = e.target.value.replace(/[^\d]/g, '');
-                      setPeriodInput(newValue);
-                      const validated = validateNumberInput(newValue, 1, 50);
-                      if (!isNaN(validated)) {
-                        setInvestmentPeriod(validated);
-                      }
+            <div className="space-y-4">
+              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
+                <Label className="text-gray-700 dark:text-gray-300">{t.period}</Label>
+                <div className="pt-2">
+                  <SliderWithInput
+                    value={investmentPeriod}
+                    onValueChange={(value) => {
+                      setInvestmentPeriod(value);
+                      setPeriodInput(value.toString());
                     }}
-                    onBlur={() => {
-                      const validated = validateNumberInput(periodInput, 1, 50);
-                      setInvestmentPeriod(validated);
-                      setPeriodInput(validated.toString());
-                    }}
-                    onFocus={(e) => e.target.select()}
+                    min={1}
+                    max={35}
+                    step={1}
+                    formatValue={(value) => `${value} ${value === 1 ? t.yearLabel : t.yearsLabel}`}
                   />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
 
-            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
-              <CardContent className="pt-6">
-                <div className="space-y-2">
+              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
+                <div className="flex" dir='ltr'>
                   <Label className="text-gray-700 dark:text-gray-300">{t.annualReturn}</Label>
-                  {windowWidth > 768 ? (
-                    <>
-                      <Input
-                        id="annualReturn"
-                        type="text"
-                        className="bg-white/50 dark:bg-zinc-900/50"
-                        value={annualReturnInput}
-                        onChange={(e) => {
-                          const newValue = e.target.value.replace(/[^\d.]/g, '');
-                          setAnnualReturnInput(newValue);
-                          const validated = validateNumberInput(newValue, 0, 100);
-                          if (!isNaN(validated)) {
-                            setAnnualReturn(validated);
-                          }
-                        }}
-                        onBlur={() => {
-                          const validated = validateNumberInput(
-                            annualReturnInput,
-                            0,
-                            100
-                          );
-                          setAnnualReturn(validated);
-                          setAnnualReturnInput(validated.toString());
-                        }}
-                        onFocus={(e) => e.target.select()}
-                      />
-                    </>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 ml-auto">
+                    {annualReturn.toFixed(1)}%
+                  </div>
+                </div>
+                <div className="pt-2">
+                  {windowWidth < 768 ? (
+                    <CustomInterestSlider
+                      value={annualReturn}
+                      onValueChange={(value) => {
+                        setAnnualReturn(value);
+                        setAnnualReturnInput(value.toString());
+                      }}
+                      min={0}
+                      max={20}
+                      step={0.1}
+                      isShowingHeader={false}
+                    />
                   ) : (
-                    <>
-                      <CustomInterestSlider
-                        value={annualReturn}
-                        onValueChange={(value) => setAnnualReturn(value)}
-                        min={0}
-                        max={20}
-                        step={0.1}
-                        isShowingHeader
-                      />
-                    </>
+                    <SliderWithInput
+                      value={annualReturn}
+                      onValueChange={(value) => {
+                        setAnnualReturn(value);
+                        setAnnualReturnInput(value.toString());
+                      }}
+                      min={0}
+                      max={20}
+                      step={0.1}
+                      formatValue={(value) => `${value.toFixed(1)}%`}
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Results Summary */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-2">
+            <Card className="bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-md h-[140px] flex flex-col">
+              <CardContent className="p-4 flex flex-col flex-1">
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  {isTargetMode ? t.monthlyRequired : t.pureContributions}
+                </h3>
+                <div className="mt-auto flex flex-col gap-2">
+                  <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                    {isTargetMode
+                      ? formatCurrency(summary.monthlyInvestment)
+                      : formatCurrency(summary.pureAccumulatedMonthlyInvestment)}
+                  </p>
+                  <div className="h-[20px]" /> {/*Placeholder for consistent height*/}
+
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-md h-[140px] flex flex-col">
+              <CardContent className="p-4 flex flex-col flex-1">
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  {t.initialGrowth}
+                </h3>
+                <div className="mt-auto flex flex-col gap-2">
+                  <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                    {formatCurrency(summary.initialGrowth)}
+                  </p>
+                  {initialAmount > 0 && (
+                    <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 self-start">
+                      +{((summary.initialGrowth / initialAmount - 1) * 100).toFixed(1)}%
+                    </span>
                   )}
                 </div>
               </CardContent>
             </Card>
-          </div>
 
-          {/* Results Summary */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
-              <CardContent className="p-6">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                  {isTargetMode ? t.monthlyRequired : t.pureContributions}
-                </h3>
-                <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                  {isTargetMode
-                    ? formatCurrency(summary.monthlyInvestment)
-                    : formatCurrency(summary.pureAccumulatedMonthlyInvestment)}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
-              <CardContent className="p-6">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                  {t.initialGrowth}
-                </h3>
-                <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                  {formatCurrency(summary.initialGrowth)}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
-              <CardContent className="p-6">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+            <Card className="bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-md h-[140px] flex flex-col">
+              <CardContent className="p-4 flex flex-col flex-1">
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
                   {t.contributionsGrowth}
                 </h3>
-                <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                  {formatCurrency(summary.contibutionsGrowth)}
-                </p>
+                <div className="mt-auto flex flex-col gap-2">
+                  <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                    {formatCurrency(summary.contibutionsGrowth)}
+                  </p>
+                  {summary.pureAccumulatedMonthlyInvestment > 0 && (
+                    <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 self-start">
+                      +{((summary.contibutionsGrowth / summary.pureAccumulatedMonthlyInvestment - 1) * 100).toFixed(1)}%
+                    </span>
+                  )}
+                </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
-              <CardContent className="p-6">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+            <Card className="bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-md h-[140px] flex flex-col">
+              <CardContent className="p-4 flex flex-col flex-1">
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
                   {t.finalValue}
                 </h3>
-                <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                  {formatCurrency(summary.finalValue)}
-                </p>
+                <div className="mt-auto flex flex-col gap-2">
+                  <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                    {formatCurrency(summary.finalValue)}
+                  </p>
+                  {(initialAmount + summary.pureAccumulatedMonthlyInvestment) > 0 && (
+                    <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 self-start">
+                      +{((summary.finalValue / (initialAmount + summary.pureAccumulatedMonthlyInvestment) - 1) * 100).toFixed(1)}%
+                    </span>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </div>

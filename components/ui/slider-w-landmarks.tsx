@@ -266,7 +266,7 @@ export function CustomInterestSlider({
             <span className="line-clamp-2">
               <a
                 href={selectedAdvisor.link}
-                className="text-blue-700/50 bold hover:underline"
+                className="text-blue-700/50 dark:text-emerald-500 bold hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >

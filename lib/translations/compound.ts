@@ -24,6 +24,8 @@ export interface CompoundTranslation {
   pureContributions: string;
   contributionsGrowth: string;
   madeWith: string;
+  yearLabel: string;
+  yearsLabel: string;
 }
 
 export const compoundTranslations: Record<Language, CompoundTranslation> = {
@@ -50,7 +52,9 @@ export const compoundTranslations: Record<Language, CompoundTranslation> = {
     pureInvestment: "Pure Investment (No Interest)",
     pureContributions: "Pure contributions (No Interest)",
     contributionsGrowth: "Contributions Growth",
-    madeWith: "Investment Calculator • Made with 💙"
+    madeWith: "Investment Calculator • Made with 💙",
+    yearLabel: "year",
+    yearsLabel: "years"
   },
   he: {
     title: "מחשבון השקעות",
@@ -75,6 +79,8 @@ export const compoundTranslations: Record<Language, CompoundTranslation> = {
     pureInvestment: "השקעה נטו (ללא ריבית)",
     pureContributions: "הפקדות נטו (ללא ריבית)",
     contributionsGrowth: "צמיחת השקעה חודשית",
-    madeWith: "מחשבון השקעות • נוצר עם 💙"
+    madeWith: "מחשבון השקעות • נוצר עם 💙",
+    yearLabel: "שנה",
+    yearsLabel: "שנים"
   },
 };
