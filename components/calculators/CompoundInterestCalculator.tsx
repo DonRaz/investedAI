@@ -233,304 +233,354 @@ export function CompoundInterestCalculator() {
   }
 
   return (
-    <div className="space-y-6" dir={direction()}>
-      {/* Mode Switch - Force LTR for the toggle section */}
-      <div className="flex items-center justify-center gap-4" dir="ltr">
-        <span className={`text-sm ${!isTargetMode ? 'font-bold' : ''}`}>
-          {t.setMonthly}
-        </span>
-        <div className="relative">
-          <Switch
-            checked={isTargetMode}
-            onCheckedChange={setIsTargetMode}
-            className="!m-0" // Override any margin that might affect positioning
-          />
-        </div>
-        <span className={`text-sm ${isTargetMode ? 'font-bold' : ''}`}>
-          {t.setTarget}
-        </span>
-      </div>
+    <div className="font-sans p-4 md:p-8 min-h-screen flex flex-col justify-center items-center" dir={direction()}>
+      <Card className="w-full max-w-4xl overflow-hidden border border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-xl bg-white/80 dark:bg-zinc-900/70 rounded-3xl mb-8">
+        <div className="absolute inset-0 bg-gradient-to-tr from-zinc-100/30 via-transparent to-emerald-100/30 dark:from-zinc-900/20 dark:to-emerald-900/20 rounded-3xl"></div>
+        <CardContent className="space-y-8 p-8 relative z-10">
+          {/* Header */}
+          <div className="text-center space-y-3 mb-10">
+            <h1 className="text-3xl font-light tracking-tight bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-zinc-100 dark:to-zinc-300 bg-clip-text text-transparent">
+              {t.title}
+            </h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 max-w-lg mx-auto">{t.subtitle}</p>
+          </div>
 
-      {/* Input Controls */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4`">
-        <Card>
-          <CardContent className="pt-6">
-            <div className="space-y-2">
-              <Label htmlFor="targetAmount">
-                {isTargetMode ? t.targetAmount : t.monthlyInvestment}
-              </Label>
-              <Input
-                id="targetAmount"
-                className="font-bold"
-                type="text"
-                value={
-                  isTargetMode ? targetAmountInput : monthlyInvestmentInput
-                }
-                onChange={(e) => {
-                  if (isTargetMode) {
-                    handleInputChange(
-                      e.target.value,
-                      setTargetAmountInput,
-                      setTargetAmount
-                    );
-                  } else {
-                    handleInputChange(
-                      e.target.value,
-                      setMonthlyInvestmentInput,
-                      setMonthlyInvestment
-                    );
-                  }
-                }}
-                onBlur={() => {
-                  if (isTargetMode) {
-                    setTargetAmountInput(formatCurrency(targetAmount));
-                  } else {
-                    setMonthlyInvestmentInput(
-                      formatCurrency(monthlyInvestment)
-                    );
-                  }
-                }}
-                onFocus={(e) => e.target.select()}
+          {/* Mode Switch - Force LTR for the toggle section */}
+          <div className="flex items-center justify-center gap-4" dir="ltr">
+            <span className={`text-sm ${!isTargetMode ? 'font-bold' : ''}`}>
+              {t.setMonthly}
+            </span>
+            <div className="relative">
+              <Switch
+                checked={isTargetMode}
+                onCheckedChange={setIsTargetMode}
+                className="!m-0" // Override any margin that might affect positioning
               />
             </div>
-          </CardContent>
-        </Card>
+            <span className={`text-sm ${isTargetMode ? 'font-bold' : ''}`}>
+              {t.setTarget}
+            </span>
+          </div>
 
-        <Card>
-          <CardContent className="pt-6">
-            <div className="space-y-2">
-              <Label htmlFor="initialInvestment">{t.initialInvestment}</Label>
-              <Input
-                id="initialInvestment"
-                type="text"
-                value={initialAmountInput}
-                onChange={(e) =>
-                  handleInputChange(
-                    e.target.value,
-                    setInitialAmountInput,
-                    setInitialAmount
-                  )
-                }
-                onBlur={() =>
-                  setInitialAmountInput(formatCurrency(initialAmount))
-                }
-                onFocus={(e) => e.target.select()}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="pt-6">
-            <div className="space-y-2">
-              <Label htmlFor="period">{t.period}</Label>
-              <Input
-                id="period"
-                type="text"
-                value={periodInput}
-                onChange={(e) => {
-                  const newValue = e.target.value.replace(/[^\d]/g, '');
-                  setPeriodInput(newValue);
-                  const validated = validateNumberInput(newValue, 1, 50);
-                  if (!isNaN(validated)) {
-                    setInvestmentPeriod(validated);
-                  }
-                }}
-                onBlur={() => {
-                  const validated = validateNumberInput(periodInput, 1, 50);
-                  setInvestmentPeriod(validated);
-                  setPeriodInput(validated.toString());
-                }}
-                onFocus={(e) => e.target.select()}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="pt-6">
-            <div className="space-y-2">
-              <Label htmlFor="annualReturn">{t.annualReturn}</Label>
-              {windowWidth > 768 ? (
-                <>
+          {/* Input Controls */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
+              <CardContent className="pt-6">
+                <div className="space-y-2">
+                  <Label className="text-gray-700 dark:text-gray-300">
+                    {isTargetMode ? t.targetAmount : t.monthlyInvestment}
+                  </Label>
                   <Input
-                    id="annualReturn"
+                    id="targetAmount"
+                    className="font-bold bg-white/50 dark:bg-zinc-900/50"
                     type="text"
-                    value={annualReturnInput}
+                    value={
+                      isTargetMode ? targetAmountInput : monthlyInvestmentInput
+                    }
                     onChange={(e) => {
-                      const newValue = e.target.value.replace(/[^\d.]/g, '');
-                      setAnnualReturnInput(newValue);
-                      const validated = validateNumberInput(newValue, 0, 100);
-                      if (!isNaN(validated)) {
-                        setAnnualReturn(validated);
+                      if (isTargetMode) {
+                        handleInputChange(
+                          e.target.value,
+                          setTargetAmountInput,
+                          setTargetAmount
+                        );
+                      } else {
+                        handleInputChange(
+                          e.target.value,
+                          setMonthlyInvestmentInput,
+                          setMonthlyInvestment
+                        );
                       }
                     }}
                     onBlur={() => {
-                      const validated = validateNumberInput(
-                        annualReturnInput,
-                        0,
-                        100
-                      );
-                      setAnnualReturn(validated);
-                      setAnnualReturnInput(validated.toString());
+                      if (isTargetMode) {
+                        setTargetAmountInput(formatCurrency(targetAmount));
+                      } else {
+                        setMonthlyInvestmentInput(
+                          formatCurrency(monthlyInvestment)
+                        );
+                      }
                     }}
                     onFocus={(e) => e.target.select()}
                   />
-                </>
-              ) : (
-                <>
-                  <CustomInterestSlider
-                    value={annualReturn}
-                    onValueChange={(value) => setAnnualReturn(value)}
-                    min={0}
-                    max={20}
-                    step={0.1}
-                    isShowingHeader
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
+              <CardContent className="pt-6">
+                <div className="space-y-2">
+                  <Label className="text-gray-700 dark:text-gray-300">{t.initialInvestment}</Label>
+                  <Input
+                    id="initialInvestment"
+                    type="text"
+                    className="bg-white/50 dark:bg-zinc-900/50"
+                    value={initialAmountInput}
+                    onChange={(e) =>
+                      handleInputChange(
+                        e.target.value,
+                        setInitialAmountInput,
+                        setInitialAmount
+                      )
+                    }
+                    onBlur={() =>
+                      setInitialAmountInput(formatCurrency(initialAmount))
+                    }
+                    onFocus={(e) => e.target.select()}
                   />
-                </>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+                </div>
+              </CardContent>
+            </Card>
 
-      {/* Results Summary */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-muted-foreground mb-2">
-              {isTargetMode ? t.monthlyRequired : t.pureContributions}
-            </h3>
-            <p className="text-2xl font-bold">
-              {isTargetMode
-                ? formatCurrency(summary.monthlyInvestment)
-                : formatCurrency(summary.pureAccumulatedMonthlyInvestment)}
-            </p>
-          </CardContent>
-        </Card>
+            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
+              <CardContent className="pt-6">
+                <div className="space-y-2">
+                  <Label className="text-gray-700 dark:text-gray-300">{t.period}</Label>
+                  <Input
+                    id="period"
+                    type="text"
+                    className="bg-white/50 dark:bg-zinc-900/50"
+                    value={periodInput}
+                    onChange={(e) => {
+                      const newValue = e.target.value.replace(/[^\d]/g, '');
+                      setPeriodInput(newValue);
+                      const validated = validateNumberInput(newValue, 1, 50);
+                      if (!isNaN(validated)) {
+                        setInvestmentPeriod(validated);
+                      }
+                    }}
+                    onBlur={() => {
+                      const validated = validateNumberInput(periodInput, 1, 50);
+                      setInvestmentPeriod(validated);
+                      setPeriodInput(validated.toString());
+                    }}
+                    onFocus={(e) => e.target.select()}
+                  />
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-muted-foreground mb-2">
-              {t.initialGrowth}
-            </h3>
-            <p className="text-2xl font-bold">
-              {formatCurrency(summary.initialGrowth)}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-muted-foreground mb-2">
-              {t.contributionsGrowth}
-            </h3>
-            <p className="text-2xl font-bold">
-              {formatCurrency(summary.contibutionsGrowth)}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-muted-foreground mb-2">
-              {t.finalValue}
-            </h3>
-            <p className="text-2xl font-bold">
-              {formatCurrency(summary.finalValue)}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Growth Chart */}
-      <Card>
-        <CardContent className="p-2 md:p-6">
-          <div className="h-[450px] md:h-[400px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={chartData}
-                margin={{
-                  top: 20,
-                  right: windowWidth < 768 ? 10 : 30,
-                  left: windowWidth < 768 ? -35 : 20,
-                  bottom: 60,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                <XAxis
-                  dataKey="label"
-                  tickFormatter={formatAxisLabel}
-                  label={{
-                    value: t.yearMonth,
-                    position: 'bottom',
-                    offset: -20,
-                    className: 'fill-foreground',
-                  }}
-                  interval={
-                    windowWidth < 768
-                      ? Math.floor(chartData.length / 5)
-                      : Math.floor(chartData.length / 10)
-                  }
-                  height={windowWidth < 768 ? 30 : 60}
-                  tick={{ fill: 'hsl(var(--foreground))' }}
-                />
-                <YAxis
-                  tickFormatter={(value) => abbreviateNumber(value)}
-                  label={
-                    windowWidth >= 768
-                      ? {
-                          value: t.portfolioValue,
-                          angle: -90,
-                          position: 'left',
-                          offset: -10,
-                          className: 'fill-foreground',
-                        }
-                      : undefined
-                  }
-                  tick={{ fill: 'hsl(var(--foreground))' }}
-                />
-                <Tooltip content={<CustomTooltip />} />
-                <Legend
-                  formatter={(value) => (
-                    <span className="text-foreground">{value}</span>
+            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
+              <CardContent className="pt-6">
+                <div className="space-y-2">
+                  <Label className="text-gray-700 dark:text-gray-300">{t.annualReturn}</Label>
+                  {windowWidth > 768 ? (
+                    <>
+                      <Input
+                        id="annualReturn"
+                        type="text"
+                        className="bg-white/50 dark:bg-zinc-900/50"
+                        value={annualReturnInput}
+                        onChange={(e) => {
+                          const newValue = e.target.value.replace(/[^\d.]/g, '');
+                          setAnnualReturnInput(newValue);
+                          const validated = validateNumberInput(newValue, 0, 100);
+                          if (!isNaN(validated)) {
+                            setAnnualReturn(validated);
+                          }
+                        }}
+                        onBlur={() => {
+                          const validated = validateNumberInput(
+                            annualReturnInput,
+                            0,
+                            100
+                          );
+                          setAnnualReturn(validated);
+                          setAnnualReturnInput(validated.toString());
+                        }}
+                        onFocus={(e) => e.target.select()}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <CustomInterestSlider
+                        value={annualReturn}
+                        onValueChange={(value) => setAnnualReturn(value)}
+                        min={0}
+                        max={20}
+                        step={0.1}
+                        isShowingHeader
+                      />
+                    </>
                   )}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="totalValue"
-                  name={t.totalPortfolio}
-                  stroke="hsl(var(--chart-1))"
-                  strokeWidth={2}
-                  dot={false}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="initialGrowth"
-                  name={t.initialInvestment}
-                  stroke="hsl(var(--chart-2))"
-                  strokeWidth={2}
-                  dot={false}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="contributionsValue"
-                  name={t.contributions}
-                  stroke="hsl(var(--chart-3))"
-                  strokeWidth={2}
-                  dot={false}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="pureMonthlyInvestment"
-                  name={t.pureContributions}
-                  stroke="hsl(var(--chart-3))"
-                  strokeWidth={2}
-                  strokeDasharray="5 5"
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Results Summary */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
+              <CardContent className="p-6">
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+                  {isTargetMode ? t.monthlyRequired : t.pureContributions}
+                </h3>
+                <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                  {isTargetMode
+                    ? formatCurrency(summary.monthlyInvestment)
+                    : formatCurrency(summary.pureAccumulatedMonthlyInvestment)}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
+              <CardContent className="p-6">
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+                  {t.initialGrowth}
+                </h3>
+                <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                  {formatCurrency(summary.initialGrowth)}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
+              <CardContent className="p-6">
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+                  {t.contributionsGrowth}
+                </h3>
+                <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                  {formatCurrency(summary.contibutionsGrowth)}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-sm">
+              <CardContent className="p-6">
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+                  {t.finalValue}
+                </h3>
+                <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                  {formatCurrency(summary.finalValue)}
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Growth Chart */}
+          <Card className="overflow-hidden border border-white/20 dark:border-white/10 shadow-lg backdrop-blur-md bg-white/90 dark:bg-zinc-900/80 rounded-2xl">
+            <CardContent className="p-2 md:p-6">
+              <h3 className="text-lg font-semibold mb-4 bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent">
+                {t.portfolioValue}
+              </h3>
+              <div className="h-[450px] md:h-[400px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    data={chartData}
+                    margin={{
+                      top: 20,
+                      right: windowWidth < 768 ? 10 : 30,
+                      left: windowWidth < 768 ? -35 : 20,
+                      bottom: 60,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#eaeaea" />
+                    <XAxis
+                      dataKey="label"
+                      tickFormatter={formatAxisLabel}
+                      tickLine={false}
+                      axisLine={{ stroke: '#eaeaea' }}
+                      tick={{ fill: '#888', fontSize: 12 }}
+                      label={{
+                        value: t.yearMonth,
+                        position: 'insideBottom',
+                        offset: -5,
+                        fill: '#888',
+                        fontSize: 12,
+                      }}
+                      interval={
+                        windowWidth < 768
+                          ? Math.floor(chartData.length / 5)
+                          : Math.floor(chartData.length / 10)
+                      }
+                      height={windowWidth < 768 ? 30 : 60}
+                    />
+                    <YAxis
+                      tickFormatter={(value) => abbreviateNumber(value)}
+                      tickLine={false}
+                      axisLine={{ stroke: '#eaeaea' }}
+                      tick={{ fill: '#888', fontSize: 12 }}
+                      width={60}
+                      label={
+                        windowWidth >= 768
+                          ? {
+                              value: t.portfolioValue,
+                              angle: -90,
+                              position: 'left',
+                              offset: -10,
+                              fill: '#888',
+                              fontSize: 12,
+                            }
+                          : undefined
+                      }
+                    />
+                    <Tooltip
+                      content={<CustomTooltip />}
+                      contentStyle={{
+                        backgroundColor: 'hsl(var(--background) / 0.95)',
+                        borderRadius: '8px',
+                        border: '1px solid hsl(var(--border) / 0.2)',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                        padding: '8px 12px',
+                        color: 'hsl(var(--foreground))',
+                      }}
+                    />
+                    <Legend
+                      verticalAlign="top"
+                      height={36}
+                      iconType="circle"
+                      iconSize={8}
+                      formatter={(value) => (
+                        <span className="text-gray-600 dark:text-gray-400 text-sm ml-2">{value}</span>
+                      )}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="totalValue"
+                      name={t.totalPortfolio}
+                      stroke="hsl(var(--chart-1))"
+                      strokeWidth={3}
+                      dot={{ r: 1 }}
+                      activeDot={{ r: 5, strokeWidth: 0 }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="initialGrowth"
+                      name={t.initialInvestment}
+                      stroke="hsl(var(--chart-2))"
+                      strokeWidth={3}
+                      dot={{ r: 1 }}
+                      activeDot={{ r: 5, strokeWidth: 0 }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="contributionsValue"
+                      name={t.contributions}
+                      stroke="hsl(var(--chart-3))"
+                      strokeWidth={3}
+                      dot={{ r: 1 }}
+                      activeDot={{ r: 5, strokeWidth: 0 }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="pureMonthlyInvestment"
+                      name={t.pureContributions}
+                      stroke="hsl(var(--chart-3))"
+                      strokeWidth={2}
+                      strokeDasharray="5 5"
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Attribution footer */}
+          <div className="w-full text-center pb-4">
+            <p className="bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-emerald-400 dark:to-emerald-500 bg-clip-text text-transparent font-medium text-xs">
+              {t.madeWith}
+            </p>
           </div>
         </CardContent>
       </Card>

@@ -109,139 +109,177 @@ export function PensionPlanningCalculator() {
   }
 
   return (
-    <div suppressHydrationWarning className="space-y-8" dir={direction()}>
-      <div className="grid gap-6 md:grid-cols-2">
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label>{t.initialPortfolio}</Label>
-            <SliderWithInput
-              value={inputs.initialPortfolio}
-              onValueChange={(value) =>
-                setInputs({ ...inputs, initialPortfolio: value })
-              }
-              min={100000}
-              max={10000000}
-              step={50000}
-              formatValue={formatCurrency}
-            />
+    <div suppressHydrationWarning className="font-sans p-4 md:p-8 min-h-screen flex flex-col justify-center items-center" dir={direction()}>
+      <Card className="w-full max-w-4xl overflow-hidden border border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-xl bg-white/80 dark:bg-zinc-900/70 rounded-3xl mb-8">
+        <div className="absolute inset-0 bg-gradient-to-tr from-zinc-100/30 via-transparent to-emerald-100/30 dark:from-zinc-900/20 dark:to-emerald-900/20 rounded-3xl"></div>
+        <CardContent className="space-y-8 p-8 relative z-10">
+          {/* Header */}
+          <div className="text-center space-y-3 mb-10">
+            <h1 className="text-3xl font-light tracking-tight bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-zinc-100 dark:to-zinc-300 bg-clip-text text-transparent">
+              {t.pensionPlanning}
+            </h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 max-w-lg mx-auto">{t.planYourRetirement}</p>
           </div>
 
-          <div className="space-y-2">
-            <Label>{t.monthlyWithdrawal}</Label>
-            <SliderWithInput
-              value={inputs.monthlyWithdrawal}
-              onValueChange={(value) =>
-                setInputs({ ...inputs, monthlyWithdrawal: value })
-              }
-              min={1000}
-              max={50000}
-              step={500}
-              formatValue={formatCurrency}
-            />
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <div className="flex" dir='ltr'>
-              <Label>{t.portfolioReturn}</Label>
-              <div className="text-sm text-muted-foreground ml-auto">
-                {inputs.portfolioReturn.toFixed(1)}%
-              </div>
-            </div>
-            <CustomInterestSlider
-              value={inputs.portfolioReturn}
-              onValueChange={(value) =>
-                setInputs({ ...inputs, portfolioReturn: value })
-              }
-              min={0}
-              max={20}
-              step={0.1}
-            />
-          </div>
-
-          <div className="text-sm text-muted-foreground mt-4">
-            {t.withdrawalRate}: {annualWithdrawalRate.toFixed(1)}%
-          </div>
-        </div>
-      </div>
-
-      <div className="space-y-6">
-        <Card>
-          <CardContent className="pt-6">
-            <h3 className="text-lg font-semibold mb-4">
-              {t.portfolioProjection}
-            </h3>
-            <div className="h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={projectionData.slice(0,30)}>
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    className="stroke-muted"
-                  />
-                  <XAxis
-                    dataKey="year"
-                    label={{
-                      value: t.years,
-                      position: 'bottom',
-                      className: 'fill-foreground',
-                    }}
-                    tick={{ fill: 'hsl(var(--foreground))' }}
-                  />
-                  <YAxis
-                    tickFormatter={abbreviateNumber}
-                    label={{
-                      value: t.portfolioValue,
-                      angle: -90,
-                      position: 'insideLeft',
-                      className: 'fill-foreground',
-                    }}
-                    tick={{ fill: 'hsl(var(--foreground))' }}
-                  />
-                  <Tooltip
-                    formatter={(value: number) => [formatCurrency(value), '']}
-                    contentStyle={{
-                      backgroundColor: 'hsl(var(--background))',
-                      border: '1px solid hsl(var(--border))',
-                      color: 'hsl(var(--foreground))',
-                    }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="portfolioValue"
-                    stroke="hsl(var(--chart-1))"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="pt-6">
-            <h3 className="text-lg font-semibold mb-4">
-              {t.portfolioDepletion}
-            </h3>
+          <div className="grid gap-6 md:grid-cols-2">
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                {isSustainable ? (
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                ) : (
-                  <AlertTriangle className="w-5 h-5 text-yellow-500" />
-                )}
-                <span className="font-medium">
-                  {isSustainable
-                    ? `${t.indefinitelySustainable} ${formatCurrency(
-                        finalValue
-                      )}`
-                    : `${t.depleteInYear} ${depletionYear}`}
-                </span>
+              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-sm">
+                <Label className="text-gray-700 dark:text-gray-300">{t.initialPortfolio}</Label>
+                <SliderWithInput
+                  value={inputs.initialPortfolio}
+                  onValueChange={(value) =>
+                    setInputs({ ...inputs, initialPortfolio: value })
+                  }
+                  min={100000}
+                  max={10000000}
+                  step={50000}
+                  formatValue={formatCurrency}
+                />
+              </div>
+
+              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-sm">
+                <Label className="text-gray-700 dark:text-gray-300">{t.monthlyWithdrawal}</Label>
+                <SliderWithInput
+                  value={inputs.monthlyWithdrawal}
+                  onValueChange={(value) =>
+                    setInputs({ ...inputs, monthlyWithdrawal: value })
+                  }
+                  min={1000}
+                  max={50000}
+                  step={500}
+                  formatValue={formatCurrency}
+                />
               </div>
             </div>
-          </CardContent>
-        </Card>
+
+            <div className="space-y-4">
+              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-sm">
+                <div className="flex" dir='ltr'>
+                  <Label className="text-gray-700 dark:text-gray-300">{t.portfolioReturn}</Label>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 ml-auto">
+                    {inputs.portfolioReturn.toFixed(1)}%
+                  </div>
+                </div>
+                <CustomInterestSlider
+                  value={inputs.portfolioReturn}
+                  onValueChange={(value) =>
+                    setInputs({ ...inputs, portfolioReturn: value })
+                  }
+                  min={0}
+                  max={20}
+                  step={0.1}
+                />
+              </div>
+
+              <div className="text-sm text-gray-600 dark:text-gray-400 mt-4 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-sm">
+                {t.withdrawalRate}: {annualWithdrawalRate.toFixed(1)}%
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <Card className="overflow-hidden border border-white/20 dark:border-white/10 shadow-lg backdrop-blur-md bg-white/90 dark:bg-zinc-900/80 rounded-2xl">
+              <CardContent className="pt-6">
+                <h3 className="text-lg font-semibold mb-4 bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent">
+                  {t.portfolioProjection}
+                </h3>
+                <div className="h-[400px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart 
+                      data={projectionData.slice(0,30)}
+                      margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" stroke="#eaeaea" />
+                      <XAxis
+                        dataKey="year"
+                        tickLine={false}
+                        axisLine={{ stroke: '#eaeaea' }}
+                        tick={{ fill: '#888', fontSize: 12 }}
+                        label={{
+                          value: t.years,
+                          position: 'insideBottom',
+                          offset: -5,
+                          fill: '#888',
+                          fontSize: 12,
+                        }}
+                      />
+                      <YAxis
+                        tickFormatter={abbreviateNumber}
+                        tickLine={false}
+                        axisLine={{ stroke: '#eaeaea' }}
+                        tick={{ fill: '#888', fontSize: 12 }}
+                        width={60}
+                        label={{
+                          value: t.portfolioValue,
+                          angle: -90,
+                          position: 'insideLeft',
+                          fill: '#888',
+                          fontSize: 12,
+                        }}
+                      />
+                      <Tooltip
+                        formatter={(value: number) => [formatCurrency(value), t.portfolioValue]}
+                        contentStyle={{
+                          backgroundColor: 'hsl(var(--background) / 0.95)',
+                          borderRadius: '8px',
+                          border: '1px solid hsl(var(--border) / 0.2)',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                          padding: '8px 12px',
+                          color: 'hsl(var(--foreground))',
+                        }}
+                        labelFormatter={(year) => (
+                          <span style={{ color: 'hsl(var(--foreground) / 0.7)', fontSize: '0.875rem' }}>
+                            {t.years} {year}
+                          </span>
+                        )}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="portfolioValue"
+                        name={t.portfolioValue}
+                        stroke="hsl(var(--chart-1))"
+                        strokeWidth={3}
+                        dot={{ r: 1 }}
+                        activeDot={{ r: 5, strokeWidth: 0 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="overflow-hidden border border-white/20 dark:border-white/10 shadow-lg backdrop-blur-md bg-white/90 dark:bg-zinc-900/80 rounded-2xl">
+              <CardContent className="pt-6">
+                <h3 className="text-lg font-semibold mb-4 bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent">
+                  {t.portfolioDepletion}
+                </h3>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 p-4 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-sm">
+                    {isSustainable ? (
+                      <CheckCircle className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
+                    ) : (
+                      <AlertTriangle className="w-5 h-5 text-amber-500 dark:text-amber-400" />
+                    )}
+                    <span className="font-medium text-gray-800 dark:text-gray-200">
+                      {isSustainable
+                        ? `${t.indefinitelySustainable} ${formatCurrency(
+                            finalValue
+                          )}`
+                        : `${t.depleteInYear} ${depletionYear}`}
+                    </span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </CardContent>
+      </Card>
+      
+      {/* Attribution footer */}
+      <div className="w-full text-center pb-4">
+        <p className="bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-emerald-400 dark:to-emerald-500 bg-clip-text text-transparent font-medium text-xs">
+          {t.madeWith}
+        </p>
       </div>
     </div>
   );
