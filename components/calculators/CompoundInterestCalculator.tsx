@@ -35,6 +35,7 @@ import { compoundTranslations } from '@/lib/translations/compound';
 import { CustomInterestSlider } from '../ui/slider-w-landmarks';
 import { SliderWithInput } from '@/components/ui/slider-w-input';
 import { LiquidToggle, GooeyFilter } from '@/components/ui/liquid-toggle';
+import { useCurrencyFormatter } from '@/lib/hooks/useCurrencyFormatter';
 
 // Define slider info keys type
 type SliderInfoKeys = 
@@ -78,7 +79,8 @@ const useWindowSize = () => {
 };
 
 export function CompoundInterestCalculator() {
-  const { language, direction, formatCurrency } = useTranslationStore();
+  const { language, direction } = useTranslationStore();
+  const { formatCurrencySafe, abbreviateNumber } = useCurrencyFormatter();
   const t = compoundTranslations[language];
   const [mounted, setMounted] = useState(false);
   const [isTargetMode, setIsTargetMode] = useState(true);
@@ -166,19 +168,6 @@ export function CompoundInterestCalculator() {
   const parseInputValue = useCallback((value: string): number => {
     const parsed = Number(value.replace(/[^0-9.-]+/g, ''));
     return isNaN(parsed) ? 0 : parsed;
-  }, []);
-
-  const abbreviateNumber = useCallback((value: number): string => {
-    if (value >= 1000000000) {
-      return `${(value / 1000000000).toFixed(0)}B`;
-    }
-    if (value >= 1000000) {
-      return `${(value / 1000000).toFixed(0)}M`;
-    }
-    if (value >= 1000) {
-      return `${(value / 1000).toFixed(0)}K`;
-    }
-    return value.toString();
   }, []);
 
   const handleInputChange = useCallback(
@@ -292,7 +281,7 @@ export function CompoundInterestCalculator() {
           </p>
           {payload.map((entry, index) => (
             <p key={index} className="text-sm" style={{ color: entry.color }}>
-              {entry.name}: {formatCurrency(entry.value)}
+              {entry.name}: {formatCurrencySafe(entry.value)}
             </p>
           ))}
         </div>
@@ -363,16 +352,16 @@ export function CompoundInterestCalculator() {
                     onValueChange={(value) => {
                       if (isTargetMode) {
                         setTargetAmount(value);
-                        setTargetAmountInput(formatCurrency(value));
+                        setTargetAmountInput(formatCurrencySafe(value));
                       } else {
                         setMonthlyInvestment(value);
-                        setMonthlyInvestmentInput(formatCurrency(value));
+                        setMonthlyInvestmentInput(formatCurrencySafe(value));
                       }
                     }}
                     min={isTargetMode ? 100000 : 0}
                     max={isTargetMode ? 10000000 : 50000}
                     step={isTargetMode ? 50000 : 500}
-                    formatValue={formatCurrency}
+                    formatValue={formatCurrencySafe}
                   />
                 </div>
               </div>
@@ -387,12 +376,12 @@ export function CompoundInterestCalculator() {
                     value={initialAmount}
                     onValueChange={(value) => {
                       setInitialAmount(value);
-                      setInitialAmountInput(formatCurrency(value));
+                      setInitialAmountInput(formatCurrencySafe(value));
                     }}
                     min={0}
                     max={1000000}
                     step={10000}
-                    formatValue={formatCurrency}
+                    formatValue={formatCurrencySafe}
                   />
                 </div>
               </div>
@@ -468,8 +457,8 @@ export function CompoundInterestCalculator() {
                 <div className="mt-auto flex flex-col gap-2">
                   <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
                     {isTargetMode
-                      ? formatCurrency(roundNumber(summary.monthlyInvestment))
-                      : formatCurrency(roundNumber(summary.pureAccumulatedMonthlyInvestment))}
+                      ? formatCurrencySafe(roundNumber(summary.monthlyInvestment))
+                      : formatCurrencySafe(roundNumber(summary.pureAccumulatedMonthlyInvestment))}
                   </p>
                   <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-amber-100/80 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 self-start">
                     {investmentPeriod * 12} {t.months}
@@ -485,7 +474,7 @@ export function CompoundInterestCalculator() {
                 </h3>
                 <div className="mt-auto flex flex-col gap-2">
                   <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    {formatCurrency(roundNumber(summary.initialGrowth))}
+                    {formatCurrencySafe(roundNumber(summary.initialGrowth))}
                   </p>
                   {initialAmount > 0 && (
                     <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 self-start">
@@ -503,7 +492,7 @@ export function CompoundInterestCalculator() {
                 </h3>
                 <div className="mt-auto flex flex-col gap-2">
                   <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    {formatCurrency(roundNumber(summary.contibutionsGrowth))}
+                    {formatCurrencySafe(roundNumber(summary.contibutionsGrowth))}
                   </p>
                   {summary.pureAccumulatedMonthlyInvestment > 0 && (
                     <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 self-start">
@@ -521,7 +510,7 @@ export function CompoundInterestCalculator() {
                 </h3>
                 <div className="mt-auto flex flex-col gap-2">
                   <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    {formatCurrency(roundNumber(summary.finalValue))}
+                    {formatCurrencySafe(roundNumber(summary.finalValue))}
                   </p>
                   {(initialAmount + summary.pureAccumulatedMonthlyInvestment) > 0 && (
                     <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 self-start">

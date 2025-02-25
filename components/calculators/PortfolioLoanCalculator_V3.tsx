@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
@@ -29,6 +29,7 @@ import {
 } from 'recharts';
 import { useTranslationStore } from '@/lib/translations';
 import { portfolioV3Translations } from '@/lib/translations/portfolioV3';
+import { useCurrencyFormatter } from '@/lib/hooks/useCurrencyFormatter';
 
 // Add these type definitions at the top of the file
 type RefNames = 'profitPercentage' | 'taxRate' | 'currentValue' | 'targetCash';
@@ -88,7 +89,8 @@ interface HelpButtonProps {
 
 const PortfolioTaxCalculator: React.FC = () => {
 	// Add translation hooks
-	const { language, direction, formatCurrency } = useTranslationStore();
+	const { language, direction } = useTranslationStore();
+	const { formatCurrencySafe, abbreviateNumber } = useCurrencyFormatter();
 	const t = portfolioV3Translations[language];
 
 	const [showDetails, setShowDetails] = useState(false);
@@ -323,7 +325,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 							<ClickableValue
 								value={inputs.currentValue}
 								refName="currentValue"
-								formatter={(v) => formatCurrency(Number(v))}
+								formatter={(v) => formatCurrencySafe(Number(v))}
 							/>
 							,{t.with}{' '}
 							<ClickableValue
@@ -339,7 +341,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 							<ClickableValue
 								value={inputs.targetCash}
 								refName="targetCash"
-								formatter={(v) => formatCurrency(Number(v))}
+								formatter={(v) => formatCurrencySafe(Number(v))}
 							/>{' '}
 							{t.inCash}
 						</p>
@@ -352,7 +354,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 									<div className="absolute -right-[40%] top-[2%] w-full rotate-45 transform">
 										<div className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-[10px] sm:text-xs py-1 px-6 shadow-lg border border-emerald-400/30 text-center whitespace-nowrap">
 											<span className="font-semibold tracking-wider">
-												{formatCurrency(Math.round((finalYear.loanStrategy - summary.totalLoanNeeded)/1000))}
+												{formatCurrencySafe(Math.round((finalYear.loanStrategy - summary.totalLoanNeeded)/1000))}
 											</span>
 										</div>
 									</div>
@@ -366,7 +368,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 									<div className="absolute -right-[30%] top-[5%] w-full rotate-45 transform">
 										<div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[10px] sm:text-xs py-1 px-6 shadow-lg border border-amber-400/30 text-center whitespace-nowrap">
 											<span className="font-semibold tracking-wider">
-												{formatCurrency(Math.round(finalYear.sellStrategy/1000))}
+												{formatCurrencySafe(Math.round(finalYear.sellStrategy/1000))}
 											</span>
 										</div>
 									</div>
@@ -465,7 +467,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 									}}
 								/>
 								<YAxis
-									tickFormatter={(value) => formatCurrency(value / 1000)}
+									tickFormatter={(value) => abbreviateNumber(value)}
 									tickLine={false}
 									axisLine={{ stroke: '#eaeaea' }}
 									tick={{ fill: '#888', fontSize: 12 }}
@@ -487,7 +489,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 											netWorth: 'Net Worth (Loan)',
 										}[name];
 										return [
-											<span style={{ color: 'hsl(var(--foreground))', fontWeight: 500 }}>{formatCurrency(Number(value))}</span>,
+											<span style={{ color: 'hsl(var(--foreground))', fontWeight: 500 }}>{formatCurrencySafe(Number(value))}</span>,
 											<span style={{ color: 'hsl(var(--foreground) / 0.8)' }}>{strategyName}</span>
 										];
 									}}
@@ -549,7 +551,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 								<div className="flex justify-between text-sm">
 									<span className="text-gray-600 dark:text-gray-200/80">{t.summaryRequiredLoan}</span>
 									<span className="font-medium">
-										{formatCurrency(summary.totalLoanNeeded)}
+										{formatCurrencySafe(summary.totalLoanNeeded)}
 									</span>
 								</div>
 								{loanStrategy === 'monthly' && (
@@ -558,7 +560,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 											{t.summaryMonthlyPayment}
 										</span>
 										<span className="font-medium">
-											{formatCurrency(finalYear.monthlyPayment)}
+											{formatCurrencySafe(finalYear.monthlyPayment)}
 										</span>
 									</div>
 								)}
@@ -567,13 +569,13 @@ const PortfolioTaxCalculator: React.FC = () => {
 										{loanStrategy === 'upfront' ? t.summaryPrepaidInterest : t.summaryTotalInterest}
 									</span>
 									<span className="font-medium">
-										{formatCurrency(finalYear.totalInterestPaid)}
+										{formatCurrencySafe(finalYear.totalInterestPaid)}
 									</span>
 								</div>
 								<div className="flex justify-between text-sm">
 									<span className="text-gray-600 dark:text-gray-200/80">{t.summaryFinalValue}</span>
 									<span className="font-medium">
-										{formatCurrency(finalYear.loanStrategy)}
+										{formatCurrencySafe(finalYear.loanStrategy)}
 									</span>
 								</div>
 							</div>
@@ -583,7 +585,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 									{t.summaryNetWorth}
 								</span>
 								<span className="font-medium text-emerald-900 dark:text-emerald-100 pr-3">
-									{formatCurrency(finalYear.loanStrategy - summary.totalLoanNeeded)}
+									{formatCurrencySafe(finalYear.loanStrategy - summary.totalLoanNeeded)}
 								</span>
 							</div>
 						</div>
@@ -596,13 +598,13 @@ const PortfolioTaxCalculator: React.FC = () => {
 								<div className="flex justify-between text-sm">
 									<span className="text-gray-600 dark:text-gray-200/80">{t.summaryAmountToSell}</span>
 									<span className="font-medium">
-										{formatCurrency(summary.amountToSell)}
+										{formatCurrencySafe(summary.amountToSell)}
 									</span>
 								</div>
 								<div className="flex justify-between text-sm">
 									<span className="text-gray-600 dark:text-gray-200/80">{t.summaryTaxPaid}</span>
 									<span className="font-medium">
-										{formatCurrency(summary.taxPaid)}
+										{formatCurrencySafe(summary.taxPaid)}
 									</span>
 								</div>
 								<div className="flex justify-between text-sm">
@@ -610,7 +612,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 										{t.summaryRemainingPortfolio}
 									</span>
 									<span className="font-medium">
-										{formatCurrency(inputs.currentValue - summary.amountToSell)}
+										{formatCurrencySafe(inputs.currentValue - summary.amountToSell)}
 									</span>
 								</div>
 							</div>
@@ -619,7 +621,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 									{/*t.summaryFinalValue*/ t.summaryNetWorth}
 								</span>
 								<span className="font-medium text-amber-900 dark:text-amber-100 pr-3">
-									{formatCurrency(finalYear.sellStrategy)}
+									{formatCurrencySafe(finalYear.sellStrategy)}
 								</span>
 							</div>
 						</div>
@@ -719,7 +721,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 												<Label className="text-sm font-normal">{t.portfolioValue}</Label>
 												<HelpButton sliderKey="currentValue" />
 												<span className="ml-auto font-medium">
-													{formatCurrency(inputs.currentValue)}
+													{formatCurrencySafe(inputs.currentValue)}
 												</span>
 											</div>
 											<Slider
@@ -733,8 +735,8 @@ const PortfolioTaxCalculator: React.FC = () => {
 												className="py-2"
 											/>
 											<div className="flex justify-between text-xs text-gray-500">
-												<span>{formatCurrency(50000)}</span>
-												<span>{formatCurrency(500000)}</span>
+												<span>{formatCurrencySafe(50000)}</span>
+												<span>{formatCurrencySafe(500000)}</span>
 											</div>
 										</div>
 										<div
@@ -747,7 +749,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 												<Label className="text-sm font-normal">{t.targetCash}</Label>
 												<HelpButton sliderKey="targetCash" />
 												<span className="ml-auto font-medium">
-													{formatCurrency(inputs.targetCash)}
+													{formatCurrencySafe(inputs.targetCash)}
 												</span>
 											</div>
 											<Slider
@@ -761,8 +763,8 @@ const PortfolioTaxCalculator: React.FC = () => {
 												className="py-2"
 											/>
 											<div className="flex justify-between text-xs text-gray-500">
-												<span>{formatCurrency(10000)}</span>
-												<span>{formatCurrency(300000)}</span>
+												<span>{formatCurrencySafe(10000)}</span>
+												<span>{formatCurrencySafe(300000)}</span>
 											</div>
 										</div>
 									</div>

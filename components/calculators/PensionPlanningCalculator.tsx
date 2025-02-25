@@ -29,6 +29,7 @@ import {
 import { useTranslationStore } from '@/lib/translations';
 import { pensionTranslations } from '@/lib/translations/pension';
 import { AlertTriangle, CheckCircle } from 'lucide-react';
+import { useCurrencyFormatter } from '@/lib/hooks/useCurrencyFormatter';
 
 // Define slider info keys type
 type SliderInfoKeys = 
@@ -48,6 +49,7 @@ interface CalculatorInputs {
 
 export function PensionPlanningCalculator() {
   const { language, direction, formatCurrency } = useTranslationStore();
+  const { abbreviateNumber } = useCurrencyFormatter();
   const t = pensionTranslations[language];
   const [mounted, setMounted] = useState(false);
   
@@ -106,21 +108,6 @@ export function PensionPlanningCalculator() {
     const parsed = Number(value.replace(/[^0-9.-]+/g, ''));
     return isNaN(parsed) ? 0 : parsed;
   }, []);
-
-  const abbreviateNumber = useCallback((value: number): string => {
-    const suffix = language === 'he' ? '₪' : '$';
-    
-    if (value >= 10000000) {
-      return `${suffix}${(value / 1000000).toFixed(0)}M`;
-    }
-    if (value >= 1000000) {
-      return `${suffix}${(value / 1000000).toFixed(1)}M`;
-    }
-    if (value >= 1000) {
-      return `${suffix}${(value / 1000).toFixed(0)}K`;
-    }
-    return `${suffix}${value}`;
-  }, [language]);
 
   const calculateProjections = () => {
     const data = [];
@@ -275,7 +262,7 @@ export function PensionPlanningCalculator() {
                         }}
                       />
                       <YAxis
-                        tickFormatter={abbreviateNumber}
+                        tickFormatter={value => abbreviateNumber(value)}
                         tickLine={false}
                         axisLine={{ stroke: '#eaeaea' }}
                         tick={{ fill: '#888', fontSize: 12 }}

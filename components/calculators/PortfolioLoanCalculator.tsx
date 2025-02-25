@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import { Info } from "lucide-react";
 import { useTranslationStore } from "@/lib/translations";
 import { portfolioTranslations } from "@/lib/translations/portfolio";
+import { useCurrencyFormatter } from '@/lib/hooks/useCurrencyFormatter';
 
 interface CalculatorInputs {
   initialPortfolio: number;
@@ -29,7 +30,8 @@ interface CalculatorInputs {
 }
 
 export function PortfolioLoanCalculator() {
-  const { language, direction, formatCurrency } = useTranslationStore();
+  const { language, direction } = useTranslationStore();
+  const { formatCurrencySafe, abbreviateNumber } = useCurrencyFormatter();
   const t = portfolioTranslations[language];
   const [mounted, setMounted] = useState(false);
 
@@ -174,7 +176,7 @@ export function PortfolioLoanCalculator() {
                     tick={{ fill: 'hsl(var(--foreground))' }}
                   />
                   <YAxis 
-                    tickFormatter={(value) => formatCurrency(value).split('.')[0]}
+                    tickFormatter={(value) => formatCurrencySafe(value).split('.')[0]}
                     label={{ 
                       value: t.portfolioValue, 
                       angle: -90, 
@@ -184,7 +186,7 @@ export function PortfolioLoanCalculator() {
                     tick={{ fill: 'hsl(var(--foreground))' }}
                   />
                   <Tooltip 
-                    formatter={(value: number) => [formatCurrency(value), '']}
+                    formatter={(value: number) => [formatCurrencySafe(value), '']}
                     contentStyle={{
                       backgroundColor: 'hsl(var(--background))',
                       border: '1px solid hsl(var(--border))',
@@ -226,19 +228,19 @@ export function PortfolioLoanCalculator() {
                 <div className="flex justify-between">
                   <dt className="text-muted-foreground">{t.finalPortfolioValue}</dt>
                   <dd className="font-medium" suppressHydrationWarning>
-                    {formatCurrency(finalYear.loanStrategy)}
+                    {formatCurrencySafe(finalYear.loanStrategy)}
                   </dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-muted-foreground">{t.netWorthAfterLoan}</dt>
                   <dd className="font-medium" suppressHydrationWarning>
-                    {formatCurrency(finalYear.loanStrategy - inputs.loanAmount)}
+                    {formatCurrencySafe(finalYear.loanStrategy - inputs.loanAmount)}
                   </dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-muted-foreground">{t.totalInterestPaid}</dt>
                   <dd className="font-medium" suppressHydrationWarning>
-                    {formatCurrency(totalInterestPaid)}
+                    {formatCurrencySafe(totalInterestPaid)}
                   </dd>
                 </div>
               </dl>
@@ -252,19 +254,19 @@ export function PortfolioLoanCalculator() {
                 <div className="flex justify-between">
                   <dt className="text-muted-foreground">{t.finalPortfolioValue}</dt>
                   <dd className="font-medium" suppressHydrationWarning>
-                    {formatCurrency(finalYear.sellStrategy)}
+                    {formatCurrencySafe(finalYear.sellStrategy)}
                   </dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-muted-foreground">{t.initialTaxPaid}</dt>
                   <dd className="font-medium" suppressHydrationWarning>
-                    {formatCurrency(taxPaid)}
+                    {formatCurrencySafe(taxPaid)}
                   </dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-muted-foreground">{t.taxOpportunityCost}</dt>
                   <dd className="font-medium" suppressHydrationWarning>
-                    {formatCurrency(Math.round(taxOpportunityCost))}
+                    {formatCurrencySafe(Math.round(taxOpportunityCost))}
                   </dd>
                 </div>
               </dl>

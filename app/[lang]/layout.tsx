@@ -49,7 +49,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang={lang} suppressHydrationWarning className={inter.variable}>
-      <body className="font-sans bg-gradient-to-br from-zinc-100 via-zinc-200 to-zinc-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950">
+      <body className="font-sans bg-zinc-200 dark:bg-zinc-900">
         <WarningSuppressor />
         <ThemeProvider>
           <div className="flex min-h-screen flex-col">

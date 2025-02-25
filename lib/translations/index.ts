@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { landingTranslations, LandingTranslation } from './landing';
 
 export type Language = 'en' | 'he';
 
@@ -17,6 +18,12 @@ export const useTranslationStore = create<TranslationStore>()(
       setLanguage: (language) => set({ language }),
       direction: () => get().language === 'he' ? 'rtl' : 'ltr',
       formatCurrency: (value) => {
+        // Use a simple default format for SSR to prevent hydration errors
+        // This will be replaced on the client side
+        if (typeof window === 'undefined') {
+          return `$${value.toLocaleString()}`;
+        }
+        
         const language = get().language;
         return new Intl.NumberFormat(language === 'en' ? 'en-US' : 'he-IL', {
           style: 'currency',
@@ -30,3 +37,7 @@ export const useTranslationStore = create<TranslationStore>()(
     }
   )
 );
+
+// Export translations
+export { landingTranslations };
+export type { LandingTranslation };
