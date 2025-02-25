@@ -108,17 +108,19 @@ export function PensionPlanningCalculator() {
   }, []);
 
   const abbreviateNumber = useCallback((value: number): string => {
+    const suffix = language === 'he' ? '₪' : '$';
+    
     if (value >= 10000000) {
-      return `${(value / 1000000).toFixed(0)}M`;
+      return `${suffix}${(value / 1000000).toFixed(0)}M`;
     }
     if (value >= 1000000) {
-      return `${(value / 1000000).toFixed(1)}M`;
+      return `${suffix}${(value / 1000000).toFixed(1)}M`;
     }
     if (value >= 1000) {
-      return `${(value / 1000).toFixed(0)}K`;
+      return `${suffix}${(value / 1000).toFixed(0)}K`;
     }
-    return value.toString();
-  }, []);
+    return `${suffix}${value}`;
+  }, [language]);
 
   const calculateProjections = () => {
     const data = [];

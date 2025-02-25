@@ -86,9 +86,9 @@ interface HelpButtonProps {
 	sliderKey: SliderInfoKeys;
 }
 
-const PortfolioTaxCalculator = () => {
+const PortfolioTaxCalculator: React.FC = () => {
 	// Add translation hooks
-	const { language, direction } = useTranslationStore();
+	const { language, direction, formatCurrency } = useTranslationStore();
 	const t = portfolioV3Translations[language];
 
 	const [showDetails, setShowDetails] = useState(false);
@@ -323,7 +323,7 @@ const PortfolioTaxCalculator = () => {
 							<ClickableValue
 								value={inputs.currentValue}
 								refName="currentValue"
-								formatter={(v) => '$' + v.toLocaleString()}
+								formatter={(v) => formatCurrency(Number(v))}
 							/>
 							,{t.with}{' '}
 							<ClickableValue
@@ -339,7 +339,7 @@ const PortfolioTaxCalculator = () => {
 							<ClickableValue
 								value={inputs.targetCash}
 								refName="targetCash"
-								formatter={(v) => '$' + v.toLocaleString()}
+								formatter={(v) => formatCurrency(Number(v))}
 							/>{' '}
 							{t.inCash}
 						</p>
@@ -352,7 +352,7 @@ const PortfolioTaxCalculator = () => {
 									<div className="absolute -right-[40%] top-[2%] w-full rotate-45 transform">
 										<div className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-[10px] sm:text-xs py-1 px-6 shadow-lg border border-emerald-400/30 text-center whitespace-nowrap">
 											<span className="font-semibold tracking-wider">
-												${Math.round((finalYear.loanStrategy - summary.totalLoanNeeded)/1000)}k
+												{formatCurrency(Math.round((finalYear.loanStrategy - summary.totalLoanNeeded)/1000))}
 											</span>
 										</div>
 									</div>
@@ -366,7 +366,7 @@ const PortfolioTaxCalculator = () => {
 									<div className="absolute -right-[30%] top-[5%] w-full rotate-45 transform">
 										<div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[10px] sm:text-xs py-1 px-6 shadow-lg border border-amber-400/30 text-center whitespace-nowrap">
 											<span className="font-semibold tracking-wider">
-												${Math.round(finalYear.sellStrategy/1000)}k
+												{formatCurrency(Math.round(finalYear.sellStrategy/1000))}
 											</span>
 										</div>
 									</div>
@@ -465,7 +465,7 @@ const PortfolioTaxCalculator = () => {
 									}}
 								/>
 								<YAxis
-									tickFormatter={(value) => `$${value / 1000}k`}
+									tickFormatter={(value) => formatCurrency(value / 1000)}
 									tickLine={false}
 									axisLine={{ stroke: '#eaeaea' }}
 									tick={{ fill: '#888', fontSize: 12 }}
@@ -487,7 +487,7 @@ const PortfolioTaxCalculator = () => {
 											netWorth: 'Net Worth (Loan)',
 										}[name];
 										return [
-											<span style={{ color: 'hsl(var(--foreground))', fontWeight: 500 }}>${value.toLocaleString()}</span>,
+											<span style={{ color: 'hsl(var(--foreground))', fontWeight: 500 }}>{formatCurrency(Number(value))}</span>,
 											<span style={{ color: 'hsl(var(--foreground) / 0.8)' }}>{strategyName}</span>
 										];
 									}}
@@ -549,7 +549,7 @@ const PortfolioTaxCalculator = () => {
 								<div className="flex justify-between text-sm">
 									<span className="text-gray-600 dark:text-gray-200/80">{t.summaryRequiredLoan}</span>
 									<span className="font-medium">
-										${Math.round(summary.totalLoanNeeded).toLocaleString()}
+										{formatCurrency(summary.totalLoanNeeded)}
 									</span>
 								</div>
 								{loanStrategy === 'monthly' && (
@@ -558,7 +558,7 @@ const PortfolioTaxCalculator = () => {
 											{t.summaryMonthlyPayment}
 										</span>
 										<span className="font-medium">
-											${Math.round(finalYear.monthlyPayment).toLocaleString()}
+											{formatCurrency(finalYear.monthlyPayment)}
 										</span>
 									</div>
 								)}
@@ -567,12 +567,14 @@ const PortfolioTaxCalculator = () => {
 										{loanStrategy === 'upfront' ? t.summaryPrepaidInterest : t.summaryTotalInterest}
 									</span>
 									<span className="font-medium">
-										${Math.round(finalYear.totalInterestPaid).toLocaleString()}
+										{formatCurrency(finalYear.totalInterestPaid)}
 									</span>
 								</div>
 								<div className="flex justify-between text-sm">
 									<span className="text-gray-600 dark:text-gray-200/80">{t.summaryFinalValue}</span>
-									<span className="font-medium">${finalYear.loanStrategy.toLocaleString()}</span>
+									<span className="font-medium">
+										{formatCurrency(finalYear.loanStrategy)}
+									</span>
 								</div>
 							</div>
 
@@ -581,7 +583,7 @@ const PortfolioTaxCalculator = () => {
 									{t.summaryNetWorth}
 								</span>
 								<span className="font-medium text-emerald-900 dark:text-emerald-100 pr-3">
-									${(finalYear.loanStrategy - summary.totalLoanNeeded).toLocaleString()}
+									{formatCurrency(finalYear.loanStrategy - summary.totalLoanNeeded)}
 								</span>
 							</div>
 						</div>
@@ -594,19 +596,21 @@ const PortfolioTaxCalculator = () => {
 								<div className="flex justify-between text-sm">
 									<span className="text-gray-600 dark:text-gray-200/80">{t.summaryAmountToSell}</span>
 									<span className="font-medium">
-										${Math.round(summary.amountToSell).toLocaleString()}
+										{formatCurrency(summary.amountToSell)}
 									</span>
 								</div>
 								<div className="flex justify-between text-sm">
 									<span className="text-gray-600 dark:text-gray-200/80">{t.summaryTaxPaid}</span>
-									<span className="font-medium">${Math.round(summary.taxPaid).toLocaleString()}</span>
+									<span className="font-medium">
+										{formatCurrency(summary.taxPaid)}
+									</span>
 								</div>
 								<div className="flex justify-between text-sm">
 									<span className="text-gray-600 dark:text-gray-200/80">
 										{t.summaryRemainingPortfolio}
 									</span>
 									<span className="font-medium">
-										${Math.round(inputs.currentValue - summary.amountToSell).toLocaleString()}
+										{formatCurrency(inputs.currentValue - summary.amountToSell)}
 									</span>
 								</div>
 							</div>
@@ -615,7 +619,7 @@ const PortfolioTaxCalculator = () => {
 									{/*t.summaryFinalValue*/ t.summaryNetWorth}
 								</span>
 								<span className="font-medium text-amber-900 dark:text-amber-100 pr-3">
-									${finalYear.sellStrategy.toLocaleString()}
+									{formatCurrency(finalYear.sellStrategy)}
 								</span>
 							</div>
 						</div>
@@ -715,7 +719,7 @@ const PortfolioTaxCalculator = () => {
 												<Label className="text-sm font-normal">{t.portfolioValue}</Label>
 												<HelpButton sliderKey="currentValue" />
 												<span className="ml-auto font-medium">
-													${inputs.currentValue.toLocaleString()}
+													{formatCurrency(inputs.currentValue)}
 												</span>
 											</div>
 											<Slider
@@ -729,8 +733,8 @@ const PortfolioTaxCalculator = () => {
 												className="py-2"
 											/>
 											<div className="flex justify-between text-xs text-gray-500">
-												<span>$50k</span>
-												<span>$500k</span>
+												<span>{formatCurrency(50000)}</span>
+												<span>{formatCurrency(500000)}</span>
 											</div>
 										</div>
 										<div
@@ -743,7 +747,7 @@ const PortfolioTaxCalculator = () => {
 												<Label className="text-sm font-normal">{t.targetCash}</Label>
 												<HelpButton sliderKey="targetCash" />
 												<span className="ml-auto font-medium">
-													${inputs.targetCash.toLocaleString()}
+													{formatCurrency(inputs.targetCash)}
 												</span>
 											</div>
 											<Slider
@@ -757,8 +761,8 @@ const PortfolioTaxCalculator = () => {
 												className="py-2"
 											/>
 											<div className="flex justify-between text-xs text-gray-500">
-												<span>$10k</span>
-												<span>$300k</span>
+												<span>{formatCurrency(10000)}</span>
+												<span>{formatCurrency(300000)}</span>
 											</div>
 										</div>
 									</div>
