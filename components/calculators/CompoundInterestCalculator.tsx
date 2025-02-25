@@ -14,6 +14,17 @@ import {
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { HelpCircle } from 'lucide-react';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from '@/components/ui/drawer';
 import {
   calculateMonthlyGrowth,
   calculateContributionsGrowth,
@@ -24,6 +35,18 @@ import { compoundTranslations } from '@/lib/translations/compound';
 import { CustomInterestSlider } from '../ui/slider-w-landmarks';
 import { SliderWithInput } from '@/components/ui/slider-w-input';
 import { LiquidToggle, GooeyFilter } from '@/components/ui/liquid-toggle';
+
+// Define slider info keys type
+type SliderInfoKeys = 
+  | 'targetAmount'
+  | 'monthlyInvestment'
+  | 'initialInvestment'
+  | 'period'
+  | 'annualReturn';
+
+interface HelpButtonProps {
+  sliderKey: SliderInfoKeys;
+}
 
 interface ChartDataPoint {
   month: number;
@@ -69,12 +92,61 @@ export function CompoundInterestCalculator() {
   const [annualReturn, setAnnualReturn] = useState(10);
   const [annualReturnInput, setAnnualReturnInput] = useState('10');
   const [periodInput, setPeriodInput] = useState('10');
+  
+  // Add drawer state
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerContent, setDrawerContent] = useState({ title: '', description: '' });
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   const windowWidth = useWindowSize();
+
+  // Add openInfoDrawer function
+  const openInfoDrawer = (title: string, description: string): void => {
+    setDrawerContent({ title, description });
+    setDrawerOpen(true);
+  };
+
+  // Add sliderInfo object
+  const sliderInfo: Record<SliderInfoKeys, { title: string; description: string }> = {
+    targetAmount: {
+      title: t.targetAmount_info,
+      description: t.targetAmount_desc,
+    },
+    monthlyInvestment: {
+      title: t.monthlyInvestment_info,
+      description: t.monthlyInvestment_desc,
+    },
+    initialInvestment: {
+      title: t.initialInvestment_info,
+      description: t.initialInvestment_desc,
+    },
+    period: {
+      title: t.period_info,
+      description: t.period_desc,
+    },
+    annualReturn: {
+      title: t.annualReturn_info,
+      description: t.annualReturn_desc,
+    },
+  };
+
+  // Add HelpButton component
+  const HelpButton: React.FC<HelpButtonProps> = ({ sliderKey }) => (
+    <Button
+      variant="ghost"
+      size="icon"
+      className="h-5 w-5 rounded-full bg-transparent hover:bg-white/30 dark:hover:bg-black/30 transition-all shadow-sm backdrop-blur-sm p-0 ml-1"
+      onClick={(e) => {
+        e.stopPropagation();
+        openInfoDrawer(sliderInfo[sliderKey].title, sliderInfo[sliderKey].description);
+      }}
+    >
+      <HelpCircle className="h-3.5 w-3.5 ms-2 text-emerald-700/90 dark:text-emerald-400/90 transition-colors" />
+    </Button>
+  );
 
   const formatMonthYear = useCallback((month: number, year: number): string => {
     const monthNum = (month % 12) + 1;
@@ -279,9 +351,12 @@ export function CompoundInterestCalculator() {
           <div className="grid gap-6 md:grid-cols-2">
             <div className="space-y-4 border-r border-zinc-200/30 dark:border-zinc-700/30 md:pr-6 pr-0">
               <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
-                <Label className="text-gray-700 dark:text-gray-300">
-                  {isTargetMode ? t.targetAmount : t.monthlyInvestment}
-                </Label>
+                <div className="flex items-center">
+                  <Label className="text-gray-700 dark:text-gray-300">
+                    {isTargetMode ? t.targetAmount : t.monthlyInvestment}
+                  </Label>
+                  <HelpButton sliderKey={isTargetMode ? "targetAmount" : "monthlyInvestment"} />
+                </div>
                 <div className="pt-2">
                   <SliderWithInput
                     value={isTargetMode ? targetAmount : monthlyInvestment}
@@ -303,7 +378,10 @@ export function CompoundInterestCalculator() {
               </div>
 
               <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
-                <Label className="text-gray-700 dark:text-gray-300">{t.initialInvestment}</Label>
+                <div className="flex items-center">
+                  <Label className="text-gray-700 dark:text-gray-300">{t.initialInvestment}</Label>
+                  <HelpButton sliderKey="initialInvestment" />
+                </div>
                 <div className="pt-2">
                   <SliderWithInput
                     value={initialAmount}
@@ -322,7 +400,10 @@ export function CompoundInterestCalculator() {
 
             <div className="space-y-4">
               <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
-                <Label className="text-gray-700 dark:text-gray-300">{t.period}</Label>
+                <div className="flex items-center">
+                  <Label className="text-gray-700 dark:text-gray-300">{t.period}</Label>
+                  <HelpButton sliderKey="period" />
+                </div>
                 <div className="pt-2">
                   <SliderWithInput
                     value={investmentPeriod}
@@ -339,8 +420,9 @@ export function CompoundInterestCalculator() {
               </div>
 
               <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
-                <div className="flex" dir='ltr'>
+                <div className="flex items-center" dir='ltr'>
                   <Label className="text-gray-700 dark:text-gray-300">{t.annualReturn}</Label>
+                  <HelpButton sliderKey="annualReturn" />
                   <div className="text-sm text-gray-600 dark:text-gray-400 ml-auto">
                     {annualReturn.toFixed(1)}%
                   </div>
@@ -390,7 +472,7 @@ export function CompoundInterestCalculator() {
                       : formatCurrency(roundNumber(summary.pureAccumulatedMonthlyInvestment))}
                   </p>
                   <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-amber-100/80 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 self-start">
-                    {investmentPeriod * 12} {t.month}
+                    {investmentPeriod * 12} {t.months}
                   </span>
                 </div>
               </CardContent>
@@ -569,15 +651,30 @@ export function CompoundInterestCalculator() {
               </div>
             </CardContent>
           </Card>
-
-          {/* Attribution footer */}
-          <div className="w-full text-center pb-4">
-            <p className="bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-emerald-400 dark:to-emerald-500 bg-clip-text text-transparent font-medium text-xs">
-              {t.madeWith}
-            </p>
-          </div>
         </CardContent>
       </Card>
+      
+      {/* Help Info Drawer */}
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>{drawerContent.title}</DrawerTitle>
+            <DrawerDescription>{drawerContent.description}</DrawerDescription>
+          </DrawerHeader>
+          <DrawerFooter>
+            <DrawerClose asChild>
+              <Button variant="outline">{t.close}</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+      
+      {/* Attribution footer */}
+      <div className="w-full text-center pb-4">
+        <p className="bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-emerald-400 dark:to-emerald-500 bg-clip-text text-transparent font-medium text-xs">
+          {t.madeWith}
+        </p>
+      </div>
     </div>
   );
 }
