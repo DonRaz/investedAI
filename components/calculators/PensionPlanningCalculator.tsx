@@ -109,8 +109,8 @@ export function PensionPlanningCalculator() {
   }
 
   return (
-    <div suppressHydrationWarning className="font-sans p-4 md:p-8 min-h-screen flex flex-col justify-center items-center" dir={direction()}>
-      <Card className="w-full max-w-4xl overflow-hidden border border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-xl bg-white/80 dark:bg-zinc-900/70 rounded-3xl mb-8">
+    <div suppressHydrationWarning className="font-sans p-4 md:p-8 flex flex-col justify-center items-center" dir={direction()}>
+      <Card className="w-full max-w-7xl overflow-hidden border border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-xl bg-white/80 dark:bg-zinc-900/70 rounded-3xl mb-8">
         <div className="absolute inset-0 bg-gradient-to-tr from-zinc-100/30 via-transparent to-emerald-100/30 dark:from-zinc-900/20 dark:to-emerald-900/20 rounded-3xl"></div>
         <CardContent className="space-y-8 p-8 relative z-10">
           {/* Header */}
@@ -123,7 +123,7 @@ export function PensionPlanningCalculator() {
 
           <div className="grid gap-6 md:grid-cols-2">
             <div className="space-y-4">
-              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-sm">
+              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
                 <Label className="text-gray-700 dark:text-gray-300">{t.initialPortfolio}</Label>
                 <SliderWithInput
                   value={inputs.initialPortfolio}
@@ -137,7 +137,7 @@ export function PensionPlanningCalculator() {
                 />
               </div>
 
-              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-sm">
+              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
                 <Label className="text-gray-700 dark:text-gray-300">{t.monthlyWithdrawal}</Label>
                 <SliderWithInput
                   value={inputs.monthlyWithdrawal}
@@ -153,7 +153,7 @@ export function PensionPlanningCalculator() {
             </div>
 
             <div className="space-y-4">
-              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-sm">
+              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
                 <div className="flex" dir='ltr'>
                   <Label className="text-gray-700 dark:text-gray-300">{t.portfolioReturn}</Label>
                   <div className="text-sm text-gray-600 dark:text-gray-400 ml-auto">

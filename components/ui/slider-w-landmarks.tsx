@@ -159,22 +159,7 @@ export function CustomInterestSlider({
   };
 
   const selectedAdvisor = findClosestAdvisor(value);
-  // const predictionSummaryText = getAdvisorSummary(selectedAdvisor);
   return (
-    // <div className={cn('w-full max-w-2xl mx-auto px-4 py-4', className)}>
-    //   <div className="flex justify-between items-start mb-12">
-    //     <h2 className="text-md sm:text-lg text-gray-600 mr-auto">
-    //       Estimate Average Returns
-    //     </h2>
-    //     <div className="mb-auto">
-    //       <span className="text-lg sm:text-xl font-bold text-gray-700">
-    //         {value.toFixed(1)}
-    //       </span>
-    //       <span className="text-md sm:text-base mt-auto font-bold text-gray-700">
-    //         %
-    //       </span>
-    //     </div>
-    //   </div>
     <div className={cn('w-full max-w-2xl mx-auto px-4 py-0', className)}>
       <div className="flex justify-between items-start mb-12">
         {isShowingHeader && (
@@ -246,7 +231,7 @@ export function CustomInterestSlider({
         </div>
       </div>
 
-      <div className="h-[3.5rem] mb-2">
+      <div className="h-[2.5rem] mb-2">
         {selectedAdvisor && (
           <div className="flex items-center gap-2 text-gray-400 text-xs sm:text-sm animate-in fade-in slide-in-from-bottom-4 italic">
             {/* Replace Play icon with custom SVG */}
@@ -266,7 +251,7 @@ export function CustomInterestSlider({
             <span className="line-clamp-2">
               <a
                 href={selectedAdvisor.link}
-                className="text-blue-700/50 dark:text-emerald-500 bold hover:underline"
+                className="text-blue-700/50 bold hover:underline dark:text-emerald-500"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -275,18 +260,6 @@ export function CustomInterestSlider({
               - {getAdvisorSummary(selectedAdvisor)}
               {/* {selectedAdvisor.logic} */}
             </span>
-            {/* <span className="line-clamp-2">
-              {selectedAdvisor.name}'s Prediction on {selectedAdvisor.date} (
-              <a
-                href={selectedAdvisor.link}
-                className="text-blue-600 hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Link
-              </a>
-              ) {selectedAdvisor.logic}
-            </span> */}
           </div>
         )}
       </div>

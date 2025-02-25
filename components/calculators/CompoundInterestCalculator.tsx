@@ -12,7 +12,6 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { Card, CardContent } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -24,6 +23,7 @@ import { useTranslationStore } from '@/lib/translations';
 import { compoundTranslations } from '@/lib/translations/compound';
 import { CustomInterestSlider } from '../ui/slider-w-landmarks';
 import { SliderWithInput } from '@/components/ui/slider-w-input';
+import { LiquidToggle, GooeyFilter } from '@/components/ui/liquid-toggle';
 
 interface ChartDataPoint {
   month: number;
@@ -229,15 +229,31 @@ export function CompoundInterestCalculator() {
     return null;
   };
 
+  // Helper function to round numbers for display
+  const roundNumber = useCallback((value: number): number => {
+    if (value >= 1000000) {
+      // Round to nearest 1000 for values over 1M
+      return Math.round(value / 1000) * 1000;
+    } else if (value >= 10000) {
+      // Round to nearest 100 for values over 10K
+      return Math.round(value / 100) * 100;
+    } else {
+      // Round to nearest 10 for smaller values
+      return Math.round(value / 10) * 10;
+    }
+  }, []);
+
   if (!mounted) {
     return null;
   }
 
   return (
     <div className="font-sans p-4 md:p-8 min-h-screen flex flex-col justify-center items-center" dir={direction()}>
-      <Card className="w-full max-w-4xl overflow-hidden border border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-xl bg-white/80 dark:bg-zinc-900/70 rounded-3xl mb-8">
+      <GooeyFilter />
+      
+      <Card className="w-full max-w-7xl overflow-hidden border border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-xl bg-white/80 dark:bg-zinc-900/70 rounded-3xl mb-8">
         <div className="absolute inset-0 bg-gradient-to-tr from-zinc-100/30 via-transparent to-emerald-100/30 dark:from-zinc-900/20 dark:to-emerald-900/20 rounded-3xl"></div>
-        <CardContent className="space-y-8 p-8 relative z-10">
+        <CardContent className="space-y-8 p-4 md:p-8 relative z-10">
           {/* Header */}
           <div className="text-center space-y-3 mb-10">
             <h1 className="text-3xl font-light tracking-tight bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-zinc-100 dark:to-zinc-300 bg-clip-text text-transparent">
@@ -247,20 +263,16 @@ export function CompoundInterestCalculator() {
           </div>
 
           {/* Mode Switch - Force LTR for the toggle section */}
-          <div className="flex items-center justify-center gap-4" dir="ltr">
-            <span className={`text-sm ${!isTargetMode ? 'font-bold' : ''}`}>
-              {t.setMonthly}
-            </span>
-            <div className="relative">
-              <Switch
-                checked={isTargetMode}
-                onCheckedChange={setIsTargetMode}
-                className="!m-0" // Override any margin that might affect positioning
-              />
-            </div>
-            <span className={`text-sm ${isTargetMode ? 'font-bold' : ''}`}>
-              {t.setTarget}
-            </span>
+          <div className="flex items-center justify-center">
+            <LiquidToggle
+              checked={isTargetMode}
+              onCheckedChange={setIsTargetMode}
+              leftLabel={t.setMonthly}
+              rightLabel={t.setTarget}
+              variant="success"
+              className="mx-auto"
+              forceDirection="ltr"
+            />
           </div>
 
           {/* Input Controls */}
@@ -374,11 +386,12 @@ export function CompoundInterestCalculator() {
                 <div className="mt-auto flex flex-col gap-2">
                   <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
                     {isTargetMode
-                      ? formatCurrency(summary.monthlyInvestment)
-                      : formatCurrency(summary.pureAccumulatedMonthlyInvestment)}
+                      ? formatCurrency(roundNumber(summary.monthlyInvestment))
+                      : formatCurrency(roundNumber(summary.pureAccumulatedMonthlyInvestment))}
                   </p>
-                  <div className="h-[20px]" /> {/*Placeholder for consistent height*/}
-
+                  <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-amber-100/80 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 self-start">
+                    {investmentPeriod * 12} {t.month}
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -390,7 +403,7 @@ export function CompoundInterestCalculator() {
                 </h3>
                 <div className="mt-auto flex flex-col gap-2">
                   <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    {formatCurrency(summary.initialGrowth)}
+                    {formatCurrency(roundNumber(summary.initialGrowth))}
                   </p>
                   {initialAmount > 0 && (
                     <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 self-start">
@@ -408,7 +421,7 @@ export function CompoundInterestCalculator() {
                 </h3>
                 <div className="mt-auto flex flex-col gap-2">
                   <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    {formatCurrency(summary.contibutionsGrowth)}
+                    {formatCurrency(roundNumber(summary.contibutionsGrowth))}
                   </p>
                   {summary.pureAccumulatedMonthlyInvestment > 0 && (
                     <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 self-start">
@@ -426,7 +439,7 @@ export function CompoundInterestCalculator() {
                 </h3>
                 <div className="mt-auto flex flex-col gap-2">
                   <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    {formatCurrency(summary.finalValue)}
+                    {formatCurrency(roundNumber(summary.finalValue))}
                   </p>
                   {(initialAmount + summary.pureAccumulatedMonthlyInvestment) > 0 && (
                     <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 self-start">
