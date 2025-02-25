@@ -4,6 +4,17 @@ import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { HelpCircle } from 'lucide-react';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from '@/components/ui/drawer';
 import { CustomInterestSlider } from '@/components/ui/slider-w-landmarks';
 import { SliderWithInput } from '@/components/ui/slider-w-input';
 import {
@@ -19,6 +30,16 @@ import { useTranslationStore } from '@/lib/translations';
 import { pensionTranslations } from '@/lib/translations/pension';
 import { AlertTriangle, CheckCircle } from 'lucide-react';
 
+// Define slider info keys type
+type SliderInfoKeys = 
+  | 'initialPortfolio'
+  | 'monthlyWithdrawal'
+  | 'portfolioReturn';
+
+interface HelpButtonProps {
+  sliderKey: SliderInfoKeys;
+}
+
 interface CalculatorInputs {
   initialPortfolio: number;
   monthlyWithdrawal: number;
@@ -29,6 +50,10 @@ export function PensionPlanningCalculator() {
   const { language, direction, formatCurrency } = useTranslationStore();
   const t = pensionTranslations[language];
   const [mounted, setMounted] = useState(false);
+  
+  // Add drawer state
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerContent, setDrawerContent] = useState({ title: '', description: '' });
 
   useEffect(() => {
     setMounted(true);
@@ -39,6 +64,43 @@ export function PensionPlanningCalculator() {
     monthlyWithdrawal: 5000,
     portfolioReturn: 7,
   });
+
+  // Add openInfoDrawer function
+  const openInfoDrawer = (title: string, description: string): void => {
+    setDrawerContent({ title, description });
+    setDrawerOpen(true);
+  };
+
+  // Add sliderInfo object
+  const sliderInfo: Record<SliderInfoKeys, { title: string; description: string }> = {
+    initialPortfolio: {
+      title: t.initialPortfolio_info,
+      description: t.initialPortfolio_desc,
+    },
+    monthlyWithdrawal: {
+      title: t.monthlyWithdrawal_info,
+      description: t.monthlyWithdrawal_desc,
+    },
+    portfolioReturn: {
+      title: t.portfolioReturn_info,
+      description: t.portfolioReturn_desc,
+    },
+  };
+
+  // Add HelpButton component
+  const HelpButton: React.FC<HelpButtonProps> = ({ sliderKey }) => (
+    <Button
+      variant="ghost"
+      size="icon"
+      className="h-5 w-5 rounded-full bg-transparent hover:bg-white/30 dark:hover:bg-black/30 transition-all shadow-sm backdrop-blur-sm p-0 ms-2"
+      onClick={(e) => {
+        e.stopPropagation();
+        openInfoDrawer(sliderInfo[sliderKey].title, sliderInfo[sliderKey].description);
+      }}
+    >
+      <HelpCircle className="h-3.5 w-3.5 text-emerald-700/90 dark:text-emerald-400/90 transition-colors" />
+    </Button>
+  );
 
   const parseInputValue = useCallback((value: string): number => {
     const parsed = Number(value.replace(/[^0-9.-]+/g, ''));
@@ -124,7 +186,10 @@ export function PensionPlanningCalculator() {
           <div className="grid gap-6 md:grid-cols-2">
             <div className="space-y-4">
               <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
-                <Label className="text-gray-700 dark:text-gray-300">{t.initialPortfolio}</Label>
+                <div className="flex items-center">
+                  <Label className="text-gray-700 dark:text-gray-300">{t.initialPortfolio}</Label>
+                  <HelpButton sliderKey="initialPortfolio" />
+                </div>
                 <SliderWithInput
                   value={inputs.initialPortfolio}
                   onValueChange={(value) =>
@@ -138,7 +203,10 @@ export function PensionPlanningCalculator() {
               </div>
 
               <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
-                <Label className="text-gray-700 dark:text-gray-300">{t.monthlyWithdrawal}</Label>
+                <div className="flex items-center">
+                  <Label className="text-gray-700 dark:text-gray-300">{t.monthlyWithdrawal}</Label>
+                  <HelpButton sliderKey="monthlyWithdrawal" />
+                </div>
                 <SliderWithInput
                   value={inputs.monthlyWithdrawal}
                   onValueChange={(value) =>
@@ -154,8 +222,9 @@ export function PensionPlanningCalculator() {
 
             <div className="space-y-4">
               <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
-                <div className="flex" dir='ltr'>
+                <div className="flex items-center" dir='ltr'>
                   <Label className="text-gray-700 dark:text-gray-300">{t.portfolioReturn}</Label>
+                  <HelpButton sliderKey="portfolioReturn" />
                   <div className="text-sm text-gray-600 dark:text-gray-400 ml-auto">
                     {inputs.portfolioReturn.toFixed(1)}%
                   </div>
@@ -274,6 +343,21 @@ export function PensionPlanningCalculator() {
           </div>
         </CardContent>
       </Card>
+      
+      {/* Help Info Drawer */}
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>{drawerContent.title}</DrawerTitle>
+            <DrawerDescription>{drawerContent.description}</DrawerDescription>
+          </DrawerHeader>
+          <DrawerFooter>
+            <DrawerClose asChild>
+              <Button variant="outline">{t.close}</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
       
       {/* Attribution footer */}
       <div className="w-full text-center pb-4">
