@@ -49,9 +49,10 @@ interface CalculatorInputs {
 
 export function PensionPlanningCalculator() {
   const { language, direction, formatCurrency } = useTranslationStore();
-  const { abbreviateNumber } = useCurrencyFormatter();
+  const { abbreviateNumber, formatCurrencySafe } = useCurrencyFormatter();
   const t = pensionTranslations[language];
   const [mounted, setMounted] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 768);
   
   // Add drawer state
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -59,6 +60,9 @@ export function PensionPlanningCalculator() {
 
   useEffect(() => {
     setMounted(true);
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const [inputs, setInputs] = useState<CalculatorInputs>({
@@ -152,6 +156,11 @@ export function PensionPlanningCalculator() {
   // Calculate annual withdrawal rate
   const annualWithdrawalRate =
     ((inputs.monthlyWithdrawal * 12) / inputs.initialPortfolio) * 100;
+
+  // Update the Tooltip formatter to use formatCurrencySafe
+  const tooltipFormatter = useCallback((value: number) => {
+    return [formatCurrencySafe(value), t.portfolioValue];
+  }, [formatCurrencySafe, t.portfolioValue]);
 
   if (!mounted) {
     return (
@@ -267,16 +276,16 @@ export function PensionPlanningCalculator() {
                         axisLine={{ stroke: '#eaeaea' }}
                         tick={{ fill: '#888', fontSize: 12 }}
                         width={60}
-                        label={{
+                        label={windowWidth >= 640 ? {
                           value: t.portfolioValue,
                           angle: -90,
                           position: 'insideLeft',
                           fill: '#888',
                           fontSize: 12,
-                        }}
+                        } : undefined}
                       />
                       <Tooltip
-                        formatter={(value: number) => [formatCurrency(value), t.portfolioValue]}
+                        formatter={tooltipFormatter}
                         contentStyle={{
                           backgroundColor: 'hsl(var(--background) / 0.95)',
                           borderRadius: '8px',

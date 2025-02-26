@@ -567,7 +567,7 @@ export function CompoundInterestCalculator() {
                       tick={{ fill: '#888', fontSize: 12 }}
                       width={60}
                       label={
-                        windowWidth >= 768
+                        windowWidth >= 640
                           ? {
                               value: t.portfolioValue,
                               angle: -90,
@@ -595,8 +595,9 @@ export function CompoundInterestCalculator() {
                       height={36}
                       iconType="circle"
                       iconSize={8}
+                      wrapperStyle={windowWidth < 640 ? { fontSize: '10px' } : { fontSize: '12px' }}
                       formatter={(value) => (
-                        <span className="text-gray-600 dark:text-gray-400 text-sm ml-2">{value}</span>
+                        <span className="text-gray-600 dark:text-gray-400 text-sm ml-2" style={{ fontSize: windowWidth < 640 ? '10px' : '12px' }}>{value}</span>
                       )}
                     />
                     <Line

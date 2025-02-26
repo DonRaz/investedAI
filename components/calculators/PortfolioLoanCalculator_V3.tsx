@@ -92,6 +92,15 @@ const PortfolioTaxCalculator: React.FC = () => {
 	const { language, direction } = useTranslationStore();
 	const { formatCurrencySafe, abbreviateNumber } = useCurrencyFormatter();
 	const t = portfolioV3Translations[language];
+	const [mounted, setMounted] = useState(false);
+	const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 768);
+
+	useEffect(() => {
+		setMounted(true);
+		const handleResize = () => setWindowWidth(window.innerWidth);
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
 
 	const [showDetails, setShowDetails] = useState(false);
 	const [loanStrategy, setLoanStrategy] = useState('monthly');
@@ -472,6 +481,14 @@ const PortfolioTaxCalculator: React.FC = () => {
 									axisLine={{ stroke: '#eaeaea' }}
 									tick={{ fill: '#888', fontSize: 12 }}
 									width={60}
+									label={windowWidth >= 640 ? {
+										value: t.portfolioValue,
+										angle: -90,
+										position: 'insideLeft',
+										offset: -5,
+										fill: '#888',
+										fontSize: 12,
+									} : undefined}
 								/>
 								<RechartsTooltip
 									contentStyle={{
@@ -504,11 +521,12 @@ const PortfolioTaxCalculator: React.FC = () => {
 									height={36}
 									iconType="circle"
 									iconSize={8}
+									wrapperStyle={windowWidth < 640 ? { fontSize: '10px' } : { fontSize: '12px' }}
 									formatter={(value) => (
-										<span style={{ color: '#666', fontSize: 12, marginLeft: 8 }}>{value}</span>
+										<span style={{ color: '#666', fontSize: windowWidth < 640 ? 10 : 12, marginLeft: 8 }}>{value}</span>
 									)}
 								/>
-                                <Line
+								<Line
 									type="monotone"
 									dataKey="sellStrategy"
 									name="Sell Strategy"
@@ -526,7 +544,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 									dot={{ r: 1 }}
 									activeDot={{ r: 5, strokeWidth: 0 }}
 								/>
-                                <Line
+								<Line
 									type="monotone"
 									dataKey="netWorth"
 									name="Net Worth (Loan)"
@@ -535,14 +553,12 @@ const PortfolioTaxCalculator: React.FC = () => {
 									dot={{ r: 0 }}
 									activeDot={{ r: 4, strokeWidth: 0 }}
 								/>
-
-
 							</LineChart>
 						</ResponsiveContainer>
 					</div>
 					{/* Loan Strategy Results*/}
 					<div className="grid gap-6 md:grid-cols-2">
-                        {/* Loan Strategy */}
+						{/* Loan Strategy */}
 						<div className="flex flex-col h-full bg-gradient-to-br from-emerald-50/95 via-emerald-50/90 to-zinc-50/95 dark:from-emerald-950/30 dark:via-emerald-900/30 dark:to-zinc-900/30 backdrop-blur-md rounded-2xl p-6 shadow-md border border-emerald-100/50 dark:border-emerald-900/50">
 							<h3 className="font-medium text-md mb-4 text-emerald-900 dark:text-emerald-200">
 								{t.summaryLoanStrategy}
@@ -589,7 +605,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 								</span>
 							</div>
 						</div>
-                        {/* Sell Strategy */}
+						{/* Sell Strategy */}
 						<div className="flex flex-col h-full bg-gradient-to-br from-amber-50/95 via-amber-700/10 to-zinc-50/95 dark:from-amber-950/30 dark:via-amber-900/30 dark:to-zinc-900/30 backdrop-blur-md rounded-2xl p-6 shadow-md border border-amber-100/50 dark:border-amber-900/50">
 							<h3 className="font-medium text-md mb-4 text-amber-900 dark:text-amber-200">
 								{t.summarySellStrategy}
@@ -647,7 +663,7 @@ const PortfolioTaxCalculator: React.FC = () => {
 								</h4>
 								<div className="p-6 bg-transparent  backdrop-blur-md rounded-2xl border border-gray-200/50 dark:border-gray-700/30 shadow-lg mb-6">
 									<div className="grid grid-cols-1 gap-y-6 text-sm">
-                                    <div className="flex items-start">
+										<div className="flex items-start">
 											<div className="w-3 h-3 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 mt-1 mr-3 flex-shrink-0 shadow-inner"></div>
 											<div>
 												<div className="font-medium">{t.sellStrategy}</div>
@@ -661,7 +677,6 @@ const PortfolioTaxCalculator: React.FC = () => {
 												<div className="text-xs text-gray-500 mt-1">{t.keepInvestments}</div>
 											</div>
 										</div>
-	
 										<div className="flex items-start">
 											<div className="w-3 h-3 rounded-full bg-gradient-to-br from-emerald-200 to-emerald-300 mt-1 mr-3 flex-shrink-0 shadow-inner"></div>
 											<div>
