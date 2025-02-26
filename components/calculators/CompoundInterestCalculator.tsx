@@ -448,7 +448,7 @@ export function CompoundInterestCalculator() {
           </div>
 
           {/* Results Summary */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
             <Card className="bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-md h-[140px] flex flex-col">
               <CardContent className="p-4 flex flex-col flex-1">
                 <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
