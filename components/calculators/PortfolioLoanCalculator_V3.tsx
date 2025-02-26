@@ -855,13 +855,6 @@ const PortfolioTaxCalculator: React.FC = () => {
 				</CardContent>
 			</Card>
 
-			{/* Attribution footer - now positioned below everything */}
-			<div className="w-full text-center pb-4">
-				<p className="bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-emerald-400 dark:to-emerald-500 bg-clip-text text-transparent font-medium text-xs">
-					{t.madeWith}
-				</p>
-			</div>
-
 			{/* Info Drawer */}
 			<Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
 				<DrawerContent className="max-h-[30vh] rounded-t-3xl overflow-hidden backdrop-blur-xl bg-white/90 dark:bg-zinc-900/90 border-t border-white/20 dark:border-white/10 shadow-2xl">

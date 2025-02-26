@@ -658,13 +658,6 @@ export function CompoundInterestCalculator() {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
-      
-      {/* Attribution footer */}
-      <div className="w-full text-center pb-4">
-        <p className="bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-emerald-400 dark:to-emerald-500 bg-clip-text text-transparent font-medium text-xs">
-          {t.madeWith}
-        </p>
-      </div>
     </div>
   );
 }

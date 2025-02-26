@@ -20,7 +20,7 @@ export default function CompoundPage({
   }, [lang, setLanguage]);
 
   return (
-    <div className="container mx-auto">
+    <div className="mx-auto">
       <PortfolioLoanCalculator_V3 />
     </div>
   );

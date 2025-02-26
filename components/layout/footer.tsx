@@ -3,6 +3,7 @@
 import { useTranslationStore } from "@/lib/translations";
 import { commonTranslations } from "@/lib/translations/common";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export function Footer() {
   const { language, direction } = useTranslationStore();
@@ -19,30 +20,35 @@ export function Footer() {
 
   return (
     <footer className="border-t">
-      <div className="container flex h-14 items-center justify-between mx-auto" dir={direction()}>
-        <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} InvestCalc. {t.allRightsReserved}
+      <div className="container flex flex-col h-auto py-4 items-center justify-between mx-auto" dir={direction()}>
+        <p className="bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-emerald-400 dark:to-emerald-500 bg-clip-text text-transparent font-medium text-xs mb-3">
+          {t.madeWith}
         </p>
-        <nav className="flex items-center space-x-6">
-          <a
-            href="#"
-            className="text-sm text-muted-foreground hover:text-foreground"
-          >
-            {t.terms}
-          </a>
-          <a
-            href="#"
-            className="text-sm text-muted-foreground hover:text-foreground"
-          >
-            {t.privacy}
-          </a>
-          <a
-            href="#"
-            className="text-sm text-muted-foreground hover:text-foreground"
-          >
-            {t.contact}
-          </a>
-        </nav>
+        <div className="flex w-full items-center justify-between">
+          <p className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} InvestCalc. {t.allRightsReserved}
+          </p>
+          <nav className="flex items-center space-x-6">
+            <Link
+              href={`/${language}/terms`}
+              className="text-sm text-muted-foreground hover:text-foreground"
+            >
+              {t.terms}
+            </Link>
+            <Link
+              href={`/${language}/privacy`}
+              className="text-sm text-muted-foreground hover:text-foreground"
+            >
+              {t.privacy}
+            </Link>
+            <Link
+              href={`/${language}/contact`}
+              className="text-sm text-muted-foreground hover:text-foreground"
+            >
+              {t.contact}
+            </Link>
+          </nav>
+        </div>
       </div>
     </footer>
   );

@@ -26,7 +26,12 @@ export async function generateStaticParams() {
     '/tax',
     '/pension',
     '/compound',
-    '/loan-vs-sell'
+    '/loan-vs-sell',
+    '/terms',
+    '/privacy',
+    '/contact',
+    '/not-found',
+    '/404'
   ];
 
   const locales = ['en', 'he'];

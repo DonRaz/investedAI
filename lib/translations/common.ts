@@ -17,6 +17,13 @@ export interface CommonTranslation {
   terms: string;
   privacy: string;
   contact: string;
+  madeWith: string;
+  
+  // 404 Page
+  pageNotFound: string;
+  pageNotFoundDesc: string;
+  goBack: string;
+  goHome: string;
 }
 
 export const commonTranslations: Record<Language, CommonTranslation> = {
@@ -37,6 +44,13 @@ export const commonTranslations: Record<Language, CommonTranslation> = {
     terms: "Terms",
     privacy: "Privacy",
     contact: "Contact",
+    madeWith: "Made with ❤️ by Shahar Raz",
+    
+    // 404 Page
+    pageNotFound: "Page Not Found",
+    pageNotFoundDesc: "The page you're looking for doesn't exist or has been moved.",
+    goBack: "Go Back",
+    goHome: "Go to Home",
   },
   he: {
     // Header
@@ -55,5 +69,12 @@ export const commonTranslations: Record<Language, CommonTranslation> = {
     terms: "תנאי שימוש",
     privacy: "פרטיות",
     contact: "צור קשר",
+    madeWith: "נוצר באהבה ע״י שחר רז",
+    
+    // 404 Page
+    pageNotFound: "הדף לא נמצא",
+    pageNotFoundDesc: "הדף שאתה מחפש אינו קיים או הועבר.",
+    goBack: "חזור",
+    goHome: "עבור לדף הבית",
   },
 };
