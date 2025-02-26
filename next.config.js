@@ -15,6 +15,12 @@ const nextConfig = {
   },
   // Add basePath if needed
   // basePath: '',
+  
+  // Configure custom 404 page for static exports
+  experimental: {
+    // This ensures our custom 404 page is used
+    missingSuspenseWithCSRBailout: false,
+  },
 };
 
 module.exports = nextConfig;

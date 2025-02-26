@@ -90,3 +90,41 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Ensure transparent images display correctly */
+img {
+  background-color: transparent !important;
+}
+
+/* Specific styling for the 404 page image */
+.transparent-image {
+  background-color: transparent !important;
+}
+
+/* Light mode specific styling */
+:root img.transparent-image {
+  mix-blend-mode: multiply;
+}
+
+/* Dark mode specific styling */
+.dark img.transparent-image {
+  mix-blend-mode: screen;
+  filter: brightness(1.3) contrast(1.2);
+}
+
+/* Additional styling for the 404 page */
+.not-found-container {
+  position: relative;
+  z-index: 1;
+}
+
+.not-found-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.05) 100%);
+  z-index: -1;
+}
