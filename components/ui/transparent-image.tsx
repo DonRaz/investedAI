@@ -37,14 +37,15 @@ export function TransparentImage({
       style={{ 
         width: width, 
         height: height,
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        maxWidth: '100%'
       }}
     >
       <Image
         src={src}
         alt={alt}
         fill
-        sizes={`(max-width: 1024px) ${width * 0.75}px, ${width}px`}
+        sizes={`(max-width: 768px) 100vw, (max-width: 1024px) ${width * 0.75}px, ${width}px`}
         className="object-contain drop-shadow-md transparent-image"
         style={{ 
           objectFit: 'contain',

@@ -24,6 +24,7 @@ export interface CommonTranslation {
   pageNotFoundDesc: string;
   goBack: string;
   goHome: string;
+  oopsGotLost: string;
 }
 
 export const commonTranslations: Record<Language, CommonTranslation> = {
@@ -51,6 +52,7 @@ export const commonTranslations: Record<Language, CommonTranslation> = {
     pageNotFoundDesc: "The page you're looking for doesn't exist or has been moved.",
     goBack: "Go Back",
     goHome: "Go to Home",
+    oopsGotLost: "Oops! We got lost",
   },
   he: {
     // Header
@@ -76,5 +78,6 @@ export const commonTranslations: Record<Language, CommonTranslation> = {
     pageNotFoundDesc: "הדף שאתה מחפש אינו קיים או הועבר.",
     goBack: "חזור",
     goHome: "עבור לדף הבית",
+    oopsGotLost: "אופס! הלכנו לאיבוד",
   },
 };

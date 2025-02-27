@@ -31,8 +31,8 @@ export default function NotFoundPage({
       <TransparentImage 
         src="/images/lost-puppy.png" 
         alt="Lost puppy"
-        width={450}
-        height={450}
+        width={640}
+        height={358}
         className="mb-8 lg:mb-0"
       />
 
@@ -42,7 +42,7 @@ export default function NotFoundPage({
         </h1>
         
         <h2 className="text-2xl lg:text-3xl font-semibold mb-4">
-          {t.pageNotFound}
+          {t.oopsGotLost}
         </h2>
         
         <p className="text-muted-foreground mb-8 text-center lg:text-left">
