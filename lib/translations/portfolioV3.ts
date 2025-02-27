@@ -188,7 +188,7 @@ export const portfolioV3Translations: Record<Language, PortfolioV3Translation> =
 
     // Slider Info
     marketReturn: "Market Return Rate",
-    marketReturnDesc: "The expected annual percentage growth of your investment portfolio. Historical average for the S&P 500 is around 10%. Higher returns mean your portfolio grows faster, potentially offsetting interest costs in the loan strategy.",
+    marketReturnDesc: "The expected annual percentage growth of your investment portfolio. Historical average for the S&P 500 is around 10%. The Nasdaq100 averaged 19.7% between 2020 and 2025. Higher returns mean your portfolio grows faster, potentially offsetting interest costs in the loan strategy.",
     interestRate_2: "Loan Interest Rate",
     interestRateDesc: "The annual interest rate charged on your portfolio-backed loan. These rates are typically lower than unsecured loans because your portfolio serves as collateral. Lower rates make the loan strategy more attractive compared to selling assets.",
     currentValue: "Portfolio Value",
@@ -290,7 +290,7 @@ export const portfolioV3Translations: Record<Language, PortfolioV3Translation> =
 
     // Slider Info
     marketReturn: "שיעור תשואת שוק",
-    marketReturnDesc: "התשואה השנתית הצפויה באחוזים של תיק ההשקעות שלך. הממוצע ההיסטורי עבור S&P 500 הוא סביב 10%. תשואות גבוהות יותר משמעותן שתיק ההשקעות שלך גדל מהר יותר, מה שעשוי לקזז את עלויות הריבית באסטרטגיית ההלוואה.",
+    marketReturnDesc: "התשואה השנתית הצפויה באחוזים של תיק ההשקעות שלך. הממוצע ההיסטורי עבור S&P 500 הוא סביב 10%. מדד הנאסדק 100 השיג תשואה של 19.7% בין השנים 2020 ל-2025. תשואות גבוהות יותר משמעותן שתיק ההשקעות שלך גדל מהר יותר, מה שעשוי לקזז את עלויות הריבית באסטרטגיית ההלוואה.",
     interestRate_2: "שיעור ריבית ההלוואה",
     interestRateDesc: "שיעור הריבית השנתי שנגבה על ההלוואה המגובה בתיק ההשקעות שלך. שיעורים אלה נמוכים בדרך כלל מהלוואות לא מובטחות מכיוון שתיק ההשקעות שלך משמש כבטוחה. שיעורים נמוכים יותר הופכים את אסטרטגיית ההלוואה לאטרקטיבית יותר בהשוואה למכירת נכסים.",
     currentValue: "ערך תיק",

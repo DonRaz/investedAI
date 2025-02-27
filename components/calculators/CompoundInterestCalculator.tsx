@@ -314,7 +314,7 @@ export function CompoundInterestCalculator() {
       
       <Card className="w-full max-w-7xl overflow-hidden border border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-xl bg-white/80 dark:bg-zinc-900/70 rounded-3xl mb-8">
         <div className="absolute inset-0 bg-gradient-to-tr from-zinc-100/30 via-transparent to-emerald-100/30 dark:from-zinc-900/20 dark:to-emerald-900/20 rounded-3xl"></div>
-        <CardContent className="space-y-8 p-4 md:p-8 relative z-10">
+        <CardContent className="space-y-4 md:space-y-8 p-2 md:p-8 relative z-10">
           {/* Header */}
           <div className="text-center space-y-3 mb-10">
             <h1 className="text-3xl font-light tracking-tight bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-zinc-100 dark:to-zinc-300 bg-clip-text text-transparent">
@@ -336,100 +336,164 @@ export function CompoundInterestCalculator() {
             />
           </div>
 
-          {/* Input Controls */}
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="space-y-4 border-r border-zinc-200/30 dark:border-zinc-700/30 md:pr-6 pr-0">
-              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
-                <div className="flex items-center">
-                  <Label className="text-gray-700 dark:text-gray-300">
-                    {isTargetMode ? t.targetAmount : t.monthlyInvestment}
-                  </Label>
-                  <HelpButton sliderKey={isTargetMode ? "targetAmount" : "monthlyInvestment"} />
-                </div>
-                <div className="pt-2">
-                  <SliderWithInput
-                    value={isTargetMode ? targetAmount : monthlyInvestment}
-                    onValueChange={(value) => {
-                      if (isTargetMode) {
-                        setTargetAmount(value);
-                        setTargetAmountInput(formatCurrencySafe(value));
-                      } else {
-                        setMonthlyInvestment(value);
-                        setMonthlyInvestmentInput(formatCurrencySafe(value));
-                      }
-                    }}
-                    min={isTargetMode ? 100000 : 0}
-                    max={isTargetMode ? 10000000 : 50000}
-                    step={isTargetMode ? 50000 : 500}
-                    formatValue={formatCurrencySafe}
-                  />
-                </div>
-              </div>
+          {/* Wrapper for Input Controls and Results Summary with responsive ordering */}
+          <div className="flex flex-col space-y-4 md:space-y-8 gap-2 md:gap-8">
+            {/* Results Summary - will appear first on small screens */}
+            <div className="order-1 md:order-2 ">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                <Card className="bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-md h-[140px] flex flex-col">
+                  <CardContent className="p-4 flex flex-col flex-1">
+                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      {isTargetMode ? t.monthlyRequired : t.pureContributions}
+                    </h3>
+                    <div className="mt-auto flex flex-col gap-2">
+                      <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                        {isTargetMode
+                          ? formatCurrencySafe(roundNumber(summary.monthlyInvestment))
+                          : formatCurrencySafe(roundNumber(summary.pureAccumulatedMonthlyInvestment))}
+                      </p>
+                      <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-amber-100/80 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 self-start">
+                        {investmentPeriod * 12} {t.months}
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
 
-              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
-                <div className="flex items-center">
-                  <Label className="text-gray-700 dark:text-gray-300">{t.initialInvestment}</Label>
-                  <HelpButton sliderKey="initialInvestment" />
-                </div>
-                <div className="pt-2">
-                  <SliderWithInput
-                    value={initialAmount}
-                    onValueChange={(value) => {
-                      setInitialAmount(value);
-                      setInitialAmountInput(formatCurrencySafe(value));
-                    }}
-                    min={0}
-                    max={1000000}
-                    step={10000}
-                    formatValue={formatCurrencySafe}
-                  />
-                </div>
+                <Card className="bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-md h-[140px] flex flex-col">
+                  <CardContent className="p-4 flex flex-col flex-1">
+                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      {t.initialGrowth}
+                    </h3>
+                    <div className="mt-auto flex flex-col gap-2">
+                      <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                        {formatCurrencySafe(roundNumber(summary.initialGrowth))}
+                      </p>
+                      {initialAmount > 0 && (
+                        <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 self-start">
+                          +{((summary.initialGrowth / initialAmount - 1) * 100).toFixed(1)}%
+                        </span>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-md h-[140px] flex flex-col">
+                  <CardContent className="p-4 flex flex-col flex-1">
+                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      {t.contributionsGrowth}
+                    </h3>
+                    <div className="mt-auto flex flex-col gap-2">
+                      <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                        {formatCurrencySafe(roundNumber(summary.contibutionsGrowth))}
+                      </p>
+                      {summary.pureAccumulatedMonthlyInvestment > 0 && (
+                        <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 self-start">
+                          +{((summary.contibutionsGrowth / summary.pureAccumulatedMonthlyInvestment - 1) * 100).toFixed(1)}%
+                        </span>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-md h-[140px] flex flex-col">
+                  <CardContent className="p-4 flex flex-col flex-1">
+                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      {t.finalValue}
+                    </h3>
+                    <div className="mt-auto flex flex-col gap-2">
+                      <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                        {formatCurrencySafe(roundNumber(summary.finalValue))}
+                      </p>
+                      {(initialAmount + summary.pureAccumulatedMonthlyInvestment) > 0 && (
+                        <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 self-start">
+                          +{((summary.finalValue / (initialAmount + summary.pureAccumulatedMonthlyInvestment) - 1) * 100).toFixed(1)}%
+                        </span>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
 
-            <div className="space-y-4">
-              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
-                <div className="flex items-center">
-                  <Label className="text-gray-700 dark:text-gray-300">{t.period}</Label>
-                  <HelpButton sliderKey="period" />
-                </div>
-                <div className="pt-2">
-                  <SliderWithInput
-                    value={investmentPeriod}
-                    onValueChange={(value) => {
-                      setInvestmentPeriod(value);
-                      setPeriodInput(value.toString());
-                    }}
-                    min={1}
-                    max={35}
-                    step={1}
-                    formatValue={(value) => `${value} ${value === 1 ? t.yearLabel : t.yearsLabel}`}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
-                <div className="flex items-center" dir='ltr'>
-                  <Label className="text-gray-700 dark:text-gray-300">{t.annualReturn}</Label>
-                  <HelpButton sliderKey="annualReturn" />
-                  <div className="text-sm text-gray-600 dark:text-gray-400 ml-auto">
-                    {annualReturn.toFixed(1)}%
+            {/* Input Controls - will appear second on small screens */}
+            <div className="order-2 md:order-1">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-6">
+                <div className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
+                  <div className="flex items-center">
+                    <Label className="text-gray-700 dark:text-gray-300">
+                      {isTargetMode ? t.targetAmount : t.monthlyInvestment}
+                    </Label>
+                    <HelpButton sliderKey={isTargetMode ? "targetAmount" : "monthlyInvestment"} />
+                  </div>
+                  <div className="pt-2">
+                    <SliderWithInput
+                      value={isTargetMode ? targetAmount : monthlyInvestment}
+                      onValueChange={(value) => {
+                        if (isTargetMode) {
+                          setTargetAmount(value);
+                          setTargetAmountInput(formatCurrencySafe(value));
+                        } else {
+                          setMonthlyInvestment(value);
+                          setMonthlyInvestmentInput(formatCurrencySafe(value));
+                        }
+                      }}
+                      min={isTargetMode ? 100000 : 0}
+                      max={isTargetMode ? 10000000 : 50000}
+                      step={isTargetMode ? 50000 : 500}
+                      formatValue={formatCurrencySafe}
+                    />
                   </div>
                 </div>
-                <div className="pt-2">
-                  {windowWidth < 768 ? (
-                    <CustomInterestSlider
-                      value={annualReturn}
+
+                <div className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
+                  <div className="flex items-center">
+                    <Label className="text-gray-700 dark:text-gray-300">{t.initialInvestment}</Label>
+                    <HelpButton sliderKey="initialInvestment" />
+                  </div>
+                  <div className="pt-2">
+                    <SliderWithInput
+                      value={initialAmount}
                       onValueChange={(value) => {
-                        setAnnualReturn(value);
-                        setAnnualReturnInput(value.toString());
+                        setInitialAmount(value);
+                        setInitialAmountInput(formatCurrencySafe(value));
                       }}
                       min={0}
-                      max={20}
-                      step={0.1}
-                      isShowingHeader={false}
+                      max={1000000}
+                      step={10000}
+                      formatValue={formatCurrencySafe}
                     />
-                  ) : (
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
+                  <div className="flex items-center">
+                    <Label className="text-gray-700 dark:text-gray-300">{t.period}</Label>
+                    <HelpButton sliderKey="period" />
+                  </div>
+                  <div className="pt-2">
+                    <SliderWithInput
+                      value={investmentPeriod}
+                      onValueChange={(value) => {
+                        setInvestmentPeriod(value);
+                        setPeriodInput(value.toString());
+                      }}
+                      min={1}
+                      max={35}
+                      step={1}
+                      formatValue={(value) => `${value} ${value === 1 ? t.yearLabel : t.yearsLabel}`}
+                    />
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
+                  <div className="flex items-center">
+                    <Label className="text-gray-700 dark:text-gray-300">{t.annualReturn}</Label>
+                    <HelpButton sliderKey="annualReturn" />
+                    <div className="text-sm text-gray-600 dark:text-gray-400 ml-auto">
+                      {annualReturn.toFixed(1)}%
+                    </div>
+                  </div>
+                  <div className="pt-2">
                     <SliderWithInput
                       value={annualReturn}
                       onValueChange={(value) => {
@@ -441,90 +505,15 @@ export function CompoundInterestCalculator() {
                       step={0.1}
                       formatValue={(value) => `${value.toFixed(1)}%`}
                     />
-                  )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Results Summary */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
-            <Card className="bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-md h-[140px] flex flex-col">
-              <CardContent className="p-4 flex flex-col flex-1">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  {isTargetMode ? t.monthlyRequired : t.pureContributions}
-                </h3>
-                <div className="mt-auto flex flex-col gap-2">
-                  <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    {isTargetMode
-                      ? formatCurrencySafe(roundNumber(summary.monthlyInvestment))
-                      : formatCurrencySafe(roundNumber(summary.pureAccumulatedMonthlyInvestment))}
-                  </p>
-                  <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-amber-100/80 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 self-start">
-                    {investmentPeriod * 12} {t.months}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-md h-[140px] flex flex-col">
-              <CardContent className="p-4 flex flex-col flex-1">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  {t.initialGrowth}
-                </h3>
-                <div className="mt-auto flex flex-col gap-2">
-                  <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    {formatCurrencySafe(roundNumber(summary.initialGrowth))}
-                  </p>
-                  {initialAmount > 0 && (
-                    <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 self-start">
-                      +{((summary.initialGrowth / initialAmount - 1) * 100).toFixed(1)}%
-                    </span>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-md h-[140px] flex flex-col">
-              <CardContent className="p-4 flex flex-col flex-1">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  {t.contributionsGrowth}
-                </h3>
-                <div className="mt-auto flex flex-col gap-2">
-                  <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    {formatCurrencySafe(roundNumber(summary.contibutionsGrowth))}
-                  </p>
-                  {summary.pureAccumulatedMonthlyInvestment > 0 && (
-                    <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 self-start">
-                      +{((summary.contibutionsGrowth / summary.pureAccumulatedMonthlyInvestment - 1) * 100).toFixed(1)}%
-                    </span>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-md h-[140px] flex flex-col">
-              <CardContent className="p-4 flex flex-col flex-1">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  {t.finalValue}
-                </h3>
-                <div className="mt-auto flex flex-col gap-2">
-                  <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    {formatCurrencySafe(roundNumber(summary.finalValue))}
-                  </p>
-                  {(initialAmount + summary.pureAccumulatedMonthlyInvestment) > 0 && (
-                    <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 self-start">
-                      +{((summary.finalValue / (initialAmount + summary.pureAccumulatedMonthlyInvestment) - 1) * 100).toFixed(1)}%
-                    </span>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
           {/* Growth Chart */}
           <Card className="overflow-hidden border border-white/20 dark:border-white/10 shadow-lg backdrop-blur-md bg-white/90 dark:bg-zinc-900/80 rounded-2xl">
-            <CardContent className="p-2 md:p-6">
+            <CardContent className="ps-4 md:p-6">
               <h3 className="text-lg font-semibold mb-4 bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent">
                 {t.portfolioValue}
               </h3>
@@ -572,7 +561,7 @@ export function CompoundInterestCalculator() {
                               value: t.portfolioValue,
                               angle: -90,
                               position: 'left',
-                              offset: -10,
+                              offset: -20,
                               fill: '#888',
                               fontSize: 12,
                             }

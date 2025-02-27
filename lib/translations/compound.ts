@@ -90,7 +90,7 @@ export const compoundTranslations: Record<Language, CompoundTranslation> = {
     period_desc: "The length of time you plan to invest. Longer investment periods dramatically increase the effects of compound interest, as your returns generate their own returns over time.",
     
     annualReturn_info: "Annual Return Rate",
-    annualReturn_desc: "The expected yearly percentage growth of your investments. This rate varies by investment type - stocks historically average 7-10% annually over long periods, while bonds and savings accounts typically offer lower returns with less risk."
+    annualReturn_desc: "The expected yearly percentage growth of your investments. This rate varies by investment type. Historical average for the S&P 500 is around 10%. The Nasdaq100 returned 19.7% between 2020 and 2025, while bonds and savings accounts typically offer lower returns with less risk."
   },
   he: {
     title: "מחשבון השקעות - ריבית דריבית",
@@ -137,6 +137,6 @@ export const compoundTranslations: Record<Language, CompoundTranslation> = {
     period_desc: "משך הזמן שאתה מתכנן להשקיע. תקופות השקעה ארוכות יותר מגדילות באופן דרמטי את ההשפעות של ריבית דריבית, כאשר התשואות שלך מייצרות את התשואות שלהן עצמן לאורך זמן.",
     
     annualReturn_info: "שיעור תשואה שנתי",
-    annualReturn_desc: "צמיחת האחוזים השנתית הצפויה של ההשקעות שלך. שיעור זה משתנה לפי סוג ההשקעה - מניות היסטורית ממוצעות 7-10% בשנה לאורך תקופות ארוכות, בעוד שאגרות חוב וחשבונות חיסכון בדרך כלל מציעים תשואות נמוכות יותר עם פחות סיכון."
+    annualReturn_desc: "צמיחת האחוזים השנתית הצפויה של ההשקעות שלך. שיעור זה משתנה לפי סוג ההשקעה. מדד ה-S&P 500 מניב בממוצע כ-10% בשנה. מדד הנאסדק 100 השיג תשואה של 19.7% בין השנים 2020 ל-2025, בעוד שאגרות חוב וחשבונות חיסכון בדרך כלל מציעים תשואות נמוכות יותר עם פחות סיכון."
   },
 };
