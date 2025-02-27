@@ -514,7 +514,7 @@ export function CompoundInterestCalculator() {
           {/* Growth Chart */}
           <Card className="overflow-hidden border border-white/20 dark:border-white/10 shadow-lg backdrop-blur-md bg-white/90 dark:bg-zinc-900/80 rounded-2xl">
             <CardContent className="ps-4 md:p-6">
-              <h3 className="text-lg font-semibold mb-4 bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent">
+              <h3 className="hidden md:block text-lg font-semibold mb-4 bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent">
                 {t.portfolioValue}
               </h3>
               <div className="h-[450px] md:h-[400px]">
