@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import {
   LineChart,
   Line,
@@ -45,8 +45,17 @@ type SliderInfoKeys =
   | 'period'
   | 'annualReturn';
 
+// Define RefNames type for clickable values
+type RefNames = 'initialInvestment' | 'targetAmount' | 'monthlyInvestment' | 'period' | 'annualReturn';
+
 interface HelpButtonProps {
   sliderKey: SliderInfoKeys;
+}
+
+interface ClickableValueProps {
+  value: number;
+  refName: RefNames;
+  formatter?: (value: number) => string;
 }
 
 interface ChartDataPoint {
@@ -98,6 +107,23 @@ export function CompoundInterestCalculator() {
   // Add drawer state
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerContent, setDrawerContent] = useState({ title: '', description: '' });
+  const [animatingRef, setAnimatingRef] = useState<RefNames | null>(null);
+
+  // References for scrolling
+  const initialInvestmentRef = useRef<HTMLDivElement>(null);
+  const targetAmountRef = useRef<HTMLDivElement>(null);
+  const monthlyInvestmentRef = useRef<HTMLDivElement>(null);
+  const periodRef = useRef<HTMLDivElement>(null);
+  const annualReturnRef = useRef<HTMLDivElement>(null);
+
+  // Define refs object for scrolling
+  const refs = {
+    initialInvestment: initialInvestmentRef,
+    targetAmount: targetAmountRef,
+    monthlyInvestment: monthlyInvestmentRef,
+    period: periodRef,
+    annualReturn: annualReturnRef,
+  } as const;
 
   useEffect(() => {
     setMounted(true);
@@ -105,11 +131,40 @@ export function CompoundInterestCalculator() {
 
   const windowWidth = useWindowSize();
 
+  // Add handleValueClick function
+  const handleValueClick = (refName: RefNames): void => {
+    setAnimatingRef(refName);
+
+    setTimeout(() => {
+      if (refs[refName]?.current) {
+        refs[refName].current?.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+
+    setTimeout(() => {
+      setAnimatingRef(null);
+    }, 1500);
+  };
+
   // Add openInfoDrawer function
   const openInfoDrawer = (title: string, description: string): void => {
     setDrawerContent({ title, description });
     setDrawerOpen(true);
   };
+
+  // Add ClickableValue component
+  const ClickableValue: React.FC<ClickableValueProps> = ({
+    value,
+    refName,
+    formatter = (v: number) => v.toString(),
+  }) => (
+    <span
+      onClick={() => handleValueClick(refName)}
+      className="underline decoration-dotted cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors font-medium"
+    >
+      {formatter(value)}
+    </span>
+  );
 
   // Add sliderInfo object
   const sliderInfo: Record<SliderInfoKeys, { title: string; description: string }> = {
@@ -447,6 +502,25 @@ export function CompoundInterestCalculator() {
 
                 <div className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
                   <div className="flex items-center">
+                    <Label className="text-gray-700 dark:text-gray-300">{t.period}</Label>
+                    <HelpButton sliderKey="period" />
+                  </div>
+                  <div className="pt-2">
+                    <SliderWithInput
+                      value={investmentPeriod}
+                      onValueChange={(value) => {
+                        setInvestmentPeriod(value);
+                        setPeriodInput(value.toString());
+                      }}
+                      min={1}
+                      max={35}
+                      step={1}
+                      formatValue={(value) => `${value} ${value === 1 ? t.yearLabel : t.yearsLabel}`}
+                    />
+                  </div>
+                </div>
+                <div className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
+                  <div className="flex items-center">
                     <Label className="text-gray-700 dark:text-gray-300">{t.initialInvestment}</Label>
                     <HelpButton sliderKey="initialInvestment" />
                   </div>
@@ -465,33 +539,12 @@ export function CompoundInterestCalculator() {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
-                  <div className="flex items-center">
-                    <Label className="text-gray-700 dark:text-gray-300">{t.period}</Label>
-                    <HelpButton sliderKey="period" />
-                  </div>
-                  <div className="pt-2">
-                    <SliderWithInput
-                      value={investmentPeriod}
-                      onValueChange={(value) => {
-                        setInvestmentPeriod(value);
-                        setPeriodInput(value.toString());
-                      }}
-                      min={1}
-                      max={35}
-                      step={1}
-                      formatValue={(value) => `${value} ${value === 1 ? t.yearLabel : t.yearsLabel}`}
-                    />
-                  </div>
-                </div>
 
                 <div className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
                   <div className="flex items-center">
                     <Label className="text-gray-700 dark:text-gray-300">{t.annualReturn}</Label>
                     <HelpButton sliderKey="annualReturn" />
-                    <div className="text-sm text-gray-600 dark:text-gray-400 ml-auto">
-                      {annualReturn.toFixed(1)}%
-                    </div>
+
                   </div>
                   <div className="pt-2">
                     <SliderWithInput
