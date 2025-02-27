@@ -133,17 +133,23 @@ export function CompoundInterestCalculator() {
 
   // Add handleValueClick function
   const handleValueClick = (refName: RefNames): void => {
-    setAnimatingRef(refName);
+    // Only set animatingRef if we're in target mode or if the ref is not targetAmount
+    if (isTargetMode || refName !== "targetAmount") {
+      setAnimatingRef(refName);
+    }
 
     setTimeout(() => {
       if (refs[refName]?.current) {
-        refs[refName].current?.scrollIntoView({ behavior: 'smooth' });
+        refs[refName].current?.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'center'
+        });
       }
     }, 100);
 
     setTimeout(() => {
       setAnimatingRef(null);
-    }, 1500);
+    }, 2500);
   };
 
   // Add openInfoDrawer function
@@ -160,7 +166,7 @@ export function CompoundInterestCalculator() {
   }) => (
     <span
       onClick={() => handleValueClick(refName)}
-      className="underline decoration-dotted cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors font-medium"
+      className="underline decoration-dotted cursor-pointer text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors font-medium inline-flex items-center"
     >
       {formatter(value)}
     </span>
@@ -378,6 +384,44 @@ export function CompoundInterestCalculator() {
             <p className="text-sm text-gray-500 dark:text-gray-400 max-w-lg mx-auto">{t.subtitle}</p>
           </div>
 
+          {/* Storyline Section */}
+          <div className="p-6 backdrop-blur-md bg-gradient-to-r from-zinc-50/90 to-zinc-100/90 dark:from-zinc-950/60 dark:to-zinc-900/60 rounded-2xl border border-zinc-200/50 dark:border-zinc-800/30 shadow-lg mb-8">
+            <p className="text-sm leading-relaxed text-gray-800 dark:text-gray-200 text-center">
+              {t.ifYouStart}{' '}
+              <ClickableValue
+                value={initialAmount}
+                refName="initialInvestment"
+                formatter={(v) => formatCurrencySafe(Number(v))}
+              />{' '}
+              {t.andInvest}{' '}
+              <ClickableValue
+                value={isTargetMode ? summary.monthlyInvestment : monthlyInvestment}
+                refName="monthlyInvestment"
+                formatter={(v) => formatCurrencySafe(Number(v))}
+              />{' '}
+              {t.monthly}{' '}
+              {t.for}{' '}
+              <ClickableValue
+                value={investmentPeriod}
+                refName="period"
+                formatter={(v) => `${v} ${v === 1 ? t.yearLabel : t.yearsLabel}`}
+              />{' '}
+              {t.withReturn}{' '}
+              <ClickableValue
+                value={annualReturn}
+                refName="annualReturn"
+                formatter={(v) => `${v}%`}
+              />{' '}
+              {isTargetMode ? t.youWillReach : t.youWillHave}{' '}
+              <ClickableValue
+                value={isTargetMode ? targetAmount : summary.finalValue}
+                refName="targetAmount"
+                formatter={(v) => formatCurrencySafe(Number(v))}
+              />
+              {t.atTheEnd}
+            </p>
+          </div>
+
           {/* Mode Switch - Force LTR for the toggle section */}
           <div className="flex items-center justify-center">
             <LiquidToggle
@@ -396,7 +440,11 @@ export function CompoundInterestCalculator() {
             {/* Results Summary - will appear first on small screens */}
             <div className="order-1 md:order-2 ">
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                <Card className="bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-md h-[140px] flex flex-col">
+                <Card className={`bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border ${
+                  isTargetMode && animatingRef === "monthlyInvestment"
+                    ? 'animate-pulse border-emerald-400 dark:border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)] dark:shadow-[0_0_15px_rgba(16,185,129,0.2)]' 
+                    : 'border-white/50 dark:border-zinc-700/30'
+                } shadow-md h-[140px] flex flex-col transition-all duration-300`}>
                   <CardContent className="p-4 flex flex-col flex-1">
                     <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
                       {isTargetMode ? t.monthlyRequired : t.pureContributions}
@@ -450,7 +498,11 @@ export function CompoundInterestCalculator() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border border-white/50 dark:border-zinc-700/30 shadow-md h-[140px] flex flex-col">
+                <Card className={`bg-gradient-to-br from-white/70 to-zinc-200/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md border ${
+                  isTargetMode && animatingRef === "targetAmount"
+                    ? 'animate-pulse border-emerald-400 dark:border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)] dark:shadow-[0_0_15px_rgba(16,185,129,0.2)]' 
+                    : 'border-white/50 dark:border-zinc-700/30'
+                } shadow-md h-[140px] flex flex-col transition-all duration-300`}>
                   <CardContent className="p-4 flex flex-col flex-1">
                     <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
                       {t.finalValue}
@@ -473,14 +525,21 @@ export function CompoundInterestCalculator() {
             {/* Input Controls - will appear second on small screens */}
             <div className="order-2 md:order-1">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-6">
-                <div className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
+                <div className={`bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border ${
+                  animatingRef === (isTargetMode ? "targetAmount" : "monthlyInvestment") 
+                    ? 'animate-pulse border-emerald-400 dark:border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)] dark:shadow-[0_0_15px_rgba(16,185,129,0.2)]' 
+                    : 'border-white/50 dark:border-zinc-700/30'
+                } shadow-md transition-all duration-300`}>
                   <div className="flex items-center">
                     <Label className="text-gray-700 dark:text-gray-300">
                       {isTargetMode ? t.targetAmount : t.monthlyInvestment}
                     </Label>
                     <HelpButton sliderKey={isTargetMode ? "targetAmount" : "monthlyInvestment"} />
                   </div>
-                  <div className="pt-2">
+                  <div 
+                    className="pt-2" 
+                    ref={isTargetMode ? targetAmountRef : monthlyInvestmentRef}
+                  >
                     <SliderWithInput
                       value={isTargetMode ? targetAmount : monthlyInvestment}
                       onValueChange={(value) => {
@@ -500,12 +559,19 @@ export function CompoundInterestCalculator() {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
+                <div className={`bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border ${
+                  animatingRef === "period" 
+                    ? 'animate-pulse border-emerald-400 dark:border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)] dark:shadow-[0_0_15px_rgba(16,185,129,0.2)]' 
+                    : 'border-white/50 dark:border-zinc-700/30'
+                } shadow-md transition-all duration-300`}>
                   <div className="flex items-center">
                     <Label className="text-gray-700 dark:text-gray-300">{t.period}</Label>
                     <HelpButton sliderKey="period" />
                   </div>
-                  <div className="pt-2">
+                  <div 
+                    className="pt-2" 
+                    ref={periodRef}
+                  >
                     <SliderWithInput
                       value={investmentPeriod}
                       onValueChange={(value) => {
@@ -519,12 +585,19 @@ export function CompoundInterestCalculator() {
                     />
                   </div>
                 </div>
-                <div className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
+                <div className={`bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border ${
+                  animatingRef === "initialInvestment" 
+                    ? 'animate-pulse border-emerald-400 dark:border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)] dark:shadow-[0_0_15px_rgba(16,185,129,0.2)]' 
+                    : 'border-white/50 dark:border-zinc-700/30'
+                } shadow-md transition-all duration-300`}>
                   <div className="flex items-center">
                     <Label className="text-gray-700 dark:text-gray-300">{t.initialInvestment}</Label>
                     <HelpButton sliderKey="initialInvestment" />
                   </div>
-                  <div className="pt-2">
+                  <div 
+                    className="pt-2" 
+                    ref={initialInvestmentRef}
+                  >
                     <SliderWithInput
                       value={initialAmount}
                       onValueChange={(value) => {
@@ -540,13 +613,19 @@ export function CompoundInterestCalculator() {
                 </div>
 
 
-                <div className="bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
+                <div className={`bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border ${
+                  animatingRef === "annualReturn" 
+                    ? 'animate-pulse border-emerald-400 dark:border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)] dark:shadow-[0_0_15px_rgba(16,185,129,0.2)]' 
+                    : 'border-white/50 dark:border-zinc-700/30'
+                } shadow-md transition-all duration-300`}>
                   <div className="flex items-center">
                     <Label className="text-gray-700 dark:text-gray-300">{t.annualReturn}</Label>
                     <HelpButton sliderKey="annualReturn" />
-
                   </div>
-                  <div className="pt-2">
+                  <div 
+                    className="pt-2" 
+                    ref={annualReturnRef}
+                  >
                     <SliderWithInput
                       value={annualReturn}
                       onValueChange={(value) => {
