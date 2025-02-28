@@ -19,6 +19,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const navigation = [
   { name: "portfolio", href: "/loan-vs-sell", icon: Calculator },
@@ -34,10 +35,47 @@ export function Header() {
   const t = commonTranslations[language];
   const [isOpen, setOpen] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
+  const [isVisible, setIsVisible] = React.useState(true);
+  const [lastScrollY, setLastScrollY] = React.useState(0);
+  const [isMobile, setIsMobile] = React.useState(false);
 
   React.useEffect(() => {
     setMounted(true);
-  }, []);
+    // Check if we're on mobile initially
+    setIsMobile(window.innerWidth < 768);
+
+    // Add resize listener to update isMobile state
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Add scroll listener for header visibility
+    const controlHeader = () => {
+      if (window.innerWidth >= 768) {
+        setIsVisible(true);
+        return;
+      }
+      
+      const currentScrollY = window.scrollY;
+      
+      // Only hide header after scrolling down at least 20px
+      if (currentScrollY > lastScrollY && currentScrollY > 20) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', controlHeader);
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('scroll', controlHeader);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [lastScrollY]);
 
   // Extract the base path without language prefix
   const basePath = pathname.split('/').slice(2).join('/');
@@ -71,7 +109,13 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 ">
+    <header 
+      className={cn(
+        "sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+        "transition-transform duration-300",
+        isMobile && !isVisible && !isOpen ? "-translate-y-full" : "translate-y-0"
+      )}
+    >
       <div className="container relative flex h-14 items-center justify-between mx-auto" dir={direction()}>
         {/* Logo */}
         <div className="flex items-center gap-4  px-2 py-1  border-b-2 hover:border-b-0 hover:border-primary/50 rounded-md">
