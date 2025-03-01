@@ -112,22 +112,22 @@ export function Header() {
     <header 
       className={cn(
         "sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
-        "transition-transform duration-300",
+        "transition-transform duration-300 theme-transition",
         isMobile && !isVisible && !isOpen ? "-translate-y-full" : "translate-y-0"
       )}
     >
-      <div className="container relative flex h-14 items-center justify-between mx-auto" dir={direction()}>
+      <div className="container relative flex h-14 items-center justify-between mx-auto theme-transition" dir={direction()}>
         {/* Logo */}
-        <div className="flex items-center gap-4  px-2 py-1  border-b-2 hover:border-b-0 hover:border-primary/50 rounded-md">
+        <div className="flex items-center gap-4 px-2 py-1 border-b-2 hover:border-b-0 hover:border-primary/50 rounded-md theme-transition">
           <Link href={`/${language}`} className="flex items-center space-x-2" prefetch={true}>
-          <span className="font-semibold mx-3">Invested</span>
+          <span className="font-semibold mx-3 theme-transition">Invested</span>
             <LogoIcon className="h-6 w-6" />
 
           </Link>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex">
+        <div className="hidden md:flex theme-transition">
           <NavigationMenu>
             <NavigationMenuList>
               {navigation.map((item) => {
@@ -139,12 +139,12 @@ export function Header() {
                   <NavigationMenuItem key={item.href}>
                     <Link href={href} legacyBehavior passHref prefetch={true}>
                       <NavigationMenuLink
-                        className={`flex items-center space-x-2 px-4 py-2 text-sm transition-colors hover:text-foreground/80 ${
+                        className={`flex items-center space-x-2 px-4 py-2 text-sm transition-colors hover:text-foreground/80 theme-transition ${
                           isActive ? "text-foreground font-semibold" : "text-foreground font-medium"
                         }`}
                       >
-                        <Icon className={`${isActive ? "h-5 w-5 stroke-[2.5]" : "h-4 w-4 stroke-[1.5]"}`} />
-                        <span>{t[item.name]}</span>
+                        <Icon className={`${isActive ? "h-5 w-5 stroke-[2.5]" : "h-4 w-4 stroke-[1.5]"} theme-transition`} />
+                        <span className="theme-transition">{t[item.name]}</span>
                       </NavigationMenuLink>
                     </Link>
                   </NavigationMenuItem>
@@ -155,7 +155,7 @@ export function Header() {
         </div>
 
         {/* Theme and Language Toggles */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 theme-transition">
           <LanguageToggle />
           <ModeToggle />
           
@@ -163,17 +163,17 @@ export function Header() {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="md:hidden theme-transition"
             onClick={toggleMenu}
           >
-            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isOpen ? <X className="h-5 w-5 theme-transition" /> : <Menu className="h-5 w-5 theme-transition" />}
           </Button>
         </div>
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="absolute top-[3.5rem] left-0 right-0 border-b bg-background p-4 md:hidden">
-            <nav className="flex flex-col space-y-3">
+          <div className="absolute top-[3.5rem] left-0 right-0 border-b bg-background p-4 md:hidden theme-transition">
+            <nav className="flex flex-col space-y-3 theme-transition">
               {navigation.map((item) => {
                 const Icon = item.icon;
                 const href = `/${language}${item.href}`;
@@ -184,15 +184,15 @@ export function Header() {
                     key={item.href}
                     href={href}
                     prefetch={true}
-                    className={`flex items-center space-x-3 rounded-md px-3 py-2.5 text-sm transition-colors relative ${
+                    className={`flex items-center space-x-3 rounded-md px-3 py-2.5 text-sm transition-colors relative theme-transition ${
                       isActive 
                         ? "bg-accent/50 font-semibold after:absolute after:left-0 after:top-0 after:h-full after:w-1 after:bg-primary after:rounded-full" 
                         : "font-medium hover:bg-accent/30"
                     }`}
                     onClick={toggleMenu}
                   >
-                    <Icon className={`${isActive ? "h-5 w-5 stroke-[2.5]" : "h-4 w-4 stroke-[1.5]"}`} />
-                    <span>{t[item.name]}</span>
+                    <Icon className={`${isActive ? "h-5 w-5 stroke-[2.5]" : "h-4 w-4 stroke-[1.5]"} theme-transition`} />
+                    <span className="theme-transition">{t[item.name]}</span>
                   </Link>
                 );
               })}

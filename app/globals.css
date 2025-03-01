@@ -78,13 +78,20 @@
   /* Add smooth transitions for theme changes */
   :root,
   .dark {
-    transition: background-color 300ms ease-in-out, border-color 300ms ease-in-out, color 300ms ease-in-out;
+    color-scheme: light dark;
+    /* Remove transition from root elements */
   }
 
-  :root *,
+  /* Apply targeted transitions to specific properties */
+  .theme-transition {
+    @apply transition-colors duration-200 ease-in-out;
+  }
+
+  /* Remove universal transitions that cause sequential effects */
+  /* :root *,
   .dark * {
     transition: background-color 300ms ease-in-out, border-color 300ms ease-in-out, color 300ms ease-in-out;
-  }
+  } */
 
   body {
     @apply bg-background text-foreground;
@@ -111,3 +118,4 @@ img {
   mix-blend-mode: normal;
   filter: brightness(1.2) contrast(1.1);
 }
+

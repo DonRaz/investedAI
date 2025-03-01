@@ -30,17 +30,17 @@ export function LanguageToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Globe className="h-[1.2rem] w-[1.2rem]" />
+        <Button variant="ghost" size="icon" className="theme-transition">
+          <Globe className="h-[1.2rem] w-[1.2rem] theme-transition" />
           <span className="sr-only">Change language</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="theme-transition">
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
             onClick={() => handleLanguageChange(lang.code)}
-            className={language === lang.code ? "bg-accent" : ""}
+            className={`theme-transition ${language === lang.code ? "bg-accent" : ""}`}
           >
             {lang.name}
           </DropdownMenuItem>
