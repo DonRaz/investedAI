@@ -14,6 +14,7 @@ interface SliderWithInputProps {
   formatValue?: (value: number) => string;
   parseValue?: (value: string) => number;
   className?: string;
+  allowNegative?: boolean;
 }
 
 export function SliderWithInput({
@@ -25,35 +26,36 @@ export function SliderWithInput({
   formatValue = (v) => v.toString(),
   parseValue = (v) => Number(v.replace(/[^0-9.-]+/g, '')),
   className,
+  allowNegative = false,
 }: SliderWithInputProps) {
   const [inputValue, setInputValue] = React.useState(formatValue(value));
   const [sliderValue, setSliderValue] = React.useState(Math.min(value, max));
 
   React.useEffect(() => {
     setInputValue(formatValue(value));
-    setSliderValue(Math.min(value, max));
-  }, [value, max, formatValue]);
+    setSliderValue(Math.min(Math.max(value, min), max));
+  }, [value, min, max, formatValue]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setInputValue(newValue);
     const parsed = parseValue(newValue);
-    if (!isNaN(parsed) && parsed >= min) {
+    if (!isNaN(parsed) && (allowNegative || parsed >= min)) {
       onValueChange(parsed);
-      setSliderValue(Math.min(parsed, max));
+      setSliderValue(Math.min(Math.max(parsed, min), max));
     }
   };
 
   const handleInputBlur = () => {
     const parsed = parseValue(inputValue);
-    if (isNaN(parsed) || parsed < min) {
+    if (isNaN(parsed) || (!allowNegative && parsed < min)) {
       setInputValue(formatValue(min));
       onValueChange(min);
       setSliderValue(min);
     } else {
       setInputValue(formatValue(parsed));
       onValueChange(parsed);
-      setSliderValue(Math.min(parsed, max));
+      setSliderValue(Math.min(Math.max(parsed, min), max));
     }
   };
 

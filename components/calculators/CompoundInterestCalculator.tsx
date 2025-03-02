@@ -239,7 +239,7 @@ export function CompoundInterestCalculator() {
     ) => {
       setInputState(value);
       const parsedValue = parseInputValue(value);
-      if (!isNaN(parsedValue) && parsedValue >= 0) {
+      if (!isNaN(parsedValue)) {
         setValidatedState(parsedValue);
       }
     },
@@ -393,9 +393,9 @@ export function CompoundInterestCalculator() {
                 refName="initialInvestment"
                 formatter={(v) => formatCurrencySafe(Number(v))}
               />{' '}
-              {t.andInvest}{' '}
+              {!isTargetMode && (summary.monthlyInvestment < 0 ? t.andWithdraw : t.andInvest)}{' '}
               <ClickableValue
-                value={isTargetMode ? summary.monthlyInvestment : monthlyInvestment}
+                value={isTargetMode ? summary.monthlyInvestment : Math.abs(monthlyInvestment)}
                 refName="monthlyInvestment"
                 formatter={(v) => formatCurrencySafe(Number(v))}
               />{' '}
@@ -555,6 +555,7 @@ export function CompoundInterestCalculator() {
                       max={isTargetMode ? 10000000 : 50000}
                       step={isTargetMode ? 50000 : 500}
                       formatValue={formatCurrencySafe}
+                      allowNegative={!isTargetMode}
                     />
                   </div>
                 </div>

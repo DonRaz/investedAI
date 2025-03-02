@@ -46,6 +46,7 @@ export interface CompoundTranslation {
   // Storyline translations
   ifYouStart: string;
   andInvest: string;
+  andWithdraw: string;
   monthly: string;
   for: string;
   withReturn: string;
@@ -105,6 +106,7 @@ export const compoundTranslations: Record<Language, CompoundTranslation> = {
     // Storyline translations
     ifYouStart: "If you start with",
     andInvest: "and invest",
+    andWithdraw: "and withdraw",
     monthly: "monthly",
     for: "for",
     withReturn: "with an annual return of",
@@ -162,6 +164,7 @@ export const compoundTranslations: Record<Language, CompoundTranslation> = {
     // Storyline translations
     ifYouStart: "אם תתחיל עם",
     andInvest: "ותשקיע",
+    andWithdraw: "ותמשוך",
     monthly: "מדי חודש",
     for: "למשך",
     withReturn: "עם תשואה שנתית של",
