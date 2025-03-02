@@ -30,16 +30,10 @@ export function Footer() {
           </p>
           <nav className="flex items-center space-x-6">
             <Link
-              href={`/${language}/terms`}
+              href={`/${language}/legal`}
               className="text-sm text-muted-foreground hover:text-foreground"
             >
-              {t.terms}
-            </Link>
-            <Link
-              href={`/${language}/privacy`}
-              className="text-sm text-muted-foreground hover:text-foreground"
-            >
-              {t.privacy}
+              {t.legal}
             </Link>
             <Link
               href={`/${language}/contact`}

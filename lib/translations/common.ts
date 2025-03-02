@@ -16,6 +16,7 @@ export interface CommonTranslation {
   allRightsReserved: string;
   terms: string;
   privacy: string;
+  legal: string;
   contact: string;
   madeWith: string;
   
@@ -44,6 +45,7 @@ export const commonTranslations: Record<Language, CommonTranslation> = {
     allRightsReserved: "All rights reserved",
     terms: "Terms",
     privacy: "Privacy",
+    legal: "Legal",
     contact: "Contact",
     madeWith: "Made with ❤️ by Shahar Raz",
     
@@ -70,6 +72,7 @@ export const commonTranslations: Record<Language, CommonTranslation> = {
     allRightsReserved: "כל הזכויות שמורות",
     terms: "תנאי שימוש",
     privacy: "פרטיות",
+    legal: "מידע משפטי",
     contact: "צור קשר",
     madeWith: "נוצר באהבה ע״י שחר רז",
     
