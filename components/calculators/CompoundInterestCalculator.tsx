@@ -393,7 +393,7 @@ export function CompoundInterestCalculator() {
                 refName="initialInvestment"
                 formatter={(v) => formatCurrencySafe(Number(v))}
               />{' '}
-              {!isTargetMode && (summary.monthlyInvestment < 0 ? t.andWithdraw : t.andInvest)}{' '}
+              {(summary.monthlyInvestment < 0 ? t.andWithdraw : t.andInvest)}{' '}
               <ClickableValue
                 value={isTargetMode ? summary.monthlyInvestment : Math.abs(monthlyInvestment)}
                 refName="monthlyInvestment"
