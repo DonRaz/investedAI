@@ -48,6 +48,7 @@ Try it now: [https://invested-ai-azure.vercel.app/en/compound/](https://invested
 - [Next.js](https://nextjs.org/) - React framework for production
 - [TypeScript](https://www.typescriptlang.org/) - Typed JavaScript
 - [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [ShadcN UI](https://ui.shadcn.com/) - Beautifully designed components built with Radix UI and Tailwind CSS
 - [Chart.js](https://www.chartjs.org/) - JavaScript charting library
 
 ## 🛠️ Installation
@@ -107,5 +108,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <p align="center">
-  Built with ❤️ by <a href="https://github.com/shaharraz">Shahar Raz</a>
+  Built with ❤️ by <a href="https://github.com/shaharaz">Shahar Raz</a>
 </p>
