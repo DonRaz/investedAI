@@ -532,7 +532,7 @@ export function CompoundInterestCalculator() {
                 } shadow-md transition-all duration-300`}>
                   <div className="flex items-center">
                     <Label className="text-gray-700 dark:text-gray-300">
-                      {isTargetMode ? t.targetAmount : t.monthlyInvestment}
+                      {isTargetMode ? `${t.targetAmount} (${t.currency})` : `${t.monthlyInvestment} (${t.currency})`}
                     </Label>
                     <HelpButton sliderKey={isTargetMode ? "targetAmount" : "monthlyInvestment"} />
                   </div>
@@ -545,16 +545,16 @@ export function CompoundInterestCalculator() {
                       onValueChange={(value) => {
                         if (isTargetMode) {
                           setTargetAmount(value);
-                          setTargetAmountInput(formatCurrencySafe(value));
+                          setTargetAmountInput(value.toString());
                         } else {
                           setMonthlyInvestment(value);
-                          setMonthlyInvestmentInput(formatCurrencySafe(value));
+                          setMonthlyInvestmentInput(value.toString());
                         }
                       }}
                       min={isTargetMode ? 100000 : 0}
                       max={isTargetMode ? 10000000 : 50000}
                       step={isTargetMode ? 50000 : 500}
-                      formatValue={formatCurrencySafe}
+                      formatValue={(value) => formatCurrencySafe(value).replace(/[^0-9,]/g, '')}
                       allowNegative={!isTargetMode}
                     />
                   </div>
@@ -566,7 +566,7 @@ export function CompoundInterestCalculator() {
                     : 'border-white/50 dark:border-zinc-700/30'
                 } shadow-md transition-all duration-300`}>
                   <div className="flex items-center">
-                    <Label className="text-gray-700 dark:text-gray-300">{t.period}</Label>
+                    <Label className="text-gray-700 dark:text-gray-300">{`${t.period} (${t.yearsLabel})`}</Label>
                     <HelpButton sliderKey="period" />
                   </div>
                   <div 
@@ -582,7 +582,7 @@ export function CompoundInterestCalculator() {
                       min={1}
                       max={35}
                       step={1}
-                      formatValue={(value) => `${value} ${value === 1 ? t.yearLabel : t.yearsLabel}`}
+                      formatValue={(value) => value.toLocaleString()}
                     />
                   </div>
                 </div>
@@ -592,7 +592,7 @@ export function CompoundInterestCalculator() {
                     : 'border-white/50 dark:border-zinc-700/30'
                 } shadow-md transition-all duration-300`}>
                   <div className="flex items-center">
-                    <Label className="text-gray-700 dark:text-gray-300">{t.initialInvestment}</Label>
+                    <Label className="text-gray-700 dark:text-gray-300">{`${t.initialInvestment} (${t.currency})`}</Label>
                     <HelpButton sliderKey="initialInvestment" />
                   </div>
                   <div 
@@ -603,16 +603,15 @@ export function CompoundInterestCalculator() {
                       value={initialAmount}
                       onValueChange={(value) => {
                         setInitialAmount(value);
-                        setInitialAmountInput(formatCurrencySafe(value));
+                        setInitialAmountInput(value.toString());
                       }}
                       min={0}
                       max={1000000}
                       step={10000}
-                      formatValue={formatCurrencySafe}
+                      formatValue={(value) => formatCurrencySafe(value).replace(/[^0-9,]/g, '')}
                     />
                   </div>
                 </div>
-
 
                 <div className={`bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border ${
                   animatingRef === "annualReturn" 
@@ -620,7 +619,7 @@ export function CompoundInterestCalculator() {
                     : 'border-white/50 dark:border-zinc-700/30'
                 } shadow-md transition-all duration-300`}>
                   <div className="flex items-center">
-                    <Label className="text-gray-700 dark:text-gray-300">{t.annualReturn}</Label>
+                    <Label className="text-gray-700 dark:text-gray-300">{`${t.annualReturn} (%)`}</Label>
                     <HelpButton sliderKey="annualReturn" />
                   </div>
                   <div 
@@ -636,7 +635,7 @@ export function CompoundInterestCalculator() {
                       min={0}
                       max={20}
                       step={0.1}
-                      formatValue={(value) => `${value.toFixed(1)}%`}
+                      formatValue={(value) => value.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                     />
                   </div>
                 </div>

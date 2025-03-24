@@ -27,6 +27,7 @@ export interface CompoundTranslation {
   madeWith: string;
   yearLabel: string;
   yearsLabel: string;
+  currency: string;
   
   // Help button translations
   close: string;
@@ -64,7 +65,7 @@ export const compoundTranslations: Record<Language, CompoundTranslation> = {
     initialInvestment: "Initial Investment",
     targetAmount: "Target Amount",
     monthlyInvestment: "Monthly Investment",
-    annualReturn: "Annual Return Rate (%)",
+    annualReturn: "Annual Return Rate",
     monthlyRequired: "Monthly Investment",
     initialGrowth: "Initial Investment Growth",
     totalContributions: "Total Contributions",
@@ -76,13 +77,14 @@ export const compoundTranslations: Record<Language, CompoundTranslation> = {
     months: "Months",
     totalPortfolio: "Total Portfolio",
     contributions: "Contributions",
-    period: "Investment Period (Years)",
+    period: "Investment Period",
     pureInvestment: "Pure Investment (No Interest)",
     pureContributions: "Pure contributions (No Interest)",
     contributionsGrowth: "Contributions Growth",
     madeWith: "Investment Calculator • Made with 💙",
     yearLabel: "year",
     yearsLabel: "years",
+    currency: "$",
     
     // Help button translations
     close: "Close",
@@ -122,7 +124,7 @@ export const compoundTranslations: Record<Language, CompoundTranslation> = {
     initialInvestment: "השקעה התחלתית",
     targetAmount: "סכום יעד",
     monthlyInvestment: "השקעה חודשית",
-    annualReturn: "תשואה שנתית (%)",
+    annualReturn: "תשואה שנתית",
     monthlyRequired: "השקעה חודשית נדרשת",
     initialGrowth: "צמיחת השקעה התחלתית",
     totalContributions: "סך הפקדות",
@@ -134,13 +136,14 @@ export const compoundTranslations: Record<Language, CompoundTranslation> = {
     months: "חודשים",
     totalPortfolio: "סך הכל תיק",
     contributions: "הפקדות",
-    period: "תקופת השקעה (שנים)",
+    period: "תקופת השקעה",
     pureInvestment: "השקעה נטו (ללא ריבית)",
     pureContributions: "הפקדות נטו (ללא ריבית)",
     contributionsGrowth: "צמיחת השקעה חודשית",
     madeWith: "מחשבון השקעות • נוצר עם 💙",
     yearLabel: "שנה",
     yearsLabel: "שנים",
+    currency: "₪",
     
     // Help button translations
     close: "סגור",

@@ -28,7 +28,7 @@ export function Footer() {
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} InvestCalc. {t.allRightsReserved}
           </p>
-          <nav className="flex items-center space-x-6">
+          <nav className="flex items-center space-x-6 gap-x-6">
             <Link
               href={`/${language}/legal`}
               className="text-sm text-muted-foreground hover:text-foreground"

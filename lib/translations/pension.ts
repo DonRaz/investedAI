@@ -16,6 +16,7 @@ export interface PensionTranslation {
   pensionPlanning: string;
   planYourRetirement: string;
   madeWith: string;
+  currency: string;
   
   // Help button translations
   close: string;
@@ -46,6 +47,7 @@ export const pensionTranslations: Record<Language, PensionTranslation> = {
     pensionPlanning: "Pension Planning Calculator",
     planYourRetirement: "Plan your retirement withdrawals and see how long your portfolio will last",
     madeWith: "Pension Planning Calculator • Made with 💙",
+    currency: "$",
     
     // Help button translations
     close: "Close",
@@ -76,6 +78,7 @@ export const pensionTranslations: Record<Language, PensionTranslation> = {
     pensionPlanning: "מחשבון תכנון פנסיה",
     planYourRetirement: "תכנן את משיכות הפנסיה שלך וראה כמה זמן התיק שלך יחזיק מעמד",
     madeWith: "מחשבון תכנון פנסיה • נוצר עם 💙",
+    currency: "₪",
     
     // Help button translations
     close: "סגור",

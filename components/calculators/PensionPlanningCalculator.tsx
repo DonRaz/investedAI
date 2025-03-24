@@ -185,7 +185,7 @@ export function PensionPlanningCalculator() {
             <div className="space-y-4">
               <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
                 <div className="flex items-center">
-                  <Label className="text-gray-700 dark:text-gray-300">{t.initialPortfolio}</Label>
+                  <Label className="text-gray-700 dark:text-gray-300">{`${t.initialPortfolio} (${t.currency})`}</Label>
                   <HelpButton sliderKey="initialPortfolio" />
                 </div>
                 <SliderWithInput
@@ -196,13 +196,13 @@ export function PensionPlanningCalculator() {
                   min={100000}
                   max={10000000}
                   step={50000}
-                  formatValue={formatCurrency}
+                  formatValue={(value) => formatCurrencySafe(value).replace(/[^0-9,]/g, '')}
                 />
               </div>
 
               <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
                 <div className="flex items-center">
-                  <Label className="text-gray-700 dark:text-gray-300">{t.monthlyWithdrawal}</Label>
+                  <Label className="text-gray-700 dark:text-gray-300">{`${t.monthlyWithdrawal} (${t.currency})`}</Label>
                   <HelpButton sliderKey="monthlyWithdrawal" />
                 </div>
                 <SliderWithInput
@@ -213,7 +213,7 @@ export function PensionPlanningCalculator() {
                   min={1000}
                   max={50000}
                   step={500}
-                  formatValue={formatCurrency}
+                  formatValue={(value) => formatCurrencySafe(value).replace(/[^0-9,]/g, '')}
                 />
               </div>
             </div>
@@ -221,10 +221,10 @@ export function PensionPlanningCalculator() {
             <div className="space-y-4">
               <div className="space-y-2 bg-gradient-to-br from-white/70 to-zinc-50/70 dark:from-zinc-800/70 dark:to-zinc-900/50 backdrop-blur-md p-4 rounded-xl border border-white/50 dark:border-zinc-700/30 shadow-md">
                 <div className="flex items-center" dir='ltr'>
-                  <Label className="text-gray-700 dark:text-gray-300">{t.portfolioReturn}</Label>
+                  <Label className="text-gray-700 dark:text-gray-300">{`${t.portfolioReturn}`}</Label>
                   <HelpButton sliderKey="portfolioReturn" />
                   <div className="text-sm text-gray-600 dark:text-gray-400 ml-auto">
-                    {inputs.portfolioReturn.toFixed(1)}%
+                    {inputs.portfolioReturn.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                   </div>
                 </div>
                 <CustomInterestSlider
