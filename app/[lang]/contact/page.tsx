@@ -2,12 +2,17 @@
 
 import { useTranslationStore } from "@/lib/translations";
 import { commonTranslations } from "@/lib/translations/common";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Language } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, Briefcase, Bug, Code, Users, Loader } from "lucide-react";
+import { Mail, MapPin, Briefcase, Bug, Code, Users, Copy, Check, ExternalLink } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function ContactPage({
   params: { lang },
@@ -17,9 +22,9 @@ export default function ContactPage({
   const { direction } = useTranslationStore();
   const t = commonTranslations[lang as Language];
   const [mounted, setMounted] = useState(false);
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const formRef = useRef<HTMLFormElement>(null);
+  const [copied, setCopied] = useState(false);
+  const { toast } = useToast();
+  const email = "SRaz.Sw@gmail.com";
 
   useEffect(() => {
     setMounted(true);
@@ -29,35 +34,21 @@ export default function ContactPage({
     return null;
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(email);
+    setCopied(true);
     
-    try {
-      // Get form data
-      const formData = new FormData(e.target as HTMLFormElement);
-      const name = formData.get('name') as string;
-      const email = formData.get('email') as string;
-      const message = formData.get('message') as string;
-      
-      // In a real implementation, you would send this data to your email service
-      // For example, using a serverless function or API route
-      
-      // Simulate sending email (replace with actual email sending logic)
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Clear the form
-      if (formRef.current) {
-        formRef.current.reset();
-      }
-      
-      setFormSubmitted(true);
-    } catch (error) {
-      console.error('Error sending message:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    toast({
+      title: lang === "en" ? "Email Copied!" : "האימייל הועתק!",
+      description: lang === "en" ? "Email address copied to clipboard" : "כתובת האימייל הועתקה ללוח",
+    });
+    
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
   };
+
+
 
   return (
     <div className="container mx-auto py-12 px-4" dir={direction()}>
@@ -65,96 +56,46 @@ export default function ContactPage({
         {lang === "en" ? "Contact Us" : "צור קשר"}
       </h1>
 
-      <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-        <div className="bg-card rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold mb-4">
-            {lang === "en" ? "Send us a message" : "שלח לנו הודעה"}
-          </h2>
-
-          {formSubmitted ? (
-            <div className="bg-green-100 dark:bg-green-900 p-4 rounded-md text-green-800 dark:text-green-100">
-              {lang === "en"
-                ? "Thank you for your message! We'll get back to you soon."
-                : "תודה על פנייתך! נחזור אליך בהקדם."}
-            </div>
-          ) : (
-            <form ref={formRef} onSubmit={handleSubmit} action={`https://formsubmit.co/${encodeURIComponent("SRaz.Sw@gmail.com")}`} method="POST">
-              <input type="hidden" name="_subject" value="New contact from InvestCalc" />
-              <input type="hidden" name="_captcha" value="false" />
-              <input type="hidden" name="_next" value={typeof window !== 'undefined' ? window.location.href : ''} />
-              
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block mb-1">
-                    {lang === "en" ? "Name" : "שם"}
-                  </label>
-                  <Input
-                    id="name"
-                    name="name"
-                    placeholder={lang === "en" ? "Your name" : "השם שלך"}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block mb-1">
-                    {lang === "en" ? "Email" : "אימייל"}
-                  </label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder={lang === "en" ? "Your email" : "האימייל שלך"}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block mb-1">
-                    {lang === "en" ? "Message" : "הודעה"}
-                  </label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    placeholder={
-                      lang === "en" ? "Your message" : "ההודעה שלך"
-                    }
-                    rows={5}
-                    required
-                  />
-                </div>
-
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? (
-                    <>
-                      <Loader className="mr-2 h-4 w-4 animate-spin" />
-                      {lang === "en" ? "Sending..." : "שולח..."}
-                    </>
-                  ) : (
-                    lang === "en" ? "Send Message" : "שלח הודעה"
-                  )}
-                </Button>
-              </div>
-            </form>
-          )}
-        </div>
-
+      <div className="max-w-4xl mx-auto grid md:grid-cols-1 gap-8">
         <div className="bg-card rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold mb-4">
             {lang === "en" ? "Get in Touch" : "יצירת קשר"}
           </h2>
 
           <div className="space-y-6">
-            <div className="flex items-start gap-3">
+                      <div className="flex items-start gap-3">
               <Mail className="w-5 h-5 mt-1 text-primary" />
               <div>
                 <h3 className="font-medium">
                   {lang === "en" ? "Email" : "אימייל"}
                 </h3>
-                <p className="text-muted-foreground">SRaz.Sw@gmail.com</p>
+                <p className="text-muted-foreground gap-8 flex items-center">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="flex items-center gap-3 ps-0" 
+                        onClick={copyToClipboard}
+                      >
+                        <span>{email}</span>
+                        {copied ? (
+                          <Check className="h-4 w-4 text-green-500" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {lang === "en" ? "Copy to clipboard" : "העתק ללוח"}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                </p>
+
               </div>
             </div>
-
             <div className="flex items-start gap-3">
               <MapPin className="w-5 h-5 mt-1 text-primary" />
               <div>
